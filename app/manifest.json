@@ -1,0 +1,31 @@
+{
+  "manifest_version":2,
+  "name": "Quick Claim",
+  "version": "0.1",
+  "content_scripts":[
+    {
+      "matches":[
+        "<all_urls>"
+      ],
+      "js":["js/jquery-3.1.0.min.js","js/content.js",
+      "popup/popup.js"]
+    }
+  ],
+  "page_action":{
+    "default_icon":"img/icon.png",
+    "default_title":"Quick Claim",
+    "default_popup":"popup/popup.html"
+  },
+
+  "background":{
+    "scripts":["js/background.js"]
+  },
+
+  "commands":{
+    "_execute_page_action":{
+      "suggested_key":{
+        "default":"Ctrl+Q"
+      }
+    }
+  }
+}
