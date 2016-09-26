@@ -1,16 +1,80 @@
 <head>
   <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css" />
   <link rel='stylesheet' type='text/css' href='../css/style.css' />
-  <script src='../js/bootstrap.min.js'></script>
+  <script src='../vendor/jquery-3.1.0.min.js'></script>
+  <script src='../vendor/bootstrap.min.js'></script>
+  <script src='./popup.js'></script>
   <title>Quick Claim</title>
 </head>
 <body>
   <div class='container'>
     <h1 class='text-center'>Quick Claim</h1>
-    <p class='text-center small'>
-      Shortcut key: Ctrl+Q
-    </p>
-    <h3>Select your preset</h3>
+    <div class='row'>
+      <span id='site'></span>
+      <span>Shortcut key: Ctrl+Q</span>
+    </div>
+    <form>
+    <div class='row'>
+        <h4 class='cpt'>CPT Procedure Codes</h4>
+      <div class='col-xs-4'>
+        <div class='input-group'>
+          <div class='input-group-addon'>
+            1
+          </div>
+          <input type='text' class='form-control'
+           id='inputProcedure1' maxlength='5'>
+        </div>
+      </div>
+      <div class='col-xs-4'>
+        <div class='input-group'>
+          <div class='input-group-addon'>
+            2
+          </div>
+        <input type='text' class='form-control'
+         id='inputProcedure2' maxlength='5'>
+       </div>
+     </div>
+      <div class='col-xs-4'>
+        <div class='input-group'>
+          <div class='input-group-addon'>
+            3
+          </div>
+        <input type='text' class='form-control'
+         id='inputProcedure3' maxlength='5'>
+      </div>
+    </div>
+    </div>
+    <br />
+      <div class='row'>
+      <div class='col-xs-4'>
+        <div class='input-group'>
+          <div class='input-group-addon'>
+            4
+          </div>
+        <input type='text' class='form-control'
+         id='inputProcedure4' maxlength='5'>
+      </div>
+    </div>
+      <div class='col-xs-4'>
+        <div class='input-group'>
+          <div class='input-group-addon'>
+            5
+          </div>
+        <input type='text' class='form-control'
+         id='inputProcedure5' maxlength='5'>
+      </div>
+    </div>
+      <div class='col-xs-4'>
+        <div class='input-group'>
+          <div class='input-group-addon'>
+            6
+          </div>
+        <input type='text' class='form-control'
+         id='inputProcedure6' maxlength='5'>
+      </div>
+    </div>
+    </div>
+    </div>
+  </form>
   </div>
-
 </body>

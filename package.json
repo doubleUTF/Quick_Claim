@@ -4,7 +4,8 @@
   "description": "Chrome extension for filing medical claim forms smarter",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "lite-server -c configs/bs-config.json"
   },
   "keywords": [
     "CMS-1500",
@@ -13,5 +14,8 @@
     "form"
   ],
   "author": "doubleUTF",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "lite-server": "^2.2.2"
+  }
 }
