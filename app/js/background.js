@@ -13,6 +13,7 @@ function showTab(){
 chrome.runtime.onMessage.addListener(
   function(request,sender,sendResponse){
     if (request.message=="showPage") {
+       //console.log('tab message received')
        showTab()
     }
   }
@@ -21,8 +22,8 @@ chrome.runtime.onMessage.addListener(
 // Message listener for popup.js
 chrome.runtime.onMessage.addListener(
   function(request,sender,sendResponse){
-    if(request.from=='popup') && (request.body=='getInfo'){
-      sendResponse(site)
+    if((request.from=='popup') && (request.body=='getInfo')){
+      sendResponse('Test')
     }
   }
 )

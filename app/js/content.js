@@ -7,9 +7,19 @@ $(document).ready(function(){
       "message":"showPage",
       "site":"OA"})
   } else {
+    //console.log('sent message')
     chrome.runtime.sendMessage({
       "message":"showPage",
       "site":"dev"
     });
   }
 })
+
+// Message listener for popup.js
+chrome.runtime.onMessage.addListener(
+  function(request,sender,sendResponse){
+    if((request.from=='popup') && (request.body=='getInfo')){
+      sendResponse('Test')
+    }
+  }
+)
