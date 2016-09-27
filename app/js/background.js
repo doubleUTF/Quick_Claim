@@ -1,3 +1,6 @@
+// Globals
+var site=''
+
 // Get and show current tab
 function showTab(){
   chrome.tabs.query({active:true, currentWindow:true}, function(tabs){
@@ -6,11 +9,20 @@ function showTab(){
 })
 }
 
-// Message listener
+// Message listener for content_script.js
 chrome.runtime.onMessage.addListener(
   function(request,sender,sendResponse){
     if (request.message=="showPage") {
        showTab()
+    }
+  }
+)
+
+// Message listener for popup.js
+chrome.runtime.onMessage.addListener(
+  function(request,sender,sendResponse){
+    if(request.from=='popup') && (request.body=='getInfo'){
+      sendResponse(site)
     }
   }
 )

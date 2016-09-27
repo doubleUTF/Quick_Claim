@@ -1,5 +1,5 @@
 $(document).ready(function(){
-  // Check if Office Ally
+  // Check for Office Ally
   if ($("div[class='pageheader']")
    .text().trim()=="CMS 1500 02/12 Form" &&
    $("head>title").text().trim()=="Office Ally -- Secure Master" ) {
@@ -8,6 +8,7 @@ $(document).ready(function(){
       "site":"OA"})
   } else {
     chrome.runtime.sendMessage({
+      "message":"showPage",
       "site":"dev"
     });
   }
