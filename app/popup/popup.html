@@ -12,107 +12,125 @@
     <h1 class='text-center'>Quick Claim</h1>
     <div class='row'>
       <div class='col-xs-3'>
-        <span id='site'>Site: </span>
+        <span id='site'>Site:</span>
       </div>
       <div class='col-xs-9'>
-
     <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Claim Form</a></li>
-    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Settings</a></li>
-    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">About/Help</a></li>
+    <li role="presentation" class="active"><a href="#claim" aria-controls="home" role="tab" data-toggle="tab">Claim Form</a></li>
+    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+    <li role="presentation"><a href="#about" aria-controls="about" role="tab" data-toggle="tab">About/Help</a></li>
   </ul>
+      </div>
+    </div>
     <div class='tab-content'>
-      <div role="tabpanel" class="tab-pane active" id="home">...</div>
-<div role="tabpanel" class="tab-pane" id="profile">...</div>
-<div role="tabpanel" class="tab-pane" id="messages">...</div>
-<div role="tabpanel" class="tab-pane" id="settings">...</div>
-    </div>
-      </div>
-    </div>
-    <div class='row'>
-      <div class='col-xs-12'>
-
-        <span>  Shortcut key: Ctrl+Q</span>
-      </div>
-    </div>
-    <form>
-    <div class='row'>
-      <div class='col-xs-12'>
-        <h4 class>CPT Procedure Codes</h4>
-      </div>
-      <div class='col-xs-4'>
-        <div class='input-group'>
-          <div class='input-group-addon'>
-            1
+      <div role="tabpanel" class="tab-pane active" id="claim">
+        <form>
+        <div class='row'>
+          <div class='col-xs-12'>
+            <span class='header'><h4>CPT Procedure Codes</h4>
+            <p>
+            Configure details for each CPT code in Settings tab.
+            </p>
+          </span>
           </div>
-          <input type='text' class='form-control'
-           id='inputProcedure1' maxlength='5'>
+          <div class='col-xs-4'>
+            <div class='input-group'>
+              <div class='input-group-addon'>
+                1
+              </div>
+              <input type='text' class='form-control'
+               id='inputProcedure1' maxlength='5'>
+            </div>
+          </div>
+          <div class='col-xs-4'>
+            <div class='input-group'>
+              <div class='input-group-addon'>
+                2
+              </div>
+            <input type='text' class='form-control'
+             id='inputProcedure2' maxlength='5'>
+           </div>
+         </div>
+          <div class='col-xs-4'>
+            <div class='input-group'>
+              <div class='input-group-addon'>
+                3
+              </div>
+            <input type='text' class='form-control'
+             id='inputProcedure3' maxlength='5'>
+          </div>
         </div>
-      </div>
-      <div class='col-xs-4'>
-        <div class='input-group'>
-          <div class='input-group-addon'>
-            2
+        </div>
+        <br />
+          <div class='row'>
+          <div class='col-xs-4'>
+            <div class='input-group'>
+              <div class='input-group-addon'>
+                4
+              </div>
+            <input type='text' class='form-control'
+             id='inputProcedure4' maxlength='5'>
           </div>
-        <input type='text' class='form-control'
-         id='inputProcedure2' maxlength='5'>
-       </div>
-     </div>
-      <div class='col-xs-4'>
-        <div class='input-group'>
-          <div class='input-group-addon'>
-            3
+        </div>
+          <div class='col-xs-4'>
+            <div class='input-group'>
+              <div class='input-group-addon'>
+                5
+              </div>
+            <input type='text' class='form-control'
+             id='inputProcedure5' maxlength='5'>
           </div>
-        <input type='text' class='form-control'
-         id='inputProcedure3' maxlength='5'>
-      </div>
-    </div>
-    </div>
-    <br />
-      <div class='row'>
-      <div class='col-xs-4'>
-        <div class='input-group'>
-          <div class='input-group-addon'>
-            4
+        </div>
+          <div class='col-xs-4'>
+            <div class='input-group'>
+              <div class='input-group-addon'>
+                6
+              </div>
+            <input type='text' class='form-control'
+             id='inputProcedure6' maxlength='5'>
           </div>
-        <input type='text' class='form-control'
-         id='inputProcedure4' maxlength='5'>
-      </div>
-    </div>
-      <div class='col-xs-4'>
-        <div class='input-group'>
-          <div class='input-group-addon'>
-            5
+        </div>
+        </div>
+        <div class='row'>
+          <div class='col-xs-12'>
+            <h4>Dates of Service</h2>
           </div>
-        <input type='text' class='form-control'
-         id='inputProcedure5' maxlength='5'>
-      </div>
-    </div>
-      <div class='col-xs-4'>
-        <div class='input-group'>
-          <div class='input-group-addon'>
-            6
+        </div>
+        <div class='row'>
+          <div class='col-xs-12'>
+            <button class='btn btn-default'>Fill forms</button>
+            <button class='btn btn-default' type='reset'>Clear claim</button>
+            <button class='btn btn-default'>Clear (site)</button>
           </div>
-        <input type='text' class='form-control'
-         id='inputProcedure6' maxlength='5'>
+        </div>
+          </form>
       </div>
-    </div>
-    </div>
-    <div class='row'>
-      <div class='col-xs-12'>
-        <h4>Dates of Service</h2>
-      </div>
-    </div>
-    <div class='row'>
-      <div class='col-xs-12'>
-        <button class='btn btn-default'>Fill forms</button>
-        <button class='btn btn-default' type='reset'>Clear claim</button>
-        <button class='btn btn-default'>Clear (site)</button>
-      </div>
-    </div>
-      </form>
-    </div>
+<div role="tabpanel" class="tab-pane" id="settings">...</div>
+<div role="tabpanel" class="tab-pane" id="about">
+  <div class='col-xs-12'>
+    <h4 class='text-center'>Directions</h4>
+    <p>
+      If your data has many variations, use the 'Omit Fields'
+      mode in settings and enter data manually.
+      Otherwise, go to the settings tab and enter data for commonly used CPT codes and
+      click save when finished. Ensure you are on a supported site(OA, MD-Online).
+      Go to Claim Form tab and enter CPT codes. 
 
-
+    </p>
+    <h4 class='text-center'>About</h4>
+    <p>
+      Entering electronic medical claims on sites such as Office Ally or MD-Online
+      requires tedious and repetetive data entry. Quick Claim is a
+      Chrome extension meant to save time by remembering
+      your settings and automatically filling out the dense
+      portion of the form (Field 24 of CMS 1500). Quick Claim is
+      best when entering same, repeating data. In most cases, the only data
+      that changes are dates of service and diagnoses.
+    </p>
+    <span>Shortcut key: Ctrl+Q</span>
+  </div>
+</div>
+</div>
+    </div>
 </body>
 </html>
