@@ -1,6 +1,43 @@
+/* Popup html */
 body{
   min-width:400px;
   min-height:400px;
   background-color: rgb(51, 52, 51);
   color:rgb(226, 123, 16);
+}
+
+/* Bootstrap Overrides */
+
+.nav > li > a {
+  position: relative;
+  display: block;
+  padding: 5px 10px !important;
+}
+
+.nav-tabs {
+  border-bottom: 1px solid #797979;
+  max-width:267px;
+}
+
+.nav-tabs > li > a:hover {
+  border-color: #eee #eee #ddd;
+}
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+  color: rgb(226, 123, 16);
+  cursor: default;
+  background-color: rgb(51, 52, 51);
+  border: 1px solid #797979;
+  border-bottom-color: transparent;
+}
+
+.nav > li > a:hover,
+.nav > li > a:focus {
+  text-decoration: none;
+  background-color: #eee;
+}
+
+.nav > li >a{
+  color:rgb(138, 133, 133)
 }
