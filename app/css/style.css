@@ -15,6 +15,14 @@ body{
   float:right;
 }
 
+#popup1, #popup2{
+  display:none;
+}
+
+.popupC {
+  padding-top: 40px;
+}
+
 /* Bootstrap Overrides */
 
 .nav > li > a {

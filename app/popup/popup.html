@@ -27,11 +27,7 @@
         <form>
         <div class='row'>
           <div class='col-xs-12'>
-            <span class='header'><h4>CPT Procedure Codes</h4>
-            <p>
-            Configure details for each CPT code in Settings tab.
-            </p>
-          </span>
+            <h4>CPT Procedure Codes</h4>
           </div>
           <div class='col-xs-4'>
             <div class='input-group'>
@@ -105,8 +101,61 @@
         </div>
           </form>
       </div>
-<div role="tabpanel" class="tab-pane" id="settings">...</div>
+<div role="tabpanel" class="tab-pane" id="settings">
+<div class='row'>
+  <div class='col-xs-4'>
+    <h4>General</h4>
+    <div class='checkbox' id='checkbox1'>
+      <label>
+      <input type='checkbox' value='' />
+      Manual entry
+    </label>
+    </div>
+
+    <div class='checkbox' id='checkbox2'>
+      <label>
+      <input type='checkbox' value='' />
+      Select all diagnosis codes
+    </label>
+    </div>
+      </div>
+  <div class='col-xs-8'>
+    <div id='popup1' class='popupC'>
+      <p>
+        Fill out forms on native site manually and
+        allow disabling of specific columns to allow
+        automatic tabbing between input fields.
+      </p>
+    </div>
+    <div id='popup2' class='popupC'>
+      <p>
+        Select all diagnosis codes for every CPT code.
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='col-xs-12'>
+    <h4>CPT details</h4>
+  </div>
+<div class='col-xs-4'>
+<select size='10' class='form-control'>
+  <option>97813</option>
+  <option>97814</option>
+  <option>97140</option>
+  <option>97026</option>
+  <option>97013</option>
+</select>
+</div>
+<div class='col-xs-8'>
+  Details
+</div>
+</div>
+</div>
+
 <div role="tabpanel" class="tab-pane" id="about">
+  <div class='row'>
   <div class='col-xs-12'>
     <h4 class='text-center'>Directions</h4>
     <p>
@@ -114,21 +163,23 @@
       mode in settings and enter data manually.
       Otherwise, go to the settings tab and enter data for commonly used CPT codes and
       click save when finished. Ensure you are on a supported site(OA, MD-Online).
-      Go to Claim Form tab and enter CPT codes. 
+      Go to Claim Form tab and enter CPT codes.
 
     </p>
     <h4 class='text-center'>About</h4>
     <p>
-      Entering electronic medical claims on sites such as Office Ally or MD-Online
+      Filing electronic medical claims on sites such as Office Ally or MD-Online
       requires tedious and repetetive data entry. Quick Claim is a
       Chrome extension meant to save time by remembering
       your settings and automatically filling out the dense
       portion of the form (Field 24 of CMS 1500). Quick Claim is
-      best when entering same, repeating data. In most cases, the only data
+      ideal when entering same, repeating data. In most cases, the only data
       that changes are dates of service and diagnoses.
     </p>
     <span>Shortcut key: Ctrl+Q</span>
   </div>
+</div>
+
 </div>
 </div>
     </div>
