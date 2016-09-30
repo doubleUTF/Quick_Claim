@@ -23,7 +23,6 @@ const OA=12
   })
 })
 
-
 // Helper functions
 
 // Get tabs, type 'dev' for development purposes
