@@ -23,6 +23,10 @@ body{
   padding-top: 40px;
 }
 
+.cptDetails{
+  padding: 5px 10px !important;
+  height:24px !important;
+}
 /* Bootstrap Overrides */
 
 .nav > li > a {
@@ -57,4 +61,25 @@ body{
 
 .nav > li >a{
   color:rgb(138, 133, 133)
+}
+
+.nav-tabs > li, .nav-pills > li {
+    float:none;
+    display:inline-block;
+    *display:inline; /* ie7 fix */
+     zoom:1; /* hasLayout ie7 trigger */
+}
+
+.nav-tabs, .nav-pills {
+    text-align:center;
+}
+
+.form-control {
+  height: 30px;
+  padding: 4px 10px;
+}
+
+.input-group-addon {
+  padding: 6px 12px;
+  font-size: 14px;
 }
