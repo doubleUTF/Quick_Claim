@@ -27,6 +27,28 @@ body{
   padding: 5px 10px !important;
   height:24px !important;
 }
+
+#addCptInput{
+  padding: 5px 5px !important;
+  height:24px !important;
+  max-width: 60px;
+  display:inline;
+}
+
+#inputAdd{
+  padding:0px 5px;
+  height:25px;
+  margin-top:-2px !important;
+}
+
+#rowAdd{
+  margin-top: 5px
+}
+
+.select2-dropdown {
+  color:black;
+}
+
 /* Bootstrap Overrides */
 
 .nav > li > a {
@@ -74,7 +96,7 @@ body{
     text-align:center;
 }
 
-.form-control {
+.form-control{
   height: 30px;
   padding: 4px 10px;
 }
