@@ -4,6 +4,7 @@
   <link rel='stylesheet' type='text/css' href='../css/style.css' />
   <link rel='stylesheet' href='../css/select2.min.css' />
   <script src='../vendor/jquery-3.1.0.min.js'></script>
+  <script src='../vendor/jquery.validate.min.js'></script>
   <script src='../vendor/bootstrap.min.js'></script>
   <script src='../vendor/store.min.js'></script>
   <script src='../vendor/select2.min.js'></script>
@@ -107,30 +108,33 @@
   <div class='row'>
     <div class='col-xs-12'>
       <div class='row'>
-        <div class='col-xs-12'>
-          <h4>CPT details</h4>
-        </div>
-      <div class='col-xs-4'>
-      <select size='6' class='form-control' name='cptList'>
+      <div class='col-xs-5'>
+      <h4>CPT details</h4>
+      <select class='form-control' name='cptList'>
+        <!--
         <option>97813</option>
         <option>97814</option>
         <option>97140</option>
         <option>97026</option>
         <option>97013</option>
+      -->
       </select>
-      <form class='form-inline'>
+      <form class='form-inline' id='cptAdd'>
         <div class='form-group' id='rowAdd'>
-          <input type='text' class='form-control' id='addCptInput' maxlength="5"/>
-          <button type='button' class='btn btn-default' id='inputAdd'>Add</button>
+          <input type='text' class='form-control' id='addCptInput' maxlength="5" name='addCptInput'/>
+          <button type='submit' class='btn btn-default' id='inputAdd'>Add</button>
         </div>
       </form>
+      <div id='errorMsg'>
       </div>
-      <div class='col-xs-8'>
+      </div>
+      <div class='col-xs-7'>
+        <h4>&nbsp</h4>
         <form class='form-horizontal'>
           <div class='form-group'>
-            <label for='inputCharge' class='col-xs-7 control-label'>
+            <label for='inputCharge' class='col-xs-6 control-label'>
               Charges</label>
-              <div class='col-xs-5'>
+              <div class='col-xs-6'>
                 <input type='text' class='form-control cptDetails' id='inputCharge'/>
               </div>
           </div>

@@ -29,15 +29,15 @@ body{
 }
 
 #addCptInput{
-  padding: 5px 5px !important;
-  height:24px !important;
-  max-width: 60px;
-  display:inline;
+  padding: 5px 10px !important;
+  height:30px !important;
+  max-width: 80;
+  display:inline;;
 }
 
 #inputAdd{
-  padding:0px 5px;
-  height:25px;
+  padding:0px 12px;
+  height:30px;
   margin-top:-2px !important;
 }
 
