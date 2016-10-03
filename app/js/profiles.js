@@ -100,6 +100,7 @@ function addCpt(){
   tempObj.text=cptCode;
   store.set('cpt'+cptCode,tempObj);
   updateSelect()
+  console.log(store.get('cpt'+cptCode))
   $('#addCptInput').val('');
   $selectBox.val(cptCode).trigger('change');
 }
