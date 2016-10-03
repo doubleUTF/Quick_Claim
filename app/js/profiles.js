@@ -9,18 +9,18 @@ $(function(){
 
   // Event listener when selecting from select tab
 
-  $('select').on('select2:select',function(evt){
+  $('select[name="cptList"]').on('select2:select',function(evt){
     console.log('Select event triggered')
     var selectedValue=evt.currentTarget.value
     $('#cptHeader').text('CPT- ' + selectedValue)
-    $('#cptForm').addClass('show')
+    $('#cptDetails').addClass('show')
 
   })
 
-  $('select').on('select2:unselect',function(evt){
+  $('select[name="cptList"]').on('select2:unselect',function(evt){
     var selectedValue=evt.currentTarget.value
     $('#cptHeader').html('&nbsp')
-    $('#cptForm').removeClass('show')
+    $('#cptDetails').removeClass('show')
   })
 
   // Use jQuery Validate library to validate form inputs
@@ -58,6 +58,8 @@ function init() {
         alert('Local storage is not supported by your browser. Please disable "Private Mode", or upgrade to a modern browser.')
         return
     }}
+
+// Globals
 
 // Methods to add, remove, save CPT codes
 // to localStorage with store.js
@@ -126,4 +128,8 @@ var cptObj={
   modC:'',
   modD:'',
   epsdt:'',
+}
+
+function debug(){
+  console.log($('select')==$('select[name="cptList"]'))
 }
