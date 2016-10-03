@@ -31,8 +31,8 @@ body{
 #addCptInput{
   padding: 5px 10px !important;
   height:30px !important;
-  max-width: 80;
-  display:inline;;
+  max-width: 80px;
+  display:block;
 }
 
 #inputAdd{
@@ -47,6 +47,18 @@ body{
 
 .select2-dropdown {
   color:black;
+}
+
+#inputCharge{
+  max-width: 80px;
+  display:inline-block;
+  float:right;
+}
+
+.cptbtn{
+  width:67px;
+  margin-top:5px;
+  margin-bottom:5px;
 }
 
 /* Bootstrap Overrides */
@@ -88,8 +100,6 @@ body{
 .nav-tabs > li, .nav-pills > li {
     float:none;
     display:inline-block;
-    *display:inline; /* ie7 fix */
-     zoom:1; /* hasLayout ie7 trigger */
 }
 
 .nav-tabs, .nav-pills {
@@ -104,4 +114,9 @@ body{
 .input-group-addon {
   padding: 6px 12px;
   font-size: 14px;
+}
+
+/*jQuery Validator overrides*/
+label.error{
+  color:red !important;
 }

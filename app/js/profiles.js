@@ -4,11 +4,26 @@ $(function(){
 
   getAllCpt();
   // Set event listeners on buttons
-  //$('#inputAdd').on('click',addCpt);
-  $('select[name="cptList"]').select2({
-     placeholder:'Select a code'
-  });
+  $('')
 
+
+  // Event listener when selecting from select tab
+
+  $('select').on('select2:select',function(evt){
+    console.log('Select event triggered')
+    var selectedValue=evt.currentTarget.value
+    $('#cptHeader').text('CPT- ' + selectedValue)
+    $('#cptForm').addClass('show')
+
+  })
+
+  $('select').on('select2:unselect',function(evt){
+    var selectedValue=evt.currentTarget.value
+    $('#cptHeader').html('&nbsp')
+    $('#cptForm').removeClass('show')
+  })
+
+  // Use jQuery Validate library to validate form inputs
   $('#cptAdd').validate({
     rules:{
       addCptInput:{
@@ -21,10 +36,18 @@ $(function(){
         minlength: 'CPT Code must be length of 5'
       }
     },
-    errorLabelContainer:'#errorMsg',
-    submitHandler:addCpt
+    errorLabelContainer:'#statusMsg',
+    submitHandler:addCpt,
+    errorClass:'error'
+    })
+  $('#cptDetails').validate({
+    rules:{
+      inputCharge:{
+        digits:true
+      }
+    },
+    errorLabelContainer:"#statusMsg"
   })
-
 });
 
 
@@ -35,20 +58,6 @@ function init() {
         alert('Local storage is not supported by your browser. Please disable "Private Mode", or upgrade to a modern browser.')
         return
     }}
-
-// CPT JSON Data Model
-var cptObj={
-  id:'',
-  text:'',
-  place:'',
-  days:'',
-  emg:'',
-  modA:'',
-  modB:'',
-  modC:'',
-  modD:'',
-  epsdt:'',
-}
 
 // Methods to add, remove, save CPT codes
 // to localStorage with store.js
@@ -68,13 +77,14 @@ function getCptArray(){
 function updateSelect(){
   $('select[name="cptList"]').select2({
      placeholder:'Select a code',
+     allowClear:true,
      data:getCptArray()
    })
 }
 
 // Initialize and return obj of all CPT Codes
 function getAllCpt(){
-  if (store.get('cptList')==null){
+  if (store.get('cptList')===null){
     store.set('cptList',[]);
   }
   updateSelect()
@@ -88,8 +98,12 @@ function addCpt(){
   tempObj.text=cptCode;
   store.set('cpt'+cptCode,tempObj);
   updateSelect()
-  $('#addCptInput').val('')
+  $('#addCptInput').val('');
   $selectBox.val(cptCode).trigger('change');
+}
+
+function getCpt(cpt){
+
 }
 
 function removeCpt(){
@@ -98,4 +112,18 @@ function removeCpt(){
 
 function saveCPT(){
 
+}
+
+// CPT JSON Data Model
+var cptObj={
+  id:'',
+  text:'',
+  place:'',
+  days:'',
+  emg:'',
+  modA:'',
+  modB:'',
+  modC:'',
+  modD:'',
+  epsdt:'',
 }

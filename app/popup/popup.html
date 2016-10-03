@@ -109,89 +109,98 @@
     <div class='col-xs-12'>
       <div class='row'>
       <div class='col-xs-5'>
-      <h4>CPT details</h4>
+      <h4 class='text-center'>CPT List</h4>
       <select class='form-control' name='cptList'>
-        <!--
-        <option>97813</option>
-        <option>97814</option>
-        <option>97140</option>
-        <option>97026</option>
-        <option>97013</option>
-      -->
+        <option></option>
       </select>
       <form class='form-inline' id='cptAdd'>
         <div class='form-group' id='rowAdd'>
-          <input type='text' class='form-control' id='addCptInput' maxlength="5" name='addCptInput'/>
-          <button type='submit' class='btn btn-default' id='inputAdd'>Add</button>
+          <input type='text' class='form-control center-block'
+           id='addCptInput' maxlength="5" name='addCptInput'/>
         </div>
+        <button type='submit' class='btn btn-primary center-block cptbtn'
+         id='inputAdd'>Add</button>
+         <button type='submit' class='btn btn-success center-block cptbtn'
+         id='inputSave'>Save</button>
+         <button type='submit' class='btn btn-danger center-block cptbtn'
+         id='inputDelete'>Delete</button>
       </form>
-      <div id='errorMsg'>
+      <div id='statusMsg'>
       </div>
       </div>
       <div class='col-xs-7'>
-        <h4>&nbsp</h4>
-        <form class='form-horizontal'>
+        <h4 id='cptHeader' class='text-center'>&nbsp</h4>
+        <form class='form-horizontal hide' id='cptForm'>
           <div class='form-group'>
-            <label for='inputCharge' class='col-xs-6 control-label'>
+            <label for='inputCharge' class='col-xs-4 control-label'>
               Charges</label>
-              <div class='col-xs-6'>
-                <input type='text' class='form-control cptDetails' id='inputCharge'/>
+              <div class='col-xs-8'>
+                <input type='text' class='form-control cptDetails'
+                 id='inputCharge' name='inputCharge' maxlength='11'/>
               </div>
           </div>
           <div class='form-group'>
             <label for='inputPlace' class='col-xs-8 control-label'>
               Place of Service</label>
               <div class='col-xs-4'>
-                <input type='text' class='form-control cptDetails' id='inputPlace'/>
+                <input type='text' class='form-control cptDetails'
+                 id='inputPlace' name='inputPlace'/>
               </div>
           </div>
           <div class='form-group'>
             <label for='inputDays' class='col-xs-8 control-label'>
               Days or Units</label>
               <div class='col-xs-4'>
-                <input type='text' class='form-control cptDetails' id='inputDays'/>
+                <input type='text' class='form-control
+                 cptDetails' id='inputDays' name='inputDays'/>
               </div>
           </div>
           <div class='form-group'>
             <label for='inputEmg' class='col-xs-8 control-label'>
               EMG</label>
               <div class='col-xs-4'>
-                <input type='text' class='form-control cptDetails' id='inputEmg'/>
+                <input type='text' class='form-control cptDetails'
+                 id='inputEmg' name='inputEmg'/>
               </div>
           </div>
           <div class='form-group'>
             <label for='inputModA' class='col-xs-8 control-label'>
               Modifier A</label>
               <div class='col-xs-4'>
-                <input type='text' class='form-control cptDetails' id='inputModA'/>
+                <input type='text' class='form-control cptDetails'
+                 id='inputModA' name='inputModA'/>
               </div>
           </div>
           <div class='form-group'>
             <label for='inputModB' class='col-xs-8 control-label'>
               Modifier B</label>
               <div class='col-xs-4'>
-                <input type='text' class='form-control cptDetails' id='inputModB'/>
+                <input type='text' class='form-control cptDetails'
+                 id='inputModB' name='inputModB'/>
               </div>
           </div>
           <div class='form-group'>
             <label for='inputModC' class='col-xs-8 control-label'>
               Modifier C</label>
               <div class='col-xs-4'>
-                <input type='text' class='form-control cptDetails' id='inputModC'/>
+                <input type='text' class='form-control cptDetails'
+                 id='inputModC' name='inputModC'/>
               </div>
           </div>
           <div class='form-group'>
             <label for='inputModD' class='col-xs-8 control-label'>
               Modifier D</label>
               <div class='col-xs-4'>
-                <input type='text' class='form-control cptDetails' id='inputModD'/>
+                <input type='text' class='form-control cptDetails'
+                 id='inputModD' name='inputModD'/>
               </div>
           </div>
           <div class='form-group'>
             <label for='inputEpsdt' class='col-xs-8 control-label'>
               EPSDT Family Plan</label>
               <div class='col-xs-4'>
-                <input type='text' class='form-control cptDetails' id='inputEpsdt'/>
+                <input type='text' class='form-control cptDetails'
+                 id='inputEpsdt' name='inputEpsdt'/>
               </div>
           </div>
         </form>
