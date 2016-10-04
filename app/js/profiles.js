@@ -21,16 +21,23 @@ $(function(){
   })
 
   $('select[name="cptList"]').on('select2:unselect',function(evt){
-    var selectedValue=evt.currentTarget.value
     currentCpt=''
-    $('#cptHeader').html('&nbsp')
-    $('#cptDetails').removeClass('show')
-    hideButtons()
-    $('#cptDetails').find("input[type=text]").val('');
+    clearProfilesTab()
   })
 
   $('select[name="cptList"]').on('change',function(){
-    $('#successMsg >p').remove();
+    $('#successMsg').text('');
+  })
+
+  // Clear profiles tab
+  $('a[href="#profiles"]').on('hide.bs.tab',clearProfilesTab)
+
+  // Delete current cpt button
+  $('#inputDelete').on('click',function(){
+    store.remove('cpt'+currentCpt);
+    $('select[name="cptList"]').find('[value='+currentCpt+']')
+    .remove().trigger('change')
+    clearProfilesTab();
   })
 
   // Use jQuery Validate library to validate form inputs
@@ -38,7 +45,8 @@ $(function(){
     rules:{
       addCptInput:{
         minlength:5,
-        digits:true
+        digits:true,
+        cptInArray:true
       }
     },
     messages:{
@@ -49,7 +57,15 @@ $(function(){
     errorLabelContainer:'#statusMsg',
     submitHandler:addCpt,
     errorClass:'error'
-    })
+  })
+
+  // Add custom rule
+
+  jQuery.validator.addMethod('cptInArray',function(value,element){
+      return checkCptInArray(currentCpt)},
+      "CPT already in database"
+  );
+
   $('#cptDetails').validate({
     rules:{
       inputCharge:{
@@ -68,6 +84,7 @@ $(function(){
       $('#inputSave').prop('disabled',true);
     }
   })
+
 });
 
 
@@ -115,6 +132,8 @@ function getAllCpt(){
 // Add CPT code to localStorage then open details for specified CPT
 function addCpt(){
   // TODO prevent user from inputting CPT thats already in localStorage
+
+  clearFields()
   var cptCode=$('#addCptInput').val()
   var $selectBox=$('select[name="cptList"]').select2();
   var tempObj= $.extend({},cptObj)
@@ -127,13 +146,14 @@ function addCpt(){
   $('#cptHeader').text('CPT- ' + cptCode)
   $('#cptDetails').addClass('show');
   $('#inputCharge').focus();
-  currentCPT=cptCode;
+  currentCpt=cptCode;
   showButtons()
-
+  addToCptArray(currentCpt);
 }
 
 // Remove selected cpt from localStorage then deselect from list.
 function removeCpt(){
+  console.log(currentCpt)
 
 }
 
@@ -153,7 +173,7 @@ function saveCpt(cpt){
 
   store.set('cpt'+cpt,copyObj);
 
-  $('#successMsg').addClass('valid').append("<p>Saved "+cpt+"<p>")
+  $('#successMsg').addClass('valid').addClass('show').text("Saved CPT:  "+cpt)
   // TODO Need a way to prevent mass Saved messages when constantly clicking
 }
 
@@ -198,4 +218,35 @@ function populateFields(cpt){
     $('#'+cptDetailHtmlList[i]).val(cptObj[p])
     i++
   }
+}
+
+function clearFields(){
+  for (var i=0; i<cptDetailHtmlList.length;i++){
+    $('#'+cptDetailHtmlList[i]).val('')
+  }
+}
+function clearProfilesTab(){
+  $('#cptHeader').html('&nbsp')
+  $('#successMsg').removeClass('show');
+  $('#cptDetails').removeClass('show');
+  $('select[name="cptList"]').val(null).trigger('change');
+  hideButtons();
+  clearFields();
+}
+
+function addToCptArray(cpt){
+  if (!store.get('cptList')){
+    store.set('cptList',[])
+  }
+  var tempArray=store.get('cptList')
+  tempArray.push(cpt)
+  store.set('cptList',tempArray);
+}
+
+function checkCptInArray(cpt){
+  var tempArray=$('select[name="cptList"] option').map(function(){return $(this).val()}).toArray()
+  tempArray.forEach(function(value){
+    //TODO finish cpt in array validation
+  })
+
 }

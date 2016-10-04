@@ -121,6 +121,10 @@ label.error{
   color:red;
 }
 
-label.valid{
-  color:green;
+p.valid{
+  color:rgb(12, 227, 40);
+}
+
+#inputDelete{
+  margin-top:15px;
 }
