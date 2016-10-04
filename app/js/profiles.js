@@ -3,13 +3,11 @@ $(function(){
   var currentCpt=''
   init()
 
-  getAllCpt();
-  // Set event listeners on buttons
+  updateSelect();
 
-
+  //////////////// Register event listeners
 
   // Event listener when selecting from select tab
-
   $('select[name="cptList"]').on('select2:select',function(evt){
     var selectedValue=evt.currentTarget.value
     currentCpt=selectedValue;
@@ -19,7 +17,6 @@ $(function(){
     $('#inputCharge').focus();
     showButtons()
     populateFields(currentCpt);
-
   })
 
   $('select[name="cptList"]').on('select2:unselect',function(evt){
@@ -31,21 +28,12 @@ $(function(){
     $('#successMsg').text('');
   })
 
-  // Clear profiles tab
+  // Clear profiles tab when switching out tab
   $('a[href="#profiles"]').on('hide.bs.tab',clearProfilesTab)
 
-  // Delete current cpt button
+  // Delete cpt handler
   $('#inputDelete').on('click',function(){
-    var headerCpt=$('#cptHeader').text()
-    var currCpt=headerCpt.replace(/([A-Za-z-\s])+/,'');
-    console.log('Current CPT in inputDelete listener: '+currCpt);
-    $('select[name="cptList"]').find('[value='+currCpt+']')
-    .remove().trigger('change')
-    store.remove('cpt'+currCpt);
-    clearProfilesTab();
-    $('#successMsg').addClass('show').text("Deleted CPT  "+currCpt).addClass('deleted')
-    .addClass('text-center')
-    currentCpt=''
+    deleteCpt()
   })
 
   // Use jQuery Validate library to validate form inputs
@@ -67,7 +55,7 @@ $(function(){
     errorClass:'error'
   })
 
-  // Add custom rule
+  // Add custom rule to make sure cpt input is not already in cptList
 
   jQuery.validator.addMethod('cptInArray',function(value,element){
       var currentCptInput=$('#addCptInput').val()
@@ -96,6 +84,24 @@ $(function(){
 
 });
 
+// Constants
+const cptDetailHtmlList=['inputCharge','inputPlace','inputDays','inputEmg','inputModA',
+'inputModB','inputModC','inputModD','inputEpsdt']
+
+// CPT JSON Data Model
+const cptObj={
+  id:'',
+  text:'',
+  charge:'',
+  place:'',
+  days:'',
+  emg:'',
+  modA:'',
+  modB:'',
+  modC:'',
+  modD:'',
+  epsdt:'',
+}
 
 // Helper functions
 // Initialize store.js
@@ -105,7 +111,6 @@ function init() {
         return
     }}
 
-// Globals
 
 // Methods to add, remove, save CPT codes
 // to localStorage with store.js
@@ -130,14 +135,6 @@ function updateSelect(){
    })
 }
 
-// Initialize and return obj of all CPT Codes
-function getAllCpt(){
-  if (store.get('cptList')===null){
-    store.set('cptList',[]);
-  }
-  updateSelect()
-  }
-
 // Add CPT code to localStorage then open details for specified CPT
 function addCpt(){
   // TODO prevent user from inputting CPT thats already in localStorage
@@ -159,12 +156,6 @@ function addCpt(){
   showButtons()
 }
 
-// Remove selected cpt from localStorage then deselect from list.
-function removeCpt(){
-  console.log(currentCpt)
-
-}
-
 // Save CPT code to localStorage then exit details
 function saveCpt(cpt){
   var i=0
@@ -178,29 +169,20 @@ function saveCpt(cpt){
     copyObj[p]=$('#'+cptDetailHtmlList[i]).val()
     i++
   }
-
   store.set('cpt'+cpt,copyObj);
-
   $('#successMsg').addClass('valid').addClass('show').text("Saved CPT:  "+cpt)
-  // TODO Need a way to prevent mass Saved messages when constantly clicking
 }
 
-const cptDetailHtmlList=['inputCharge','inputPlace','inputDays','inputEmg','inputModA',
-'inputModB','inputModC','inputModD','inputEpsdt']
-
-// CPT JSON Data Model
-var cptObj={
-  id:'',
-  text:'',
-  charge:'',
-  place:'',
-  days:'',
-  emg:'',
-  modA:'',
-  modB:'',
-  modC:'',
-  modD:'',
-  epsdt:'',
+function deleteCpt(){
+  var headerCpt=$('#cptHeader').text()
+  var currCpt=headerCpt.replace(/([A-Za-z-\s])+/,'');
+  $('select[name="cptList"]').find('[value='+currCpt+']')
+  .remove().trigger('change')
+  store.remove('cpt'+currCpt);
+  clearProfilesTab();
+  $('#successMsg').addClass('show').text("Deleted CPT  "+currCpt).addClass('deleted')
+  .addClass('text-center')
+  currentCpt=''
 }
 
 function showButtons(){
@@ -211,9 +193,6 @@ function showButtons(){
 function hideButtons(){
   $('#inputSave').removeClass('show')
   $('#inputDelete').removeClass('show')
-}
-function debug(){
-  console.log($('select')==$('select[name="cptList"]'))
 }
 
 function populateFields(cpt){
@@ -233,6 +212,7 @@ function clearFields(){
     $('#'+cptDetailHtmlList[i]).val('')
   }
 }
+
 function clearProfilesTab(){
   $('#cptHeader').html('&nbsp')
   $('#successMsg').removeClass('show');
