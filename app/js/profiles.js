@@ -1,26 +1,34 @@
 // Handler for .ready() call
 $(function(){
+  var currentCPT=''
   init()
 
   getAllCpt();
   // Set event listeners on buttons
-  $('')
+  $('#inputSave').on('click',function(){
+    var cpt=currentCPT
+    console.log(cpt)
+    saveCpt(cpt)
+  })
 
 
   // Event listener when selecting from select tab
 
   $('select[name="cptList"]').on('select2:select',function(evt){
-    console.log('Select event triggered')
     var selectedValue=evt.currentTarget.value
+    currentCPT=selectedValue;
     $('#cptHeader').text('CPT- ' + selectedValue)
     $('#cptDetails').addClass('show')
+    showButtons()
 
   })
 
   $('select[name="cptList"]').on('select2:unselect',function(evt){
     var selectedValue=evt.currentTarget.value
+    currentCPT=''
     $('#cptHeader').html('&nbsp')
     $('#cptDetails').removeClass('show')
+    hideButtons()
   })
 
   // Use jQuery Validate library to validate form inputs
@@ -43,10 +51,14 @@ $(function(){
   $('#cptDetails').validate({
     rules:{
       inputCharge:{
-        digits:true
+        number:true
       }
     },
-    errorLabelContainer:"#statusMsg"
+    errorLabelContainer:"#statusMsg",
+    invalidHandler:function(){
+      console.log('invoking invalid handler')
+      $('#inputSave').button('disable')
+    }
   })
 });
 
@@ -92,6 +104,7 @@ function getAllCpt(){
   updateSelect()
   }
 
+// Add CPT code to localStorage then open details for specified CPT
 function addCpt(){
   var cptCode=$('#addCptInput').val()
   var $selectBox=$('select[name="cptList"]').select2();
@@ -100,27 +113,48 @@ function addCpt(){
   tempObj.text=cptCode;
   store.set('cpt'+cptCode,tempObj);
   updateSelect()
-  console.log(store.get('cpt'+cptCode))
   $('#addCptInput').val('');
   $selectBox.val(cptCode).trigger('change');
+  $('#cptHeader').text('CPT- ' + cptCode)
+  $('#cptDetails').addClass('show');
+  $('#inputCharge').focus();
+  currentCPT=cptCode;
+  showButtons()
+
 }
 
 function getCpt(cpt){
 
 }
 
+// Remove selected cpt from localStorage then deselect from list.
 function removeCpt(){
 
 }
 
-function saveCPT(){
-
+// Save CPT code to localStorage then exit details
+function saveCpt(cpt){
+  var i=0
+  var copyObj= $.extend({},cptObj)
+  for (p in cptObj){
+    if (p=='id' || p=='text'){
+      continue
+    }
+    copyObj[p]=$('#'+cptDetailHtmlList[i]).val()
+    i++
+  }
+  store.set('cpt'+cpt,copyObj);
+  
 }
+
+const cptDetailHtmlList=['inputCharge','inputPlace','inputDays','inputEmg','inputModA',
+'inputModB','inputModC','inputModD','inputEpsdt']
 
 // CPT JSON Data Model
 var cptObj={
   id:'',
   text:'',
+  charge:'',
   place:'',
   days:'',
   emg:'',
@@ -131,6 +165,15 @@ var cptObj={
   epsdt:'',
 }
 
+function showButtons(){
+  $('#inputSave').addClass('show')
+  $('#inputDelete').addClass('show')
+}
+
+function hideButtons(){
+  $('#inputSave').removeClass('show')
+  $('#inputDelete').removeClass('show')
+}
 function debug(){
   console.log($('select')==$('select[name="cptList"]'))
 }

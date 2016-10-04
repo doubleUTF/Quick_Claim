@@ -120,11 +120,11 @@
         </div>
         <button type='submit' class='btn btn-primary center-block cptbtn'
          id='inputAdd'>Add</button>
-         <button type='button' class='btn btn-success center-block cptbtn'
-         id='inputSave'>Save</button>
-         <button type='button' class='btn btn-danger center-block cptbtn'
-         id='inputDelete'>Delete</button>
       </form>
+      <button type='button' class='btn btn-success center-block cptbtn
+      hide' id='inputSave' form='cptDetails'>Save</button>
+      <button type='button' class='btn btn-danger center-block cptbtn
+     hide' id='inputDelete' form='cptDetails'>Delete</button>
       <div id='statusMsg'>
       </div>
       </div>
@@ -144,15 +144,15 @@
               Place of Service</label>
               <div class='col-xs-4'>
                 <input type='text' class='form-control cptDetails'
-                 id='inputPlace' name='inputPlace'/>
+                 id='inputPlace' name='inputPlace' maxlength='2'/>
               </div>
           </div>
           <div class='form-group'>
             <label for='inputDays' class='col-xs-8 control-label'>
               Days or Units</label>
               <div class='col-xs-4'>
-                <input type='text' class='form-control
-                 cptDetails' id='inputDays' name='inputDays'/>
+                <input type='text' class='form-control cptDetails'
+                 id='inputDays' name='inputDays' maxlength='2'/>
               </div>
           </div>
           <div class='form-group'>
