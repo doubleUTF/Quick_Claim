@@ -118,5 +118,9 @@ body{
 
 /*jQuery Validator overrides*/
 label.error{
-  color:red !important;
+  color:red;
+}
+
+label.valid{
+  color:green;
 }
