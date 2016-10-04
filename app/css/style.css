@@ -61,6 +61,11 @@ body{
   margin-bottom:5px;
 }
 
+p.deleted{
+  font-weight: bold;
+  font-size:16px;
+}
+
 /* Bootstrap Overrides */
 
 .nav > li > a {

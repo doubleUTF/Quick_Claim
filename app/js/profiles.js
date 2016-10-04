@@ -15,6 +15,8 @@ $(function(){
     currentCpt=selectedValue;
     $('#cptHeader').text('CPT- ' + selectedValue)
     $('#cptDetails').addClass('show')
+    $('#statusMsg >label').text('');
+    $('#inputCharge').focus();
     showButtons()
     populateFields(currentCpt);
 
@@ -34,10 +36,16 @@ $(function(){
 
   // Delete current cpt button
   $('#inputDelete').on('click',function(){
-    store.remove('cpt'+currentCpt);
-    $('select[name="cptList"]').find('[value='+currentCpt+']')
+    var headerCpt=$('#cptHeader').text()
+    var currCpt=headerCpt.replace(/([A-Za-z-\s])+/,'');
+    console.log('Current CPT in inputDelete listener: '+currCpt);
+    $('select[name="cptList"]').find('[value='+currCpt+']')
     .remove().trigger('change')
+    store.remove('cpt'+currCpt);
     clearProfilesTab();
+    $('#successMsg').addClass('show').text("Deleted CPT  "+currCpt).addClass('deleted')
+    .addClass('text-center')
+    currentCpt=''
   })
 
   // Use jQuery Validate library to validate form inputs
@@ -62,7 +70,8 @@ $(function(){
   // Add custom rule
 
   jQuery.validator.addMethod('cptInArray',function(value,element){
-      return checkCptInArray(currentCpt)},
+      var currentCptInput=$('#addCptInput').val()
+      return !checkCptInArray(currentCptInput)},
       "CPT already in database"
   );
 
@@ -135,6 +144,7 @@ function addCpt(){
 
   clearFields()
   var cptCode=$('#addCptInput').val()
+  currentCpt=cptCode;
   var $selectBox=$('select[name="cptList"]').select2();
   var tempObj= $.extend({},cptObj)
   tempObj.id=cptCode;
@@ -146,9 +156,7 @@ function addCpt(){
   $('#cptHeader').text('CPT- ' + cptCode)
   $('#cptDetails').addClass('show');
   $('#inputCharge').focus();
-  currentCpt=cptCode;
   showButtons()
-  addToCptArray(currentCpt);
 }
 
 // Remove selected cpt from localStorage then deselect from list.
@@ -230,23 +238,22 @@ function clearProfilesTab(){
   $('#successMsg').removeClass('show');
   $('#cptDetails').removeClass('show');
   $('select[name="cptList"]').val(null).trigger('change');
+  $('#statusMsg >label').text('');
+  $('#addCptInput').val('');
   hideButtons();
   clearFields();
 }
 
-function addToCptArray(cpt){
-  if (!store.get('cptList')){
-    store.set('cptList',[])
-  }
-  var tempArray=store.get('cptList')
-  tempArray.push(cpt)
-  store.set('cptList',tempArray);
+function checkCptInArray(cpt){
+  var tempArray=$('select[name="cptList"] option')
+                .map(function(){return $(this).val()}).toArray()
+  return numInList(cpt,tempArray);
 }
 
-function checkCptInArray(cpt){
-  var tempArray=$('select[name="cptList"] option').map(function(){return $(this).val()}).toArray()
-  tempArray.forEach(function(value){
-    //TODO finish cpt in array validation
-  })
-
+function numInList(num,list){
+  var ans= list.indexOf(num);
+  if (ans==-1){
+    return false
+  }
+  return true
 }
