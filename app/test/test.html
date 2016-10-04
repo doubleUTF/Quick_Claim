@@ -1,0 +1,50 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css" />
+  <link rel='stylesheet' type='text/css' href='../css/style.css' />
+  <link rel='stylesheet' href='../css/select2.min.css' />
+  <script src='../vendor/jquery-3.1.0.min.js'></script>
+  <script src='../vendor/jquery.validate.min.js'></script>
+  <script src='../vendor/bootstrap.min.js'></script>
+  <script src='../vendor/store.min.js'></script>
+  <script src='../vendor/select2.min.js'></script>
+  <title>Test page</title>
+</head>
+<body>
+  <div class='container'>
+    <div class='row'>
+      <select name='theBox'>
+        <option>
+        </option>
+      </select>
+      <button type='button'  class='btn btn-default' id='showBug'>Show bug</button>
+      <button type='button'  class='btn btn-default' id='showEnhancement'>Show enhancement</button>
+    </div>
+    <div class='row'>
+      <h2>Status:</h2>
+      <h4 class='hide' id='status'>Success!</h4>
+    </div>
+  </div>
+
+<script>
+var data = [{ id: 0, text: 'enhancement' }, { id: 1, text: 'bug' }, { id: 2, text: 'duplicate' }, { id: 3, text: 'invalid' }, { id: 4, text: 'wontfix' }];
+$('select[name="theBox"]').select2({
+  data:data
+});
+
+$('select[name="theBox"]').on('select2:select',function(e){
+  console.log('select event fired')
+  $('#status').removeClass('hide')
+  $('#status').addClass('show')
+})
+
+$('#showBug').on('click',function(){
+  $('select[name="theBox"]').val(1).trigger('change');
+})
+
+$('#showEnhancement').on('click',function(){
+  $('select[name="theBox"]').val(0).trigger('change');
+})
+</script>
+</body>
+</html>
