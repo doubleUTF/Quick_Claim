@@ -66,9 +66,6 @@ p.deleted{
   font-size:16px;
 }
 
-div.fullblock{
-  display:block;
-}
 /* Bootstrap Overrides */
 
 .nav > li > a {
