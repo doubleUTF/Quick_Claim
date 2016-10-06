@@ -30,7 +30,7 @@
         <form>
         <div class='row'>
           <div class='col-xs-12'>
-            <h4>CPT Procedure Codes</h4>
+            <h4>Enter CPT Codes</h4>
           </div>
           <div class='col-xs-4'>
             <div class='input-group'>
@@ -97,9 +97,9 @@
         </div>
         <div class='row'>
           <div class='col-xs-12'>
-            <button class='btn btn-default'>Fill forms</button>
-            <button class='btn btn-default' type='reset'>Clear claim</button>
-            <button class='btn btn-default'>Clear (site)</button>
+            <button class='btn btn-default'>Fill Form</button>
+            <button class='btn btn-default' type='reset'>Clear this claim</button>
+            <button class='btn btn-default'>Clear {{site}} form</button>
           </div>
         </div>
           </form>
@@ -220,7 +220,7 @@
     <div class='checkbox' id='checkbox1'>
       <label>
       <input type='checkbox' value='' />
-      Manual entry
+      Manual entry(not implemented yet)
     </label>
     </div>
 
@@ -255,24 +255,33 @@
   <div class='col-xs-12'>
     <h4 class='text-center'>Directions</h4>
     <p>
-      If your data has many variations, use the 'Omit Fields'
-      mode in settings and enter data manually.
-      Otherwise, go to the settings tab and enter data for commonly used CPT codes and
-      click save when finished. Ensure you are on a supported site(OA, MD-Online).
-      Go to Claim Form tab and enter CPT codes.
+      <h5>Standard mode:</h5>
+      Go to the Profiles tab to setup and save data for commonly used CPT codes.
+      Ensure you are on a supported site(OA, MD-Online) and at the HCFA-1500 form section.
+      Go to Claim Form tab, enter CPT codes and dates. Click Fill Form button
+      and verify data is correct. Quick Claim will automatically provide a date of service
+      for all CPT codes. If this is undesired, enter data manually and use Manual mode.
+    </p>
+    <h5>Manual Mode:</h5>
+    <p>
+      Go to Claim Form tab and check Manual Mode(Not yet implemented). You will enter data manually, but with the added
+      benefit of having the option of automatically skipping fields you know you don't use.
+    </p>
+    <h4 class='text-center'>Links</h4>
+    <div class='row'>
+      <div class='col-xs-6 text-center'>
+            Chrome Web Store
+      </div>
+      <div class='col-xs-6 text-center'>
+        <a href="https://github.com/doubleUTF/Quick_Claim">Github
+        <img src='../img/github.ico' style='height:16px' /></a>
+      </div>
+    </div>
+    <p>
 
     </p>
-    <h4 class='text-center'>About</h4>
-    <p>
-      Filing electronic medical claims on sites such as Office Ally or MD-Online
-      requires tedious and repetetive data entry. Quick Claim is a
-      Chrome extension meant to save time by remembering
-      your settings and automatically filling out the dense
-      portion of the form (Field 24 of CMS 1500). Quick Claim is
-      ideal when entering same, repeating data. In most cases, the only data
-      that changes are dates of service and diagnoses.
-    </p>
-    <span>Shortcut key: Ctrl+Q</span>
+
+    <div class='text-center'>Shortcut key: Ctrl+Q</div>
   </div>
 </div>
 
