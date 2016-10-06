@@ -42,6 +42,7 @@ $(function(){
       addCptInput:{
         minlength:5,
         digits:true,
+        blank:true,
         cptInArray:true
       }
     },
@@ -58,10 +59,17 @@ $(function(){
   // Add custom rule to make sure cpt input is not already in cptList
 
   jQuery.validator.addMethod('cptInArray',function(value,element){
-      var currentCptInput=$('#addCptInput').val()
-      return !checkCptInArray(currentCptInput)},
-      "CPT already in database"
+      var currentCptInput=$('#addCptInput').val();
+      return !checkCptInArray(currentCptInput)
+    }, "CPT already in database"
   );
+  
+  // Rule to make sure input value is not blank
+  jQuery.validator.addMethod('blank',function(value){
+    var currentCptInput=$('#addCptInput').val();
+    return currentCptInput!=''
+  },'CPT Code must be length of 5'
+);
 
   $('#cptDetails').validate({
     rules:{

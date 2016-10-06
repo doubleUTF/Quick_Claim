@@ -66,6 +66,10 @@ p.deleted{
   font-size:16px;
 }
 
+div.noOverflow{
+  overflow:hidden;
+}
+
 /* Bootstrap Overrides */
 
 .nav > li > a {

@@ -1,6 +1,11 @@
 // On document ready
 window.addEventListener('DOMContentLoaded', function(){
 
+  // Listen for tab info from content.js
+  chrome.runtime.onMessage.addListener(function(msg){
+    console.log('listening')
+    console.log(msg);
+  })
   // Check the keycode from event, if it's a letter
   // or word, autotab. Else, do not autotab.
   $('.autoinput').keyup(function(event){
@@ -15,19 +20,5 @@ window.addEventListener('DOMContentLoaded', function(){
       $('#'+next).focus();
     }
   })
-
-  // Popup tooltip on settings tab
-  $('#checkbox1').hover(function(){
-    $('#popup1').show()
-  },function(){
-    $('#popup1').hide()
-  })
-
-  $('#checkbox2').hover(function(){
-    $('#popup2').show()
-  },function(){
-    $('#popup2').hide()
-  })
-
 })
 // Helper functions
