@@ -1,13 +1,14 @@
 // On document ready
 window.addEventListener('DOMContentLoaded', function(){
 
-  // Listen for tab info from content.js
-  /*
-  chrome.runtime.onMessage.addListener(function(request){
-    console.log(request.header);
-    $('#statusOn').text(msg.body);
-    })
-*/
+  // Send request to content script for tab info
+  chrome.tabs.query({active:true,currentWindow:true},
+  function(tabs){chrome.tabs.sendMessage(tabs[0].id,
+    {message:'getTabInfo'},function(response){
+      $('#statusOn').text(response.message);
+      console.log(tabs[0]);
+    }
+  )})
 
   // Check the keycode from event, if it's a letter
   // or word, autotab. Else, do not autotab.
