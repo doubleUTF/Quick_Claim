@@ -1,13 +1,24 @@
-$(function(){
+window.addEventListener('DOMContentLoaded',function(e){
+  alert('bullshit')
+  console.log("DOM fully loaded and parsed");
   var currentTab={active:true, currentWindow:true};
-  chrome.tabs.query(currentTab,function(tabs){
-    var tab=tabs[0];
-    var tabString=tab.toString()
-    var tabJSON=JSON.stringify(tabString)
-    console.log(tabJSON)
-    chrome.runtime.sendMessage({
-      header:"tabInfo",
-      body:tabJSON
+  alert(currentTab);
+  alert('bullshit');
+
+  chrome.tabs.query(currentTab, function(tabs){
+    alert(tabs)
+    console.log(tabs)
+    chrome.tabs.sendMessage(tabs[0].id,
+        {
+        header:"tabInfo",
+        body:"bullshit"
+      })
     })
-  })
 })
+
+window.addEventListener('DOMContentLoaded',function(e){
+  console.log("DOM fully loaded and parsed")
+  alert("DOM fully loaded and parsed")
+})
+
+console.log('TEST')

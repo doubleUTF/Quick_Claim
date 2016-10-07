@@ -2,10 +2,13 @@
 window.addEventListener('DOMContentLoaded', function(){
 
   // Listen for tab info from content.js
-  chrome.runtime.onMessage.addListener(function(msg){
-    console.log('listening')
-    console.log(msg);
-  })
+  /*
+  chrome.runtime.onMessage.addListener(function(request){
+    console.log(request.header);
+    $('#statusOn').text(msg.body);
+    })
+*/
+
   // Check the keycode from event, if it's a letter
   // or word, autotab. Else, do not autotab.
   $('.autoinput').keyup(function(event){
