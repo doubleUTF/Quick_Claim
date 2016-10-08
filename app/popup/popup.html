@@ -11,6 +11,7 @@
   <script src='../js/profiles.js'></script>
   <script src='../js/claimform.js'></script>
   <script src='../js/settings.js'></script>
+  <script src='../config/supported_sites.js'></script>
   <title>Quick Claim</title>
 </head>
 <body>
@@ -33,14 +34,11 @@
           <div class='col-xs-12'>
             <h4>Status</h4>
           </div>
-          <div class='col-xs-8 noOverflow'>
-            On: <div id='statusOn'></div>
+          <div class='col-xs-6 noOverflow' id='statusOn'>
           </div>
-          <div class='col-xs-4 noOverflow'>
-            Ready: <div id='statusReady'></div>
-          </div>
-          <div class='col-xs-12'>
-            &nbsp
+          <div class='col-xs-6 noOverflow'>
+            <div id='statusBarMsg'>             
+            </div>
           </div>
           <div class='col-xs-12'>
             <h4>Enter CPT Codes</h4>

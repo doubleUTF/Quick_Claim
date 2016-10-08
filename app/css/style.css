@@ -70,6 +70,18 @@ div.noOverflow{
   overflow:hidden;
 }
 
+span.link{
+  color:rgb(21, 210, 188)
+}
+
+.supported{
+  color:rgb(19, 233, 85)
+}
+
+.notSupported{
+  color:rgb(219, 5, 5)
+}
+
 /* Bootstrap Overrides */
 
 .nav > li > a {

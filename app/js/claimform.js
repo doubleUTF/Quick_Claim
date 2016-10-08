@@ -2,13 +2,16 @@
 window.addEventListener('DOMContentLoaded', function(){
 
   // Send request to content script for tab info
-  chrome.tabs.query({active:true,currentWindow:true},
-  function(tabs){chrome.tabs.sendMessage(tabs[0].id,
-    {message:'getTabInfo'},function(response){
-      $('#statusOn').text(response.message);
-      console.log(tabs[0]);
+  chrome.tabs.query({active:true,lastFocusedWindow:true},
+  function(tabs){
+      if (tabs.length==1){
+        var url=tabs[0].url;
+        renderStatus(url);
+      } else{
+        throw new Error('Unexpected tab count')
+      }
     }
-  )})
+  )
 
   // Check the keycode from event, if it's a letter
   // or word, autotab. Else, do not autotab.
@@ -25,4 +28,34 @@ window.addEventListener('DOMContentLoaded', function(){
     }
   })
 })
+
 // Helper functions
+
+// Check to see if current url in tab is supported
+// against list of supported sites. Then render status
+// as accordingly.
+function renderStatus(url){
+  var host = url.match(/^(.*?:\/{2,3})?(.+?)(\/|$)/)[2];
+  console.log('Host: '+host);
+  var result=$.grep(supported_sites,function(elem,i){
+    return (elem.url===host);
+  })
+  if (result.length==0){
+    $('#statusOn').html('On: <span class="link">'+host+"</span>")
+    $('#statusBarMsg').text('Current site not supported').addClass('notSupported')
+
+  } else if (result.length==1){
+    $('#statusOn').html('On: <span class="link">'+host+"</span>")
+    var siteObj=result[0]
+    if (siteObj.supported){
+        $('#statusBarMsg').text(siteObj.name+' is supported!').addClass('supported')
+    } else{
+      $('#statusBarMsg').text(siteObj.name+' is not yet supported').addClass('notSupported')
+    }
+  }
+}
+
+// Disable form entry if site is not supported
+function disableForm(){
+
+}
