@@ -36,13 +36,13 @@ window.addEventListener('DOMContentLoaded', function(){
 // as accordingly.
 function renderStatus(url){
   var host = url.match(/^(.*?:\/{2,3})?(.+?)(\/|$)/)[2];
-  console.log('Host: '+host);
-  var result=$.grep(supported_sites,function(elem,i){
+  var result=$.grep(supported_sites,function(elem){
     return (elem.url===host);
   })
   if (result.length==0){
     $('#statusOn').html('On: <span class="link">'+host+"</span>")
     $('#statusBarMsg').text('Current site not supported').addClass('notSupported')
+    $('#claimForm').prop('disabled',true)
 
   } else if (result.length==1){
     $('#statusOn').html('On: <span class="link">'+host+"</span>")
@@ -51,6 +51,7 @@ function renderStatus(url){
         $('#statusBarMsg').text(siteObj.name+' is supported!').addClass('supported')
     } else{
       $('#statusBarMsg').text(siteObj.name+' is not yet supported').addClass('notSupported')
+      $('#claimForm').addClass('disabled')
     }
   }
 }
