@@ -51,12 +51,15 @@ function renderStatus(url){
         $('#statusBarMsg').text(siteObj.name+' is supported!').addClass('supported')
     } else{
       $('#statusBarMsg').text(siteObj.name+' is not yet supported').addClass('notSupported')
-      $('#claimForm').addClass('disabled')
+      $('#claimForm').prop('disabled')
     }
   }
 }
 
-// Disable form entry if site is not supported
-function disableForm(){
+
+// Load selectors to match Quick Claim form input into site form.
+// Pass in the detected site object then get the predefined selectors
+// and make use of them.
+function loadSelectors(siteObj){
 
 }
