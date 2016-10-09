@@ -7,6 +7,10 @@ window.addEventListener('DOMContentLoaded', function(){
       if (tabs.length==1){
         var url=tabs[0].url;
         renderStatus(url);
+        chrome.tabs.sendMessage(tabs[0].id,
+          {message:"getDiagnoses"},function(response){
+            console.log(response)
+          })
       } else{
         throw new Error('Unexpected tab count')
       }

@@ -82,6 +82,9 @@ span.link{
   color:rgb(219, 5, 5)
 }
 
+#directionList{
+  padding-left: 18px;
+}
 /* Bootstrap Overrides */
 
 .nav > li > a {

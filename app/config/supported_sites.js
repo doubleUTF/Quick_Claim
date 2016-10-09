@@ -9,7 +9,9 @@ const supported_sites=[
     {name:"Office_Ally",
      url:"www.officeally.com",
      supported:true,
-     selectors:{}
+     selectors:{},
+     maxDiagnosisPointers:4,
+     maxRows:50
    },
    {
      name:'MD-Online',
@@ -87,6 +89,18 @@ const supported_sites=[
      name:'Realmed',
      url:'',
      supported:false,
+     selectors:{}
+   },
+   {
+     name:'OA-Actual',
+     url:'localhost:8000',
+     supported:true,
+     selectors:{}
+   },
+   {
+     name:'Office Ally Dev',
+     url:'localhost:8001',
+     supported:true,
      selectors:{}
    }
 ]
