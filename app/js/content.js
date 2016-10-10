@@ -24,7 +24,6 @@ function getDiagnoses(site){
           diagnosisArray[diagLetters[j]]=code
           }
         }
-        //console.log(JSON.stringify(diagnosisArray))
         return JSON.stringify(diagnosisArray)
         break
     default:

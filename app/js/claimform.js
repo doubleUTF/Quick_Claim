@@ -55,15 +55,18 @@ function renderStatus(url,tabs){
       case "Office_Ally_Dev":
         chrome.tabs.sendMessage(tabs[0].id,
           {message:"getDiagnoses",site:siteObj.name},function(diagObj){
-            console.log(diagObj);
-            if (diagObj!={}){
-              $('#statusBarMsg').text(siteObj.name+' is supported! Please enter minimum one ICD-10 code into section 21.').addClass('supported')
-            } else{
-              $('#statusBarMsg').text(siteObj.name+' is ready, Enter CPT Codes.').addClass('supported')
+            if (diagObj!='{}'){
+              if (getObjLength(diagObj)>4){
+                $('#statusBarMsg').text('More than 4 diagnoses detected. Column 24.E will not be filled due to site limitations.').addClass('warning');
+                $('#claimForm').prop('disabled',false);
+                return
+              }
+              $('#statusBarMsg').text(getObjLength(diagObj)+' diagnosis code(s) detected, Enter CPT Codes.').addClass('supported')
               $('#claimForm').prop('disabled',false);
+            } else{
+              $('#statusBarMsg').text(siteObj.name+' is supported! Please enter minimum one ICD-10 code into section 21.').addClass('supported')
             }
           })
-      $('#statusBarMsg').text(siteObj.name+' is supported! Please enter minimum one ICD-10 code into section 21.').addClass('supported')
         break
       default:
         $('#statusBarMsg').text(siteObj.name+' is not yet supported').addClass('notSupported')
@@ -77,7 +80,14 @@ function renderStatus(url,tabs){
 // Pass in the detected site object then get the predefined selectors
 // and make use of them.
 
-
+function getObjLength(diagObjString){
+  var count=0
+  diagObj=JSON.parse(diagObjString);
+  for (p in diagObj){
+    count+=1
+  }
+  return count
+}
 
 
 function loadSelectors(siteObj){

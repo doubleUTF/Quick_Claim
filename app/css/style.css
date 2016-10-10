@@ -78,6 +78,10 @@ span.link{
   color:rgb(19, 233, 85)
 }
 
+.warning{
+  color:rgba(255, 230, 0, 0.76)
+}
+
 .notSupported{
   color:rgb(219, 5, 5)
 }
