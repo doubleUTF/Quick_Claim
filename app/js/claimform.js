@@ -56,14 +56,13 @@ function renderStatus(url,tabs){
         chrome.tabs.sendMessage(tabs[0].id,
           {message:"getDiagnoses",site:siteObj.name},function(diagObj){
             console.log(diagObj);
-            if (!diagObj){
+            if (diagObj!={}){
               $('#statusBarMsg').text(siteObj.name+' is supported! Please enter minimum one ICD-10 code into section 21.').addClass('supported')
             } else{
               $('#statusBarMsg').text(siteObj.name+' is ready, Enter CPT Codes.').addClass('supported')
               $('#claimForm').prop('disabled',false);
             }
           })
-
       $('#statusBarMsg').text(siteObj.name+' is supported! Please enter minimum one ICD-10 code into section 21.').addClass('supported')
         break
       default:

@@ -16,7 +16,7 @@ function getDiagnoses(site){
   var diagnosisArray={}
   switch (site){
     case 'Office_Ally_Dev':
-    console.log('Office Ally Dev case detected')
+    //console.log('Office Ally Dev case detected')
       for (var i=1;i<13;i++){
         var j=i-1
         var code=$('#ctl00_phFolderContent_ucHCFA_DIAGNOSIS_CODECMS0212_'+i).val()
@@ -24,7 +24,7 @@ function getDiagnoses(site){
           diagnosisArray[diagLetters[j]]=code
           }
         }
-        console.log(JSON.stringify(diagnosisArray))
+        //console.log(JSON.stringify(diagnosisArray))
         return JSON.stringify(diagnosisArray)
         break
     default:
