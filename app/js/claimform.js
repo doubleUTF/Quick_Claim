@@ -6,11 +6,7 @@ window.addEventListener('DOMContentLoaded', function(){
   function(tabs){
       if (tabs.length==1){
         var url=tabs[0].url;
-        renderStatus(url);
-        chrome.tabs.sendMessage(tabs[0].id,
-          {message:"getDiagnoses"},function(response){
-            console.log(response)
-          })
+        renderStatus(url,tabs);
       } else{
         throw new Error('Unexpected tab count')
       }
@@ -31,6 +27,10 @@ window.addEventListener('DOMContentLoaded', function(){
       $('#'+next).focus();
     }
   })
+
+  // Disable form by default and enable only when
+  // valid conditions have been met
+  $('#claimForm').prop('disabled',true)
 })
 
 // Helper functions
@@ -38,7 +38,7 @@ window.addEventListener('DOMContentLoaded', function(){
 // Check to see if current url in tab is supported
 // against list of supported sites. Then render status
 // as accordingly.
-function renderStatus(url){
+function renderStatus(url,tabs){
   var host = url.match(/^(.*?:\/{2,3})?(.+?)(\/|$)/)[2];
   var result=$.grep(supported_sites,function(elem){
     return (elem.url===host);
@@ -46,16 +46,29 @@ function renderStatus(url){
   if (result.length==0){
     $('#statusOn').html('On: <span class="link">'+host+"</span>")
     $('#statusBarMsg').text('Current site not supported').addClass('notSupported')
-    $('#claimForm').prop('disabled',true)
 
   } else if (result.length==1){
     $('#statusOn').html('On: <span class="link">'+host+"</span>")
     var siteObj=result[0]
-    if (siteObj.supported){
-        $('#statusBarMsg').text(siteObj.name+' is supported!').addClass('supported')
-    } else{
-      $('#statusBarMsg').text(siteObj.name+' is not yet supported').addClass('notSupported')
-      $('#claimForm').prop('disabled')
+
+    switch (siteObj.name){
+      case "Office_Ally_Dev":
+        chrome.tabs.sendMessage(tabs[0].id,
+          {message:"getDiagnoses",site:siteObj.name},function(diagObj){
+            console.log(diagObj);
+            if (!diagObj){
+              $('#statusBarMsg').text(siteObj.name+' is supported! Please enter minimum one ICD-10 code into section 21.').addClass('supported')
+            } else{
+              $('#statusBarMsg').text(siteObj.name+' is ready, Enter CPT Codes.').addClass('supported')
+              $('#claimForm').prop('disabled',false);
+            }
+          })
+
+      $('#statusBarMsg').text(siteObj.name+' is supported! Please enter minimum one ICD-10 code into section 21.').addClass('supported')
+        break
+      default:
+        $('#statusBarMsg').text(siteObj.name+' is not yet supported').addClass('notSupported')
+        break
     }
   }
 }
@@ -64,6 +77,9 @@ function renderStatus(url){
 // Load selectors to match Quick Claim form input into site form.
 // Pass in the detected site object then get the predefined selectors
 // and make use of them.
-function loadSelectors(siteObj){
 
+
+
+
+function loadSelectors(siteObj){
 }

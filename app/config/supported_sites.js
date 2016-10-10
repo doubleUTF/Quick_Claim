@@ -98,9 +98,11 @@ const supported_sites=[
      selectors:{}
    },
    {
-     name:'Office Ally Dev',
+     name:'Office_Ally_Dev',
      url:'localhost:8001',
      supported:true,
-     selectors:{}
+     selectors:{
+       diagnosis:''
+     }
    }
 ]
