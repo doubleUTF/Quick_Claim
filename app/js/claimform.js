@@ -37,9 +37,7 @@ window.addEventListener('DOMContentLoaded', function(){
 
   // Fill form button event handler TODO still working on this
   $('#fillForm').on('click',function(){
-    console.log($('#claimForm'))
-    var values=$('#claimForm').serialize();
-    console.log(values)
+    getUserInput()
   })
 }) //End of document ready
 
@@ -54,18 +52,20 @@ function renderStatus(url,tabs){
   var result=$.grep(supported_sites,function(elem){
     return (elem.url===host);
   })
+  $('#statusOn').html('On: <span class="link">'+host+"</span>")
   if (result.length==0){
-    $('#statusOn').html('Site: <span class="link">'+host+"</span>")
-    $('#statusBarMsg').text('Current site not supported').addClass('notSupported')
+    $('#siteStatus').text('Current site not supported').addClass('notSupported')
 
   } else if (result.length==1){
-    $('#statusOn').html('On: <span class="link">'+host+"</span>")
+
     var siteObj=result[0]
 
     switch (siteObj.name){
       case "Office_Ally_Dev":
+      $('#siteStatus').text(siteObj.name+' is supported!').addClass('supported')
         chrome.tabs.sendMessage(tabs[0].id,
           {message:"getDiagnoses",site:siteObj.name},function(diagObj){
+            console.log(diagObj);
             if (diagObj!='{}'){
               if (getObjLength(diagObj)>4){
                 $('#statusBarMsg').text('More than 4 diagnoses detected. Column 24.E will not be filled due to site limitations.').addClass('warning');
@@ -74,13 +74,13 @@ function renderStatus(url,tabs){
               }
               $('#statusBarMsg').text(getObjLength(diagObj)+' diagnosis code(s) detected, Enter CPT Codes.').addClass('supported')
               $('#claimFieldSet').prop('disabled',false);
-            } else{
-              $('#statusBarMsg').text(siteObj.name+' is supported! Please enter minimum one ICD-10 code into section 21.').addClass('supported')
+            } else {
+              $('#statusBarMsg').text('Please enter minimum one ICD-10 code into section 21.')
             }
           })
         break
       default:
-        $('#statusBarMsg').text(siteObj.name+' is not yet supported').addClass('notSupported')
+        $('#siteStatus').text(siteObj.name+' is not yet supported').addClass('notSupported')
         break
     }
   }
@@ -93,6 +93,7 @@ function renderStatus(url,tabs){
 
 // Get number of diagnosis codes entered in native site
 function getObjLength(diagObjString){
+  console.log('getObjLength: '+diagObjString);
   var count=0
   diagObj=JSON.parse(diagObjString);
   for (p in diagObj){
@@ -103,6 +104,27 @@ function getObjLength(diagObjString){
 
 // Retrieve input data from user Quick Claim form
 function getUserInput(){
+  var values=$('#claimForm').serializeArray();
+  var cptArray=[]
+  var datesArray=[]
+  for (var i=0;i<6;i++){
+    if (values[i].value){
+      cptArray.push(values[i].value)
+    }
+  }
+  for (var i=6;i<15;i++){
+    if (values[i].value){
+      datesArray.push(values[i].value);
+    }
+  }
+  console.log(cptArray)
+  console.log(datesArray)
+  var rowsRequired=cptArray.length*datesArray.length
+  console.log(rowsRequired)
+  
+  // TODO need to find a way to add rows asynchronously because
+  // the addrows() function on OA or any other site needs time
+  // to process before the next row can be added.
 
 }
 

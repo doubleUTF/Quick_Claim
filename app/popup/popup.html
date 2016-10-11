@@ -32,13 +32,14 @@
       <div role="tabpanel" class="tab-pane active" id="claim">
         <form id='claimForm'>
           <fieldset id='claimFieldSet'>
-        <div class='row'>
-          <div class='col-xs-12'>
-            <h4>Status</h4>
-          </div>
+        <div class='row status-row'>
           <div class='col-xs-5 noOverflow' id='statusOn'>
           </div>
           <div class='col-xs-7 noOverflow'>
+            <div id='siteStatus'>
+            </div>
+          </div>
+          <div class='col-xs-12'>
             <div id='statusBarMsg'>
             </div>
           </div>
@@ -51,7 +52,7 @@
                 1
               </div>
               <input type='text' class='form-control autoinput'
-               id='inputProcedure1' maxlength='5'>
+               id='inputProcedure1' name='inputProcedure1' maxlength='5'>
             </div>
           </div>
           <div class='col-xs-4'>
@@ -60,7 +61,7 @@
                 2
               </div>
             <input type='text' class='form-control autoinput'
-             id='inputProcedure2' maxlength='5'>
+             id='inputProcedure2' name='inputProcedure2' maxlength='5'>
            </div>
          </div>
           <div class='col-xs-4'>
@@ -69,7 +70,7 @@
                 3
               </div>
             <input type='text' class='form-control autoinput'
-             id='inputProcedure3' maxlength='5'>
+             id='inputProcedure3' name='inputProcedure3' maxlength='5'>
           </div>
         </div>
         </div>
@@ -82,7 +83,7 @@
                 4
               </div>
             <input type='text' class='form-control autoinput'
-             id='inputProcedure4' maxlength='5'>
+             id='inputProcedure4' name='inputProcedure4' maxlength='5'>
           </div>
         </div>
           <div class='col-xs-4'>
@@ -91,7 +92,7 @@
                 5
               </div>
             <input type='text' class='form-control autoinput'
-             id='inputProcedure5' maxlength='5'>
+             id='inputProcedure5' name='inputProcedure5' maxlength='5'>
           </div>
         </div>
           <div class='col-xs-4'>
@@ -100,7 +101,7 @@
                 6
               </div>
             <input type='text' class='form-control autoinput'
-             id='inputProcedure6' maxlength='5'>
+             id='inputProcedure6' name='inputProcedure6' maxlength='5'>
           </div>
         </div>
         </div>
@@ -116,7 +117,7 @@
               1
             </div>
           <input type='text' class='form-control autoinput date'
-           id='dateOfService1' maxlength='10'>
+           id='dateOfService1' name='dateOfService1' maxlength='10'>
         </div>
         </div>
         <div class='col-xs-4'>
@@ -125,7 +126,7 @@
             2
           </div>
         <input type='text' class='form-control autoinput date'
-         id='dateOfService2' maxlength='10'>
+         id='dateOfService2' name='dateOfService2' maxlength='10'>
         </div>
         </div>
         <div class='col-xs-4'>
@@ -134,7 +135,7 @@
             3
           </div>
         <input type='text' class='form-control autoinput date'
-         id='dateOfService3' maxlength='10'>
+         id='dateOfService3' name='dateOfService3' maxlength='10'>
         </div>
         </div>
       </div>
@@ -147,7 +148,7 @@
             4
           </div>
         <input type='text' class='form-control autoinput date'
-         id='dateOfService4' maxlength='10'>
+         id='dateOfService4' name='dateOfService4' maxlength='10'>
         </div>
         </div>
         <div class='col-xs-4'>
@@ -156,7 +157,7 @@
             5
           </div>
         <input type='text' class='form-control autoinput date'
-         id='dateOfService5' maxlength='10'>
+         id='dateOfService5' name='dateOfService5' maxlength='10'>
         </div>
         </div>
         <div class='col-xs-4'>
@@ -165,7 +166,7 @@
             6
           </div>
         <input type='text' class='form-control autoinput date'
-         id='dateOfService6' maxlength='10' >
+         id='dateOfService6' name='dateOfService6' maxlength='10' >
         </div>
         </div>
         </div>
@@ -178,7 +179,7 @@
             7
           </div>
         <input type='text' class='form-control autoinput date'
-         id='dateOfService7' maxlength='10'>
+         id='dateOfService7' name='dateOfService7' maxlength='10'>
         </div>
         </div>
         <div class='col-xs-4'>
@@ -187,7 +188,7 @@
             8
           </div>
         <input type='text' class='form-control autoinput date'
-         id='dateOfService8' maxlength='10'>
+         id='dateOfService8' name='dateOfService8' maxlength='10'>
         </div>
       </div>
         <div class='col-xs-4'>
@@ -196,25 +197,16 @@
             9
           </div>
         <input type='text' class='form-control autoinput date'
-         id='dateOfService9' maxlength='10'>
+         id='dateOfService9' name='dateOfService9' maxlength='10'>
         </div>
         </div>
         </div>
         <div class='row'>
-          <div class='col-xs-12 text-center' id='buttons-row'>
+          <div class='col-xs-12 text-center buttons-row'>
             <button type='button' class='btn btn-default' id='fillForm' name='fillForm'>Fill Form</button>
-          </div>
-        </div>
-        <div class='row'>
-          <div class='col-xs-12' id='buttons-row'>
-            <div class='col-xs-6'>
-              <button class='btn btn-default' type='reset'>Clear this claim</button>
-            </div>
-          <div class='col-xs-6'>
+            <button class='btn btn-default' type='reset'>Clear this claim</button>
             <button type='button' class='btn btn-default'>Clear {{site}} form</button>
           </div>
-
-        </div>
         </div>
       </fieldset>
           </form>
