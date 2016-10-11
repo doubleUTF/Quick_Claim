@@ -30,3 +30,7 @@ function getDiagnoses(site){
     break
   }
 }
+
+$('#ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_Table1').change(function(){
+  console.log('Table row added/removed');
+})
