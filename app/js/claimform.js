@@ -31,9 +31,13 @@ window.addEventListener('DOMContentLoaded', function(){
   // Disable form by default and enable only when
   // valid conditions have been met
   $('#claimForm').prop('disabled',true)
-})
 
-// Helper functions
+  // Set input masks for date input fields
+  $('.date').mask('00/00/0000',{placeholder:'__/__/____'});
+}) //End of document ready
+
+
+////////////// Helper functions
 
 // Check to see if current url in tab is supported
 // against list of supported sites. Then render status

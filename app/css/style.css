@@ -89,6 +89,20 @@ span.link{
 #directionList{
   padding-left: 18px;
 }
+
+.smallPadding{
+  padding-top:4px;
+  padding-bottom: 4px;
+}
+
+.date{
+  padding-right:5px !important;
+  padding-left:5px !important;
+}
+
+.small-addon{
+  padding: 4px 4px !important;
+}
 /* Bootstrap Overrides */
 
 .nav > li > a {
@@ -143,6 +157,7 @@ span.link{
   padding: 6px 12px;
   font-size: 14px;
 }
+
 
 /*jQuery Validator overrides*/
 label.error{
