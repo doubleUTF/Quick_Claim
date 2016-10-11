@@ -30,10 +30,17 @@ window.addEventListener('DOMContentLoaded', function(){
 
   // Disable form by default and enable only when
   // valid conditions have been met
-  $('#claimForm').prop('disabled',true)
+  $('#claimFieldSet').prop('disabled',true)
 
   // Set input masks for date input fields
   $('.date').mask('00/00/0000',{placeholder:'__/__/____'});
+
+  // Fill form button event handler TODO still working on this
+  $('#fillForm').on('click',function(){
+    console.log($('#claimForm'))
+    var values=$('#claimForm').serialize();
+    console.log(values)
+  })
 }) //End of document ready
 
 
@@ -48,7 +55,7 @@ function renderStatus(url,tabs){
     return (elem.url===host);
   })
   if (result.length==0){
-    $('#statusOn').html('On: <span class="link">'+host+"</span>")
+    $('#statusOn').html('Site: <span class="link">'+host+"</span>")
     $('#statusBarMsg').text('Current site not supported').addClass('notSupported')
 
   } else if (result.length==1){
@@ -62,11 +69,11 @@ function renderStatus(url,tabs){
             if (diagObj!='{}'){
               if (getObjLength(diagObj)>4){
                 $('#statusBarMsg').text('More than 4 diagnoses detected. Column 24.E will not be filled due to site limitations.').addClass('warning');
-                $('#claimForm').prop('disabled',false);
+                $('#claimFieldSet').prop('disabled',false);
                 return
               }
               $('#statusBarMsg').text(getObjLength(diagObj)+' diagnosis code(s) detected, Enter CPT Codes.').addClass('supported')
-              $('#claimForm').prop('disabled',false);
+              $('#claimFieldSet').prop('disabled',false);
             } else{
               $('#statusBarMsg').text(siteObj.name+' is supported! Please enter minimum one ICD-10 code into section 21.').addClass('supported')
             }
@@ -84,6 +91,7 @@ function renderStatus(url,tabs){
 // Pass in the detected site object then get the predefined selectors
 // and make use of them.
 
+// Get number of diagnosis codes entered in native site
 function getObjLength(diagObjString){
   var count=0
   diagObj=JSON.parse(diagObjString);
@@ -93,6 +101,10 @@ function getObjLength(diagObjString){
   return count
 }
 
+// Retrieve input data from user Quick Claim form
+function getUserInput(){
+
+}
 
 function loadSelectors(siteObj){
 }

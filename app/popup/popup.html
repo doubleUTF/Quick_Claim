@@ -30,8 +30,8 @@
     </div>
     <div class='tab-content'>
       <div role="tabpanel" class="tab-pane active" id="claim">
-        <form>
-          <fieldset id='claimForm'>
+        <form id='claimForm'>
+          <fieldset id='claimFieldSet'>
         <div class='row'>
           <div class='col-xs-12'>
             <h4>Status</h4>
@@ -202,9 +202,9 @@
         </div>
         <div class='row'>
           <div class='col-xs-12'>
-            <button class='btn btn-default'>Fill Form</button>
+            <button type='button' class='btn btn-default' id='fillForm' name='fillForm'>Fill Form</button>
             <button class='btn btn-default' type='reset'>Clear this claim</button>
-            <button class='btn btn-default'>Clear {{site}} form</button>
+            <button type='button' class='btn btn-default'>Clear {{site}} form</button>
           </div>
         </div>
       </fieldset>
