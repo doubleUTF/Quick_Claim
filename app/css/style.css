@@ -103,6 +103,10 @@ span.link{
 .small-addon{
   padding: 4px 4px !important;
 }
+
+#buttons-row{
+  margin-top:10px;
+}
 /* Bootstrap Overrides */
 
 .nav > li > a {
