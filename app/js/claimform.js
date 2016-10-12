@@ -38,7 +38,7 @@ window.addEventListener('DOMContentLoaded', function(){
 
   // Event handler for Fill Form button
   // TODO: find a way to use fillFormHandler without using url and tabs parameter
-  $('#fillForm').click(fillFormHandler(url,tabs))
+
 }) //End of document ready
 
 
@@ -58,7 +58,7 @@ function renderStatus(url,tabs){
 
   } else if (result.length==1){
 
-    var siteObj=result[0]
+    var siteObj=result[0] // Get specific siteObject from supported_sites
 
     switch (siteObj.name){
       case "Office_Ally_Dev":
@@ -73,6 +73,9 @@ function renderStatus(url,tabs){
               }
               $('#statusBarMsg').text(getObjLength(diagObj)+' diagnosis code(s) detected, Enter CPT Codes.').addClass('supported')
               $('#claimFieldSet').prop('disabled',false);
+              $('#fillForm').on('click', function(){
+                fillFormHandler(siteObj,tabs[0].id)
+              })
             } else {
               $('#statusBarMsg').text('Please enter minimum one ICD-10 code into section 21.')
             }
@@ -101,10 +104,8 @@ function getObjLength(diagObjString){
 }
 
 // Retrieve input data from user Quick Claim form
-// TODO: Debug why Chrome cannot read property of value
 function getUserInput(){
   var values=$('#claimForm').serializeArray();
-  console.log(values)
   var cptArray=[]
   var datesArray=[]
   for (var i=0;i<6;i++){
@@ -119,33 +120,17 @@ function getUserInput(){
   }
 
   var rowsRequired=cptArray.length*datesArray.length
-  return {cpts:cptArray,dates:datesArray,rows:rowsRequired}
-
+  var claimObj={cpts:cptArray,dates:datesArray,rows:rowsRequired}
+  return claimObj
 }
 
-function loadSelectors(siteObj){
-}
-
-// Get the site object information and use getUserInput() function
-// to figure out how many rows are needed to add and if the # of rows
-// required is allowed.
-function fillFormHandler(url,tabs){
-  var host = url.match(/^(.*?:\/{2,3})?(.+?)(\/|$)/)[2];
-  var result=$.grep(supported_sites,function(elem){
-    return (elem.url===host);
-  })
-  var siteObj=result[0]
-  var defaultRows=siteObj.defaultRows
-  var claimObj=getUserInput();
-  var rowsToAdd= claimObj.rows-defaultRows
-  console.log(rowsToAdd)
-  setInterval(function(){
-    if (rowsToAdd<=0) return
-    rowsToAdd--
-    chrome.tabs.query({active:true,lastFocusedWindow:true},
-    function(tabs){
-      chrome.tabs.sendMessage(tabs[0].id,
-        {message:"addRow"})
-    })
-  },500)
+// Pass the data required and let content.js handle how to input data
+// and if rows need to be added or subtracted since it has access
+// to the actual number of rows in the site DOM
+function fillFormHandler(siteObj,tabId){
+    var claimObj=getUserInput();
+    chrome.tabs.sendMessage(tabId, {
+      message:"fillForm",
+      siteObj:JSON.stringify(siteObj),
+      claimObj:JSON.stringify(claimObj)})
 }

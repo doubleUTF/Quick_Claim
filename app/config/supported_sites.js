@@ -102,9 +102,12 @@ const supported_sites=[
      name:'Office_Ally_Dev',
      url:'localhost:8001',
      supported:true,
-     selectors:{},
-     maxDiagnosisPointers:4,
      defaultRows:12,
+     selectors:{
+       table_rows_id:"ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_Table1 > tbody> tr"
+     },
+     maxDiagnosisPointers:4,
+
      maxRows:50
    }
 ]
