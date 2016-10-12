@@ -3,8 +3,12 @@
 
 chrome.runtime.onMessage.addListener(
   function(request,sender,sendResponse){
-    if (request.message='getDiagnoses'){
+    console.log(request.message)
+    if (request.message=='getDiagnoses'){
       sendResponse(getDiagnoses(request.site));
+    } else if (request.message=='addRow'){
+      console.log('Row Added')
+      $('#btnAddRow').click();
     }
   }
 )
@@ -30,7 +34,3 @@ function getDiagnoses(site){
     break
   }
 }
-
-$('#ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_Table1').change(function(){
-  console.log('Table row added/removed');
-})

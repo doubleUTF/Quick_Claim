@@ -2,6 +2,7 @@
 window.addEventListener('DOMContentLoaded', function(){
 
   // Send request to content script for tab info
+  // and perform actions with active tab
   chrome.tabs.query({active:true,lastFocusedWindow:true},
   function(tabs){
       if (tabs.length==1){
@@ -35,10 +36,9 @@ window.addEventListener('DOMContentLoaded', function(){
   // Set input masks for date input fields
   $('.date').mask('00/00/0000',{placeholder:'__/__/____'});
 
-  // Fill form button event handler TODO still working on this
-  $('#fillForm').on('click',function(){
-    getUserInput()
-  })
+  // Event handler for Fill Form button
+  // TODO: find a way to use fillFormHandler without using url and tabs parameter
+  $('#fillForm').click(fillFormHandler(url,tabs))
 }) //End of document ready
 
 
@@ -65,7 +65,6 @@ function renderStatus(url,tabs){
       $('#siteStatus').text(siteObj.name+' is supported!').addClass('supported')
         chrome.tabs.sendMessage(tabs[0].id,
           {message:"getDiagnoses",site:siteObj.name},function(diagObj){
-            console.log(diagObj);
             if (diagObj!='{}'){
               if (getObjLength(diagObj)>4){
                 $('#statusBarMsg').text('More than 4 diagnoses detected. Column 24.E will not be filled due to site limitations.').addClass('warning');
@@ -93,7 +92,6 @@ function renderStatus(url,tabs){
 
 // Get number of diagnosis codes entered in native site
 function getObjLength(diagObjString){
-  console.log('getObjLength: '+diagObjString);
   var count=0
   diagObj=JSON.parse(diagObjString);
   for (p in diagObj){
@@ -103,8 +101,10 @@ function getObjLength(diagObjString){
 }
 
 // Retrieve input data from user Quick Claim form
+// TODO: Debug why Chrome cannot read property of value
 function getUserInput(){
   var values=$('#claimForm').serializeArray();
+  console.log(values)
   var cptArray=[]
   var datesArray=[]
   for (var i=0;i<6;i++){
@@ -117,16 +117,35 @@ function getUserInput(){
       datesArray.push(values[i].value);
     }
   }
-  console.log(cptArray)
-  console.log(datesArray)
+
   var rowsRequired=cptArray.length*datesArray.length
-  console.log(rowsRequired)
-  
-  // TODO need to find a way to add rows asynchronously because
-  // the addrows() function on OA or any other site needs time
-  // to process before the next row can be added.
+  return {cpts:cptArray,dates:datesArray,rows:rowsRequired}
 
 }
 
 function loadSelectors(siteObj){
+}
+
+// Get the site object information and use getUserInput() function
+// to figure out how many rows are needed to add and if the # of rows
+// required is allowed.
+function fillFormHandler(url,tabs){
+  var host = url.match(/^(.*?:\/{2,3})?(.+?)(\/|$)/)[2];
+  var result=$.grep(supported_sites,function(elem){
+    return (elem.url===host);
+  })
+  var siteObj=result[0]
+  var defaultRows=siteObj.defaultRows
+  var claimObj=getUserInput();
+  var rowsToAdd= claimObj.rows-defaultRows
+  console.log(rowsToAdd)
+  setInterval(function(){
+    if (rowsToAdd<=0) return
+    rowsToAdd--
+    chrome.tabs.query({active:true,lastFocusedWindow:true},
+    function(tabs){
+      chrome.tabs.sendMessage(tabs[0].id,
+        {message:"addRow"})
+    })
+  },500)
 }

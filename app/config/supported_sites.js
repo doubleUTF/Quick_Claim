@@ -11,6 +11,7 @@ const supported_sites=[
      supported:true,
      selectors:{},
      maxDiagnosisPointers:4,
+     defaultRows:12,
      maxRows:50
    },
    {
@@ -101,8 +102,9 @@ const supported_sites=[
      name:'Office_Ally_Dev',
      url:'localhost:8001',
      supported:true,
-     selectors:{
-       diagnosis:''
-     }
+     selectors:{},
+     maxDiagnosisPointers:4,
+     defaultRows:12,
+     maxRows:50
    }
 ]
