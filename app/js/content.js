@@ -66,7 +66,6 @@ function fillForm(siteObj,claimObj){
       console.log('Site not supported');
       break;
   }
-
 }
 
 // TODO: Populate the form boy! This is the funnnn part! THIS IS IT BABY!
@@ -74,6 +73,5 @@ function populateForm(siteObj,claimObj){
   console.log('form is ready to be filled')
   console.log(siteObj)
   console.log(claimObj)
-  
   return
 }

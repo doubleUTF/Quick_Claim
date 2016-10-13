@@ -106,11 +106,18 @@ function getObjLength(diagObjString){
 // Retrieve input data from user Quick Claim form
 function getUserInput(){
   var values=$('#claimForm').serializeArray();
-  var cptArray=[]
+  var cptObjects={}
   var datesArray=[]
+
   for (var i=0;i<6;i++){
+    tempObj={}
     if (values[i].value){
-      cptArray.push(values[i].value)
+      // Check if user input cpt is in profile saved cpt via store.js
+      var cptObj=store.get('cpt'+values[i].value)
+      if (cptObj){
+        var tempObj=objectTrimmer(cptObj);
+      }
+      cptObjects['cpt'+values[i].value]=tempObj
     }
   }
   for (var i=6;i<15;i++){
@@ -119,18 +126,32 @@ function getUserInput(){
     }
   }
 
-  var rowsRequired=cptArray.length*datesArray.length
-  var claimObj={cpts:cptArray,dates:datesArray,rows:rowsRequired}
+  var rowsRequired=Object.keys(cptObjects).length*datesArray.length
+  var claimObj={cpts:cptObjects,dates:datesArray,rows:rowsRequired}
   return claimObj
 }
 
 // Pass the data required and let content.js handle how to input data
 // and if rows need to be added or subtracted since it has access
-// to the actual number of rows in the site DOM
+// to the actual number of rows in the site DOM.
+// Will also need to pass saved cpt info.
 function fillFormHandler(siteObj,tabId){
     var claimObj=getUserInput();
+
     chrome.tabs.sendMessage(tabId, {
       message:"fillForm",
       siteObj:JSON.stringify(siteObj),
       claimObj:JSON.stringify(claimObj)})
+}
+
+// Removes empty properties from object and returns
+// new object with occupied properties
+function objectTrimmer(o){
+  j={}
+  for (p in o){
+    if (o[p]){
+      j[p]=o[p]
+    }
+  }
+  return j
 }

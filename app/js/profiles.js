@@ -11,6 +11,7 @@ $(function(){
   $('select[name="cptList"]').on('select2:select',function(evt){
     var selectedValue=evt.currentTarget.value
     currentCpt=selectedValue;
+    console.log('Current cpt: '+ currentCpt);
     $('#cptHeader').text('CPT- ' + selectedValue)
     $('#cptDetails').addClass('show')
     $('#statusMsg >label').text('');
@@ -63,7 +64,7 @@ $(function(){
       return !checkCptInArray(currentCptInput)
     }, "CPT already in database"
   );
-  
+
   // Rule to make sure input value is not blank
   jQuery.validator.addMethod('blank',function(value){
     var currentCptInput=$('#addCptInput').val();
@@ -81,8 +82,8 @@ $(function(){
       $('#inputSave').prop('disabled',false);
     },
     submitHandler:function(){
-      console.log('submitting')
-      $('#inputSave').click(saveCpt(currentCpt));
+      console.log('Saving cpt: '+getCurrentCpt())
+      $('#inputSave').click(saveCpt(getCurrentCpt()));
     },
     errorLabelContainer:"#statusMsg",
     invalidHandler:function(){
@@ -145,11 +146,10 @@ function updateSelect(){
 
 // Add CPT code to localStorage then open details for specified CPT
 function addCpt(){
-  // TODO prevent user from inputting CPT thats already in localStorage
-
   clearFields()
   var cptCode=$('#addCptInput').val()
   currentCpt=cptCode;
+  console.log('addCpt currentcpt: '+currentCpt)
   var $selectBox=$('select[name="cptList"]').select2();
   var tempObj= $.extend({},cptObj)
   tempObj.id=cptCode;
@@ -177,20 +177,21 @@ function saveCpt(cpt){
     copyObj[p]=$('#'+cptDetailHtmlList[i]).val()
     i++
   }
+  console.log(copyObj)
+  console.log('cpt: '+cpt)
   store.set('cpt'+cpt,copyObj);
+  clearProfilesTab()
   $('#successMsg').addClass('valid').addClass('show').text("Saved CPT:  "+cpt)
 }
 
 function deleteCpt(){
-  var headerCpt=$('#cptHeader').text()
-  var currCpt=headerCpt.replace(/([A-Za-z-\s])+/,'');
+  var currCpt=getCurrentCpt();
   $('select[name="cptList"]').find('[value='+currCpt+']')
   .remove().trigger('change')
   store.remove('cpt'+currCpt);
   clearProfilesTab();
   $('#successMsg').addClass('show').text("Deleted CPT  "+currCpt).addClass('deleted')
   .addClass('text-center')
-  currentCpt=''
 }
 
 function showButtons(){
@@ -230,6 +231,7 @@ function clearProfilesTab(){
   $('#addCptInput').val('');
   hideButtons();
   clearFields();
+  currentCpt=''
 }
 
 function checkCptInArray(cpt){
@@ -244,4 +246,11 @@ function numInList(num,list){
     return false
   }
   return true
+}
+
+function getCurrentCpt(){
+  var headerCpt=$('#cptHeader').text()
+  if (!headerCpt) return
+  var currCpt=headerCpt.replace(/([A-Za-z-\s])+/,'');
+  return currCpt
 }
