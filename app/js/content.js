@@ -5,7 +5,7 @@ chrome.runtime.onMessage.addListener(
   function(request,sender,sendResponse){
     //console.log(request.message)
     if (request.message=='getDiagnoses'){
-      sendResponse(getDiagnoses(request.site));
+      sendResponse(getDiagnoses(request.siteName));
     } else if (request.message=='fillForm'){
       //console.log('Adjust Rows message received')
       fillForm(JSON.parse(request.siteObj),JSON.parse(request.claimObj))
@@ -16,9 +16,9 @@ chrome.runtime.onMessage.addListener(
 const diagLetters=['A','B','C','D','E','F',
                    'G','H', 'I','J','K','L']
 
-function getDiagnoses(site){
+function getDiagnoses(siteName){
   var diagnosisArray={}
-  switch (site){
+  switch (siteName){
     case 'Office_Ally_Dev':
       for (var i=1;i<13;i++){
         var j=i-1
@@ -44,6 +44,7 @@ function fillForm(siteObj,claimObj){
       var tableRowsId= siteObj.selectors.prefix+siteObj.selectors.table_rows_id
       var current_rows=($('#'+tableRowsId).length)/2
       var maxRows=siteObj.maxRows
+      // Check if adding rows is required
       if (rowsRequired>maxRows){
         console.log('Rows limit reached. Please remove a CPT or date of service')
         break
@@ -52,8 +53,10 @@ function fillForm(siteObj,claimObj){
       }
       console.log('Rows to add: ' +rowsToAdd)
       console.log('Total rows expected: '+ (rowsToAdd+current_rows))
+
       var addRowIntervalId= setInterval(function(){
         if (rowsToAdd<=0) {
+          // Populate form once there are no further rows to be added
           populateForm(siteObj,claimObj)
           clearInterval(addRowIntervalId);
         }
@@ -71,7 +74,18 @@ function fillForm(siteObj,claimObj){
 // TODO: Populate the form boy! This is the funnnn part! THIS IS IT BABY!
 function populateForm(siteObj,claimObj){
   console.log('form is ready to be filled')
+  var diagnosisArray=JSON.parse(getDiagnoses(siteObj.name))
+  var diagnosisKeys=[]
+  var row=0
+  for (p in diagnosisArray){ diagnosisKeys.push(p)}
+  console.log(diagnosisKeys)
   console.log(siteObj)
-  console.log(claimObj)
+
+  // Begin populating rows
+  
+  /*
+  for (cptObj in claimObj.cpts){
+    console.log(cptObj)
+  }*/
   return
 }

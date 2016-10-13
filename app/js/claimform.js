@@ -64,7 +64,7 @@ function renderStatus(url,tabs){
       case "Office_Ally_Dev":
       $('#siteStatus').text(siteObj.name+' is supported!').addClass('supported')
         chrome.tabs.sendMessage(tabs[0].id,
-          {message:"getDiagnoses",site:siteObj.name},function(diagObj){
+          {message:"getDiagnoses",siteName:siteObj.name},function(diagObj){
             if (diagObj!='{}'){
               if (getObjLength(diagObj)>4){
                 $('#statusBarMsg').text('More than 4 diagnoses detected. Column 24.E will not be filled due to site limitations.').addClass('warning');
