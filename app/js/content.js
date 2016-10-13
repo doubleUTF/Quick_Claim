@@ -40,8 +40,8 @@ function fillForm(siteObj,claimObj){
   var rowsToAdd=0
   switch (siteObj.name){
     case 'Office_Ally_Dev':
-      // Only added ability to add rows since OA allows extra rows in claim.
-      var tableRowsId= siteObj.selectors.table_rows_id
+      // Only added ability to add rows since OA allows empty rows in claim.
+      var tableRowsId= siteObj.selectors.prefix+siteObj.selectors.table_rows_id
       var current_rows=($('#'+tableRowsId).length)/2
       var maxRows=siteObj.maxRows
       if (rowsRequired>maxRows){
@@ -72,5 +72,8 @@ function fillForm(siteObj,claimObj){
 // TODO: Populate the form boy! This is the funnnn part! THIS IS IT BABY!
 function populateForm(siteObj,claimObj){
   console.log('form is ready to be filled')
+  console.log(siteObj)
+  console.log(claimObj)
+  
   return
 }

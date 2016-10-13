@@ -5,6 +5,9 @@ const site_data_model={
   selectors:{}
 }
 
+
+// Supported site list objects
+// Selectors are based on element id's, not name
 const supported_sites=[
     {name:"Office_Ally",
      url:"www.officeally.com",
@@ -104,10 +107,28 @@ const supported_sites=[
      supported:true,
      defaultRows:12,
      selectors:{
-       table_rows_id:"ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_Table1 > tbody> tr"
+         // To select element, use $('#'+ siteObj.selectors.prefix+ siteObj.selectors.selector + (row num starting at 0))
+       prefix:'ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_',
+       fromMonth:'FM_DATE_OF_SVC_MONTH',
+       fromDay:'FM_DATE_OF_SVC_DAY',
+       fromYear:'FM_DATE_OF_SVC_YEAR',
+       toMonth:'TO_DATE_OF_SVC_MONTH',
+       toDay:'TO_DATE_OF_SVC_DAY',
+       toYear:'TO_DATE_OF_SVC_YEAR',
+       placeOfService:'PLACE_OF_SVC',
+       emg:'EMG',
+       cpt:'CPT_CODE',
+       modA:'MODIFIER_A',
+       modB:'MODIFIER_B',
+       modC:'MODIFIER_C',
+       modD:'MODIFIER_D',
+       diagnosis:'DOS_DIAG_CODE',
+       charges:'DOS_CHRG',
+       units:'UNITS',
+       epsdt:'EPSDT_FAMILY_PLAN',
+       table_rows_id:"Table1 > tbody> tr"
      },
      maxDiagnosisPointers:4,
-
-     maxRows:50
+     maxRows:50,
    }
 ]
