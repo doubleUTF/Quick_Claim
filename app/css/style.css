@@ -66,7 +66,7 @@ p.deleted{
   font-size:16px;
 }
 
-div.noOverflow{
+.noOverflow{
   overflow:hidden;
 }
 
@@ -74,6 +74,21 @@ span.link{
   color:rgb(21, 210, 188)
 }
 
+h4{
+  display:inline-block;
+}
+
+#cptMsg, #datesMsg{
+  overflow: hidden;
+  margin-top: 8px;
+  margin-bottom: 10px;
+  height: 18px;
+  display:inline-block;
+}
+
+h4.marginLeft{
+  margin-left: 15px;
+}
 .supported{
   color:rgb(19, 233, 85)
 }

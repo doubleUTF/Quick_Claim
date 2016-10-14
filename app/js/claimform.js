@@ -29,15 +29,28 @@ window.addEventListener('DOMContentLoaded', function(){
     }
   })
 
-  // Disable form by default and enable only when
-  // valid conditions have been met
-  $('#claimFieldSet').prop('disabled',true)
+  // Disable form by default and enable upon valid conditions
+  disableForm()
 
   // Set input masks for date input fields
   $('.date').mask('00/00/0000',{placeholder:'__/__/____'});
 
-  // Event handler for Fill Form button
-  // TODO: find a way to use fillFormHandler without using url and tabs parameter
+  // Apply jquery validate on cpt inputs
+  $('#cptForm').validate({
+    rules:{
+      inputProcedure:{
+        number:true,
+        digits:true
+      }
+    },
+    messages:{
+      inputProcedure:{
+        number:"Numbers only"
+      }
+    },
+    errorClass:'error',
+    errorLabelContainer:'#cptMsg'
+  })
 
 }) //End of document ready
 
@@ -68,11 +81,11 @@ function renderStatus(url,tabs){
             if (diagObj!='{}'){
               if (getObjLength(diagObj)>4){
                 $('#statusBarMsg').text('More than 4 diagnoses detected. Column 24.E will not be filled due to site limitations.').addClass('warning');
-                $('#claimFieldSet').prop('disabled',false);
+                enableForm()
                 return
               }
               $('#statusBarMsg').text(getObjLength(diagObj)+' diagnosis code(s) detected, Enter CPT Codes.').addClass('supported')
-              $('#claimFieldSet').prop('disabled',false);
+              enableForm()
               $('#fillForm').on('click', function(){
                 fillFormHandler(siteObj,tabs[0].id)
               })
@@ -105,24 +118,25 @@ function getObjLength(diagObjString){
 
 // Retrieve input data from user Quick Claim form
 function getUserInput(){
-  var values=$('#claimForm').serializeArray();
+  var cptValues=$('#cptForm').serializeArray();
+  var datesValues=$('#datesForm').serializeArray();
   var cptObjects={}
   var datesArray=[]
 
   for (var i=0;i<6;i++){
     tempObj={}
-    if (values[i].value){
+    if (cptValues[i].value){
       // Check if user input cpt is in profile saved cpt via store.js
-      var cptObj=store.get('cpt'+values[i].value)
+      var cptObj=store.get('cpt'+cptValues[i].value)
       if (cptObj){
         var tempObj=objectTrimmer(cptObj);
       }
-      cptObjects['cpt'+values[i].value]=tempObj
+      cptObjects['cpt'+cptValues[i].value]=tempObj
     }
   }
-  for (var i=6;i<15;i++){
-    if (values[i].value){
-      datesArray.push(values[i].value);
+  for (var i=0;i<9;i++){
+    if (datesValues[i].value){
+      datesArray.push(datesValues[i].value);
     }
   }
 
@@ -154,4 +168,14 @@ function objectTrimmer(o){
     }
   }
   return j
+}
+
+function disableForm(){
+  $('#cptFieldSet').prop('disabled',true)
+  $('#datesFieldSet').prop('disabled',true)
+}
+
+function enableForm(){
+  $('#cptFieldSet').prop('disabled',false)
+  $('#datesFieldSet').prop('disabled',false)
 }

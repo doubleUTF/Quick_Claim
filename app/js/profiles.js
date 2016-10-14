@@ -91,7 +91,7 @@ $(function(){
     }
   })
 
-});
+}); // End of document ready
 
 // Constants
 const cptDetailHtmlList=['inputCharge','inputPlace','inputDays','inputEmg','inputModA',

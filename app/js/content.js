@@ -51,6 +51,8 @@ function fillForm(siteObj,claimObj){
       } else if (rowsRequired>current_rows){
         rowsToAdd=rowsRequired-current_rows
       }
+      console.log('Current rows: '+ current_rows)
+      console.log('Rows Required: '+ rowsRequired)
       console.log('Rows to add: ' +rowsToAdd)
       console.log('Total rows expected: '+ (rowsToAdd+current_rows))
 
@@ -59,6 +61,7 @@ function fillForm(siteObj,claimObj){
           // Populate form once there are no further rows to be added
           populateForm(siteObj,claimObj)
           clearInterval(addRowIntervalId);
+          return
         }
         rowsToAdd--
         $('#btnAddRow').click()
@@ -73,16 +76,17 @@ function fillForm(siteObj,claimObj){
 
 // TODO: Populate the form boy! This is the funnnn part! THIS IS IT BABY!
 function populateForm(siteObj,claimObj){
-  console.log('form is ready to be filled')
+  var datesArray=claimObj.dates
   var diagnosisArray=JSON.parse(getDiagnoses(siteObj.name))
   var diagnosisKeys=[]
   var row=0
-  for (p in diagnosisArray){ diagnosisKeys.push(p)}
+  for (p in diagnosisArray){diagnosisKeys.push(p)}
   console.log(diagnosisKeys)
   console.log(siteObj)
+  console.log(claimObj)
 
   // Begin populating rows
-  
+
   /*
   for (cptObj in claimObj.cpts){
     console.log(cptObj)
