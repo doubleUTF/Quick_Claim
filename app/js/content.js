@@ -93,3 +93,40 @@ function populateForm(siteObj,claimObj){
   }*/
   return
 }
+
+// Function to fill individual rows
+function fillRow(rowNum,){
+
+}
+
+// Regex helper functions
+function extractMonth(date){
+  var month_regex=/^(0[1-9]|1[0-2])/
+  return month_regex.exec(date[1])
+}
+
+function extractMonth(date){
+  var day_regex=/\/([0-9]{2})\//
+  return day_regex.exec(date[1])
+}
+
+function extractYear(date){
+  var year_regex=/\/([0-9]{4})/
+  return year_regex.exec(date[1])
+}
+
+// Object that maps cptObj data to site selector obj siteObj.selectors.[attribute]
+// This currently only works for Office Ally
+// Remember to add site prefix to each selector
+const cptSiteSelectorMap={
+  text:'cpt',
+  charge:'charges',
+  place:'placeOfService',
+  days:'units',
+  emg:'emg',
+  modA:'modA',
+  modB:'modB',
+  modC:'modC',
+  modD:'modD',
+  epsdt:'epsdt',
+}

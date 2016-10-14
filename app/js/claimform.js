@@ -52,6 +52,27 @@ window.addEventListener('DOMContentLoaded', function(){
     errorLabelContainer:'#cptMsg'
   })
 
+  // jQuery Validate for Dates of Services
+  $('#datesForm').validate({
+    rules:{
+      dateOfService:{
+        dateValidate:true
+      }
+    },
+    errorClass:'error',
+    errorLabelContainer:'#dateMsg',
+  })
+
+  // Date validation is not perfect, but it's good enough
+  // and I've spent enough time on it.
+  jQuery.validator.addMethod('dateValidate',function(date){
+    var date_regex = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/2\d{3}$/
+    if (date_regex.test(date) || date=='') {
+      enableFillButton()
+      return true
+    }
+    disableFillButton()
+  }, 'Incorrect MM/DD/YYYY format')
 }) //End of document ready
 
 
@@ -178,4 +199,21 @@ function disableForm(){
 function enableForm(){
   $('#cptFieldSet').prop('disabled',false)
   $('#datesFieldSet').prop('disabled',false)
+}
+
+function getCurrentTabId(){
+  chrome.tabs.query({active:true,lastFocusedWindow:true},
+  function(tabs){
+    if (tabs.length==1){
+      return tabs[0].id
+    } else throw error('Unknown tab count')
+}
+)}
+
+function disableFillButton(){
+  $('#fillForm').prop('disabled',true)
+}
+
+function enableFillButton(){
+  $('#fillForm').prop('disabled',false)
 }
