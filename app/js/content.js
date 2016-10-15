@@ -3,7 +3,6 @@
 
 chrome.runtime.onMessage.addListener(
   function(request,sender,sendResponse){
-    //console.log(request.message)
     if (request.message=='getDiagnoses'){
       sendResponse(getDiagnoses(request.siteName));
     } else if (request.message=='fillForm'){
@@ -80,39 +79,50 @@ function populateForm(siteObj,claimObj){
   var diagnosisArray=JSON.parse(getDiagnoses(siteObj.name))
   var diagnosisKeys=[]
   var row=0
+  var prefix=siteObj.selectors.prefix
+  var selectors=siteObj.selectors
   for (p in diagnosisArray){diagnosisKeys.push(p)}
-  console.log(diagnosisKeys)
-  console.log(siteObj)
-  console.log(claimObj)
 
+  console.log(claimObj.dates)
   // Begin populating rows
-
-  /*
-  for (cptObj in claimObj.cpts){
-    console.log(cptObj)
-  }*/
-  return
-}
-
-// Function to fill individual rows
-function fillRow(rowNum,){
-
+  switch (siteObj.name){
+    case 'Office_Ally_Dev':
+    // Big problem: Office Ally site does not properly increment the row number in their naming scheme.
+    // From the 12th row and beyond, all row ids are equal to 11(prefix+selector+11), even if row is 39.
+    // Therefore this is a problem on the site's end, not ours. Working around a broken naming scheme
+    // is not a good idea. Therefore, I will only support 12 rows for now until OA fixes their shit.
+    for (var i=0;i<claimObj.dates.length;i++){
+      for (var j=0;j<Object.keys(claimObj.cpts).length;j++){
+        $('#'+ prefix+ selectors.fromMonth + row).val(extractMonth(claimObj.dates[i]))
+        $('#'+ prefix+ selectors.toMonth+row).val(extractMonth(claimObj.dates[i]))
+        $('#'+ prefix+ selectors.fromDay+row).val(extractDay(claimObj.dates[i]))
+        $('#'+ prefix+ selectors.toDay+row).val(extractDay(claimObj.dates[i]))
+        $('#'+ prefix+ selectors.fromYear+row).val(extractYear(claimObj.dates[i]))
+        $('#'+ prefix+ selectors.toYear+row).val(extractYear(claimObj.dates[i]))
+        //$('#'+ prefix+ selectors.placeOfService+row).val()
+        row++
+        }
+      }
+    break
+    default:
+    break
+  }
 }
 
 // Regex helper functions
 function extractMonth(date){
   var month_regex=/^(0[1-9]|1[0-2])/
-  return month_regex.exec(date[1])
+  return month_regex.exec(date)[1]
 }
 
-function extractMonth(date){
+function extractDay(date){
   var day_regex=/\/([0-9]{2})\//
-  return day_regex.exec(date[1])
+  return day_regex.exec(date)[1]
 }
 
 function extractYear(date){
   var year_regex=/\/([0-9]{4})/
-  return year_regex.exec(date[1])
+  return year_regex.exec(date)[1]
 }
 
 // Object that maps cptObj data to site selector obj siteObj.selectors.[attribute]
