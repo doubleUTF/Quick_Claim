@@ -138,19 +138,19 @@ function getObjLength(diagObjString){
 }
 
 // Retrieve input data from user Quick Claim form
-function getUserInput(){
+function getUserInput(siteObj){
   var cptValues=$('#cptForm').serializeArray();
   var datesValues=$('#datesForm').serializeArray();
   var cptObjects={}
   var datesArray=[]
 
   for (var i=0;i<6;i++){
-    tempObj={}
+    var tempObj={}
     if (cptValues[i].value){
       // Check if user input cpt is in profile saved cpt via store.js
       var cptObj=store.get('cpt'+cptValues[i].value)
       if (cptObj){
-        var tempObj=objectTrimmer(cptObj);
+         tempObj=objectTrimmer(cptObj);
       }
       cptObjects['cpt'+cptValues[i].value]=tempObj
     }
@@ -162,6 +162,10 @@ function getUserInput(){
   }
 
   var rowsRequired=Object.keys(cptObjects).length*datesArray.length
+  console.log(rowsRequired)
+  if (rowsRequired>siteObj.maxRows){
+    $('#statusBarMsg').text('12 Rows limit reached. Further rows will not be added.').addClass('warning')
+  }
   var claimObj={cpts:cptObjects,dates:datesArray,rows:rowsRequired}
   return claimObj
 }
@@ -171,7 +175,7 @@ function getUserInput(){
 // to the actual number of rows in the site DOM.
 // Will also need to pass saved cpt info.
 function fillFormHandler(siteObj,tabId){
-    var claimObj=getUserInput();
+    var claimObj=getUserInput(siteObj);
 
     chrome.tabs.sendMessage(tabId, {
       message:"fillForm",
@@ -181,6 +185,8 @@ function fillFormHandler(siteObj,tabId){
 
 // Removes empty properties from object and returns
 // new object with occupied properties
+// Disabling this for now, easier to work with objects with empty properties
+// than to test for properties
 function objectTrimmer(o){
   j={}
   for (p in o){

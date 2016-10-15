@@ -129,6 +129,6 @@ const supported_sites=[
        table_rows_id:"Table1 > tbody> tr"
      },
      maxDiagnosisPointers:4,
-     maxRows:50,
+     maxRows:12, //changed this from 50 to 12 cause OA needs to fix their shit
    }
 ]

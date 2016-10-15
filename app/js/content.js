@@ -43,13 +43,10 @@ function fillForm(siteObj,claimObj){
       var tableRowsId= siteObj.selectors.prefix+siteObj.selectors.table_rows_id
       var current_rows=($('#'+tableRowsId).length)/2
       var maxRows=siteObj.maxRows
-      // Check if adding rows is required
-      if (rowsRequired>maxRows){
-        console.log('Rows limit reached. Please remove a CPT or date of service')
-        break
-      } else if (rowsRequired>current_rows){
-        rowsToAdd=rowsRequired-current_rows
-      }
+      // Disabling row checking in lieu of Office Ally having incorrect naming scheme.
+      // if (rowsRequired>current_rows){
+      //   rowsToAdd=rowsRequired-current_rows
+      // }
       console.log('Current rows: '+ current_rows)
       console.log('Rows Required: '+ rowsRequired)
       console.log('Rows to add: ' +rowsToAdd)
@@ -75,6 +72,7 @@ function fillForm(siteObj,claimObj){
 
 // TODO: Populate the form boy! This is the funnnn part! THIS IS IT BABY!
 function populateForm(siteObj,claimObj){
+  var selectAllDiag=true
   var datesArray=claimObj.dates
   var diagnosisArray=JSON.parse(getDiagnoses(siteObj.name))
   var diagnosisKeys=[]
@@ -83,7 +81,7 @@ function populateForm(siteObj,claimObj){
   var selectors=siteObj.selectors
   for (p in diagnosisArray){diagnosisKeys.push(p)}
 
-  console.log(claimObj.dates)
+  console.log(claimObj)
   // Begin populating rows
   switch (siteObj.name){
     case 'Office_Ally_Dev':
@@ -91,15 +89,29 @@ function populateForm(siteObj,claimObj){
     // From the 12th row and beyond, all row ids are equal to 11(prefix+selector+11), even if row is 39.
     // Therefore this is a problem on the site's end, not ours. Working around a broken naming scheme
     // is not a good idea. Therefore, I will only support 12 rows for now until OA fixes their shit.
+    // Filling everything except diagnoses. I will allow an option for the user
+    // to select all diagnosis or not.
     for (var i=0;i<claimObj.dates.length;i++){
-      for (var j=0;j<Object.keys(claimObj.cpts).length;j++){
+      for (cpt in claimObj.cpts){
         $('#'+ prefix+ selectors.fromMonth + row).val(extractMonth(claimObj.dates[i]))
         $('#'+ prefix+ selectors.toMonth+row).val(extractMonth(claimObj.dates[i]))
         $('#'+ prefix+ selectors.fromDay+row).val(extractDay(claimObj.dates[i]))
         $('#'+ prefix+ selectors.toDay+row).val(extractDay(claimObj.dates[i]))
         $('#'+ prefix+ selectors.fromYear+row).val(extractYear(claimObj.dates[i]))
         $('#'+ prefix+ selectors.toYear+row).val(extractYear(claimObj.dates[i]))
-        //$('#'+ prefix+ selectors.placeOfService+row).val()
+        $('#'+ prefix+ selectors.placeOfService+row).val(claimObj.cpts[cpt].place)
+        $('#'+ prefix+ selectors.emg+row).val(claimObj.cpts[cpt].emg)
+        $('#'+ prefix+ selectors.cpt+row).val(extractCpt(cpt))
+        $('#'+ prefix+ selectors.modA+row).val(claimObj.cpts[cpt].modA)
+        $('#'+ prefix+ selectors.modB+row).val(claimObj.cpts[cpt].modB)
+        $('#'+ prefix+ selectors.modC+row).val(claimObj.cpts[cpt].modC)
+        $('#'+ prefix+ selectors.modD+row).val(claimObj.cpts[cpt].modD)
+        $('#'+ prefix+ selectors.charges+row).val(claimObj.cpts[cpt].charge)
+        $('#'+ prefix+ selectors.units+row).val(claimObj.cpts[cpt].days)
+        $('#'+ prefix+ selectors.epsdt+row).val(claimObj.cpts[cpt].epsdt)
+        if (selectAllDiag && diagnosisKeys.length<5) {
+          $('#'+ prefix+ selectors.diagnosis+row).val(diagnosisKeys.join(''))
+        }
         row++
         }
       }
@@ -125,18 +137,7 @@ function extractYear(date){
   return year_regex.exec(date)[1]
 }
 
-// Object that maps cptObj data to site selector obj siteObj.selectors.[attribute]
-// This currently only works for Office Ally
-// Remember to add site prefix to each selector
-const cptSiteSelectorMap={
-  text:'cpt',
-  charge:'charges',
-  place:'placeOfService',
-  days:'units',
-  emg:'emg',
-  modA:'modA',
-  modB:'modB',
-  modC:'modC',
-  modD:'modD',
-  epsdt:'epsdt',
+function extractCpt(cptName){
+  var cpt_regex=/(\d+)/
+  return cpt_regex.exec(cptName)[1]
 }
