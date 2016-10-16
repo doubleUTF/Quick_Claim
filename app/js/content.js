@@ -7,7 +7,11 @@ chrome.runtime.onMessage.addListener(
       sendResponse(getDiagnoses(request.siteName));
     } else if (request.message=='fillForm'){
       //console.log('Adjust Rows message received')
-      fillForm(JSON.parse(request.siteObj),JSON.parse(request.claimObj))
+    fillForm(JSON.parse(request.siteObj),JSON.parse(request.claimObj),
+      function(response){
+        sendResponse(response)
+      })
+    return true
     }
   }
 )
@@ -34,7 +38,7 @@ function getDiagnoses(siteName){
   }
 }
 
-function fillForm(siteObj,claimObj){
+function fillForm(siteObj,claimObj,callback){
   var rowsRequired=claimObj.rows
   var rowsToAdd=0
   switch (siteObj.name){
@@ -55,9 +59,8 @@ function fillForm(siteObj,claimObj){
       var addRowIntervalId= setInterval(function(){
         if (rowsToAdd<=0) {
           // Populate form once there are no further rows to be added
-          populateForm(siteObj,claimObj)
           clearInterval(addRowIntervalId);
-          return
+          callback(populateForm(siteObj,claimObj))
         }
         rowsToAdd--
         $('#btnAddRow').click()
@@ -115,7 +118,7 @@ function populateForm(siteObj,claimObj){
         row++
         }
       }
-    break
+    return ('Success! ' + (row) + ' row(s) added.')
     default:
     break
   }

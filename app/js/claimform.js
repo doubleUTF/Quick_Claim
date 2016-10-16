@@ -162,7 +162,6 @@ function getUserInput(siteObj){
   }
 
   var rowsRequired=Object.keys(cptObjects).length*datesArray.length
-  console.log(rowsRequired)
   if (rowsRequired>siteObj.maxRows){
     $('#statusBarMsg').text('12 Rows limit reached. Further rows will not be added.').addClass('warning')
   }
@@ -180,7 +179,11 @@ function fillFormHandler(siteObj,tabId){
     chrome.tabs.sendMessage(tabId, {
       message:"fillForm",
       siteObj:JSON.stringify(siteObj),
-      claimObj:JSON.stringify(claimObj)})
+      claimObj:JSON.stringify(claimObj)}, null,
+    function(response){
+      $('#fillResponse').text(response).addClass('valid')
+      console.log(response)
+    })
 }
 
 // Removes empty properties from object and returns
