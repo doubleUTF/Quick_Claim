@@ -1,8 +1,17 @@
 var gulp= require('gulp'),
-    uglify= require('gulp-uglify');
+    usemin=require('gulp-usemin'),
+    uglify= require('gulp-uglify'),
+    minifyHtml=require('gulp-minify-html'),
+    minifyCss=require('gulp-minify-css'),
+    rev=require('gulp-rev');
 
-gulp.task('minify', function(){
-  gulp.src(['app/js/*.js','app/config/*.js'])
-  .pipe(uglify())
-  .pipe(gulp.dest('dist'))
-})
+
+gulp.task('usemin', function(){
+  return gulp.src('app/popup/*.html')
+    .pipe(usemin({
+      css:[rev()],
+      html:[minifyHtml({empty:true})],
+      js:[uglify(),rev()]
+    }))
+    .pipe(gulp.dest('dist/'));
+});
