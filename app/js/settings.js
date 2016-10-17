@@ -1,4 +1,4 @@
-$(function(){
+/*$(function(){
 
   // Event listeners to show description on hover
   // over settings
@@ -14,3 +14,4 @@ $(function(){
     $('#popup2').hide()
   })
 })
+*/
