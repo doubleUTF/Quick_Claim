@@ -40,7 +40,8 @@ window.addEventListener('DOMContentLoaded', function(){
     rules:{
       inputProcedure:{
         number:true,
-        digits:true
+        digits:true,
+        minlength:5
       }
     },
     messages:{
@@ -51,6 +52,7 @@ window.addEventListener('DOMContentLoaded', function(){
     errorClass:'error',
     errorLabelContainer:'#cptMsg'
   })
+
 
   // jQuery Validate for Dates of Services
   $('#datesForm').validate({
@@ -73,6 +75,12 @@ window.addEventListener('DOMContentLoaded', function(){
     }
     disableFillButton()
   }, 'Incorrect MM/DD/YYYY format')
+
+  // Clear claim listener
+  $('#clearForm').on('click',function(){
+    $('#cptForm').trigger('reset');
+    $('#fillResponse').text('Form cleared').removeClass('success').removeClass('fail')
+  })
 }) //End of document ready
 
 
@@ -86,32 +94,38 @@ function renderStatus(url,tabs){
   var result=$.grep(supported_sites,function(elem){
     return (elem.url===host);
   })
-  $('#statusOn').html('On: <span class="link">'+host+"</span>")
+  $('#statusOn').html('<span class="link">'+host+"</span>")
   if (result.length==0){
     $('#siteStatus').text('Current site not supported').addClass('notSupported')
 
   } else if (result.length==1){
 
     var siteObj=result[0] // Get specific siteObject from supported_sites
-
+    console.log(siteObj.name)
     switch (siteObj.name){
       case "Office_Ally_Dev":
+      case 'OA-Actual':
+      case 'Office_Ally':
+      enableForm()
       $('#siteStatus').text(siteObj.name+' is supported!').addClass('supported')
+      $('#undoForm').prop('disabled',false).on('click',function(){
+        chrome.tabs.sendMessage(tabs[0].id,{
+          message:'undoForm',siteObj:JSON.stringify(siteObj)
+        }, function(response){ ResponseHandler(response)})
+      })
         chrome.tabs.sendMessage(tabs[0].id,
           {message:"getDiagnoses",siteName:siteObj.name},function(diagObj){
+            $('#fillForm').on('click', function(){
+              fillFormHandler(siteObj,tabs[0].id)
+            })
             if (diagObj!='{}'){
               if (getObjLength(diagObj)>4){
                 $('#statusBarMsg').text('More than 4 diagnoses detected. Column 24.E will not be filled due to site limitations.').addClass('warning');
-                enableForm()
                 return
               }
               $('#statusBarMsg').text(getObjLength(diagObj)+' diagnosis code(s) detected, Enter CPT Codes.').addClass('supported')
-              enableForm()
-              $('#fillForm').on('click', function(){
-                fillFormHandler(siteObj,tabs[0].id)
-              })
             } else {
-              $('#statusBarMsg').text('Please enter minimum one ICD-10 code into section 21.')
+              $('#statusBarMsg').text('No diagnosis detected in section 21. You will enter diagnosis pointers manually for each row.')
             }
           })
         break
@@ -121,7 +135,6 @@ function renderStatus(url,tabs){
     }
   }
 }
-
 
 // Load selectors to match Quick Claim form input into site form.
 // Pass in the detected site object then get the predefined selectors
@@ -179,10 +192,9 @@ function fillFormHandler(siteObj,tabId){
     chrome.tabs.sendMessage(tabId, {
       message:"fillForm",
       siteObj:JSON.stringify(siteObj),
-      claimObj:JSON.stringify(claimObj)}, null,
-    function(response){
-      $('#fillResponse').text(response).addClass('valid')
-      console.log(response)
+      claimObj:JSON.stringify(claimObj)},
+      function(response){
+      ResponseHandler(response)
     })
 }
 
@@ -225,4 +237,19 @@ function disableFillButton(){
 
 function enableFillButton(){
   $('#fillForm').prop('disabled',false)
+}
+
+function ResponseHandler(response){
+  console.log(response)
+  var success_regex=/^Success/
+  var fail_regex=/^Invalid/
+  if (success_regex.exec(response)){
+    $('#fillResponse').text(response).addClass('success').removeClass('fail')
+  }
+  else if (fail_regex.exec(response)){
+    $('#fillResponse').text(response).addClass('fail').removeClass('success')
+  } else {
+    $('#fillResponse').text(response).removeClass('fail').removeClass('success')
+  }
+
 }

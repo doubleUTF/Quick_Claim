@@ -126,11 +126,37 @@ h4.marginLeft{
 }
 
 .buttons-row{
-  margin-top:14px;
+  margin-top:18px;
 }
 
 #fillResponse{
-  margin-top:14px;
+  margin-top:18px;
+  font-size: 16px;
+}
+
+
+.success{
+  color:rgb(12, 227, 40);
+}
+
+.fail{
+  color:rgb(232, 17, 17)
+}
+
+.header h1{
+  display:inline-block;
+}
+
+li.answer{
+  list-style-type: none;
+  margin-bottom:8px;
+}
+.faqUl{
+  margin-left:0px;
+}
+#faqs{
+  margin-top:10px;
+  margin-bottom: 5px;
 }
 /* Bootstrap Overrides */
 
