@@ -151,10 +151,12 @@ h4.marginLeft{
 }
 
 #shortcut{
-  margin-left:20px;
   margin-top:5px;
 }
 
+.bold{
+  font-weight: bold;
+}
 #undoForm{
   color:rgb(0, 0, 0)
 }
@@ -179,6 +181,7 @@ li.answer{
   margin-bottom:8px;
 }
 .faqUl{
+  margin-top:10px;
   margin-left:0px;
 }
 #faqs{

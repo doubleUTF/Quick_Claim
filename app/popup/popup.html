@@ -1,18 +1,25 @@
 <html>
 <head>
+  <!-- build:css css/style.css-->
   <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css" />
   <link rel='stylesheet' type='text/css' href='../css/style.css' />
   <link rel='stylesheet' href='../css/select2.min.css' />
+  <!-- endbuild -->
+
   <script src='../vendor/jquery-3.1.0.min.js'></script>
   <script src='../vendor/jquery.validate.min.js'></script>
   <script src='../vendor/bootstrap.min.js'></script>
   <script src='../vendor/store.min.js'></script>
   <script src='../vendor/select2.min.js'></script>
   <script src='../vendor/jquery.mask.min.js'></script>
+
+  <!-- build:js js/app.js-->
   <script src='../js/profiles.js'></script>
   <script src='../js/claimform.js'></script>
   <script src='popup.js'></script>
   <script src='../config/supported_sites.js'></script>
+  <!-- endbuild-->
+
   <title>Quick Claim</title>
 </head>
 <body>
@@ -340,22 +347,21 @@
 <div role='tabpanel' class='tab-pane' id='faq'>
   <div class='row'>
     <div class='col-xs-12'>
-      <h4 class='text-center' id='faqs'>FAQs</h4>
       <ul class='faqUl'>
-        <li>Why is only Office Ally supported?</li>
+        <li class='bold'>Why is only Office Ally supported?</li>
         <li class='answer'>This is the beta and I happen to work on their site most often.
-          Support for sites coming soon: Optum, MD-Online</li>
-        <li>How come only 12 rows can be filled on OA?</li>
+          Support for sites coming soon: Optum/United Health Care, Ability Network</li>
+        <li class='bold'>How come only 12 rows can be filled on OA?</li>
         <li class='answer'>Currently when a row is added, the element id naming scheme doesn't properly increment.
         In other words, Office Ally dropped the ball.</li>
-        <li>Why do I get error messages when I input data into Claim Form section?</li>
+        <li class='bold'>Why do I get error messages when I input data into Claim Form section?</li>
         <li class='answer'>The jQuery Validator plugin validates data as you type.
         Finish the entire input and you should be fine.</li>
-        <li>Is this app safe to use?</li>
+        <li class='bold'>Is this app safe to use?</li>
         <li class='answer'>Yes. Only CPT profile data is stored in localStorage,
         so only the local computer has access to it. No sensitive or identifying
         data is stored.</li>
-        <li>I found a bug/ want a new feature/ have questions.</li>
+        <li class='bold'>I found a bug/ want a new feature/ have questions.</li>
         <li class='answer'>Go to the <a href="https://github.com/doubleUTF/Quick_Claim">Github</a>
            page and submit an issue.</li>
       </ul>
@@ -384,12 +390,11 @@
       <li>
         Go to Claim Form tab, enter CPT codes and dates. Click Fill Form button
         and verify data is correct. Quick Claim will automatically provide each date of service
-        for all CPT codes and all diagnosis for each CPT. If this is undesired, enter data manually.
+        for all CPT codes and all diagnosis for each CPT. If this is undesired, click Undo Fill and enter data manually.
       </li>
     </ol>
-    <div class='col-xs-12 header'>
-      <button class='btn btn-primary'id='shortcut'></button>
-      <button class='btn btn-info' id='demoButton' type='button'>Demo form</button>
+    <div class='col-xs-12 text-center'>
+      <button class='btn btn-primary' id='shortcut'></button>
     </div>
       <div class='col-xs-12 secondRow'>
         <button class='btn btn-default' id='chromeBtn'>Chrome Web Store</button>

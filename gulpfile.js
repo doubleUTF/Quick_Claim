@@ -3,7 +3,9 @@ var gulp= require('gulp'),
     uglify= require('gulp-uglify'),
     minifyHtml=require('gulp-minify-html'),
     minifyCss=require('gulp-minify-css'),
-    rev=require('gulp-rev');
+    rev=require('gulp-rev'),
+    concat=require('gulp-concat'),
+    del=require('del')
 
 
 gulp.task('usemin', function(){
@@ -15,3 +17,15 @@ gulp.task('usemin', function(){
     }))
     .pipe(gulp.dest('dist/'));
 });
+
+gulp.task('concatLib',function(){
+  return gulp.src('./app/vendor/*.js')
+    .pipe(concat('lib.js'))
+    .pipe(gulp.dest('dist/js/'))
+})
+
+gulp.task('default',['clean','concatLib','usemin'])
+
+gulp.task('clean',function(){
+  return del('dist')
+})

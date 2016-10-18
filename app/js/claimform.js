@@ -242,7 +242,6 @@ function enableFillButton(){
 }
 
 function ResponseHandler(response){
-  console.log(response)
   var success_regex=/^Success/
   var fail_regex=/^Invalid/
   if (success_regex.exec(response)){

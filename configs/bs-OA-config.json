@@ -1,0 +1,6 @@
+{
+  "port": 8001,
+  "files": ["../app/**/*.{html,htm,css,js}"],
+  "server": { "baseDir": "./demo" },
+  "startPath":"demo.html"
+}

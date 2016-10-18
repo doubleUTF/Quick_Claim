@@ -173,36 +173,5 @@ const supported_sites=[
      name:'TriZetto_Provider_Solutions',
      url:'',
      supported:false
-   },
-   {
-   name:"Demo_Office_Ally",
-   url:chrome.runtime.id,
-   supported:true,
-   selectors:{
-       // To select element, use $('#'+ siteObj.selectors.prefix+ siteObj.selectors.selector + (row num starting at 0))
-     prefix:'ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_',
-     fromMonth:'FM_DATE_OF_SVC_MONTH',
-     fromDay:'FM_DATE_OF_SVC_DAY',
-     fromYear:'FM_DATE_OF_SVC_YEAR',
-     toMonth:'TO_DATE_OF_SVC_MONTH',
-     toDay:'TO_DATE_OF_SVC_DAY',
-     toYear:'TO_DATE_OF_SVC_YEAR',
-     placeOfService:'PLACE_OF_SVC',
-     emg:'EMG',
-     cpt:'CPT_CODE',
-     modA:'MODIFIER_A',
-     modB:'MODIFIER_B',
-     modC:'MODIFIER_C',
-     modD:'MODIFIER_D',
-     diagnosis:'DOS_DIAG_CODE',
-     charges:'DOS_CHRG',
-     units:'UNITS',
-     epsdt:'EPSDT_FAMILY_PLAN',
-     table_rows_id:"Table1 > tbody> tr",
-     diag21:'ctl00_phFolderContent_ucHCFA_DIAGNOSIS_CODECMS0212_'
-   },
-   maxDiagnosisPointers:4,
-   defaultRows:12,
-   maxRows:50
- }
+   }
 ]

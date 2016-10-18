@@ -20,7 +20,6 @@ const diagLetters=['A','B','C','D','E','F',
 
 function getDiagnoses(siteName){
   var diagnosisArray={}
-  console.log(siteName)
   switch (siteName){
     case 'Office_Ally_Dev':
     case 'Demo_Office_Ally':
@@ -70,10 +69,10 @@ function fillForm(siteObj,claimObj,callback){
       // if (rowsRequired>current_rows){
       //   rowsToAdd=rowsRequired-current_rows
       // }
-      console.log('Current rows: '+ current_rows)
-      console.log('Rows Required: '+ rowsRequired)
-      console.log('Rows to add: ' +rowsToAdd)
-      console.log('Total rows expected: '+ (rowsToAdd+current_rows))
+      // console.log('Current rows: '+ current_rows)
+      // console.log('Rows Required: '+ rowsRequired)
+      // console.log('Rows to add: ' +rowsToAdd)
+      // console.log('Total rows expected: '+ (rowsToAdd+current_rows))
 
       var addRowIntervalId= setInterval(function(){
         if (rowsToAdd<=0) {
@@ -210,16 +209,16 @@ function extractCpt(cptName){
 }
 
 function undoForm(siteObj){
+  var row=0
+  var success='Undo fill success, rows cleared.'
   switch (siteObj.name){
     case 'OA-Actual':
     case 'Office_Ally':
-    console.log('Clear form hit')
       var iframe=$('#Iframe9').contents()
       var tableRowsId= siteObj.selectors.prefix+siteObj.selectors.table_rows_id
       var current_rows=(iframe.find('#'+tableRowsId).length)/2
       var prefix=siteObj.selectors.prefix
       var selectors=siteObj.selectors
-      row=0
 
       for (var i=0;i<current_rows;i++){
         iframe.find('#'+ prefix+ selectors.fromMonth + row).val('')
@@ -241,6 +240,34 @@ function undoForm(siteObj){
         iframe.find('#'+ prefix+ selectors.diagnosis+row).val('')
         row++
       }
-        return 'Undo fill success, rows cleared.'
+        return success
+
+      case 'Office_Ally_Dev':
+        var tableRowsId= siteObj.selectors.prefix+siteObj.selectors.table_rows_id
+        var current_rows=($('#'+tableRowsId).length)/2
+        var prefix=siteObj.selectors.prefix
+        var selectors=siteObj.selectors
+
+        for (var i=0;i<current_rows;i++){
+          $('#'+ prefix+ selectors.fromMonth + row).val('')
+          $('#'+ prefix+ selectors.toMonth+row).val('')
+          $('#'+ prefix+ selectors.fromDay+row).val('')
+          $('#'+ prefix+ selectors.toDay+row).val('')
+          $('#'+ prefix+ selectors.fromYear+row).val('')
+          $('#'+ prefix+ selectors.toYear+row).val('')
+          $('#'+ prefix+ selectors.placeOfService+row).val('')
+          $('#'+ prefix+ selectors.emg+row).val('')
+          $('#'+ prefix+ selectors.cpt+row).val('')
+          $('#'+ prefix+ selectors.modA+row).val('')
+          $('#'+ prefix+ selectors.modB+row).val('')
+          $('#'+ prefix+ selectors.modC+row).val('')
+          $('#'+ prefix+ selectors.modD+row).val('')
+          $('#'+ prefix+ selectors.charges+row).val('')
+          $('#'+ prefix+ selectors.units+row).val('')
+          $('#'+ prefix+ selectors.epsdt+row).val('')
+          $('#'+ prefix+ selectors.diagnosis+row).val('')
+          row++
+        }
+          return success
 }
 }

@@ -10,10 +10,6 @@ $(function(){ // Start of document ready
     })
   })
 
-  $('#demoButton').on('click',function(){
-    window.open(chrome.extension.getURL('demo/demo.html')
-  )})
-
   $('#githubBtn').on('click',function(){
     chrome.tabs.create({
       url:"https://github.com/doubleUTF/Quick_Claim"
