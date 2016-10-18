@@ -6,7 +6,7 @@ body{
   color:rgb(226, 123, 16);
 }
 
-.header h4,
+
 .header p{
   display:inline;
 }
@@ -33,6 +33,7 @@ body{
   height:30px !important;
   max-width: 80px;
   display:block;
+  margin-top:12px;
 }
 
 #inputAdd{
@@ -74,9 +75,6 @@ span.link{
   color:rgb(21, 210, 188)
 }
 
-h4{
-  display:inline-block;
-}
 
 #cptMsg, #dateMsg{
   overflow: hidden;
@@ -91,6 +89,10 @@ h4{
 }
 h4.marginLeft{
   margin-left: 15px;
+  display:inline-block;
+}
+#beta{
+  display:inline-block;
 }
 .supported{
   color:rgb(19, 233, 85)

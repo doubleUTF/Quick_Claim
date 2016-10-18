@@ -32,14 +32,14 @@ const supported_sites=[
      maxRows:50
    },
    {
-     name:'MD-Online',
+     name:'Ability_Network',
      url:'',
      supported:false,
      selectors:{}
    },
    {
-     name:'Optum',
-     url:'',
+     name:'United_Health_Care',
+     url:'provider-linkhealth.unitedhealthcareonline.com',
      supported:false,
      selectors:{}
    },
@@ -167,5 +167,10 @@ const supported_sites=[
      },
      maxDiagnosisPointers:4,
      maxRows:12, //changed this from 50 to 12 cause OA needs to fix their shit
+   },
+   {
+     name:'TriZetto_Provider_Solutions',
+     url:'',
+     supported:false
    }
 ]

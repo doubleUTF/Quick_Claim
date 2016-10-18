@@ -11,14 +11,14 @@
   <script src='../vendor/jquery.mask.min.js'></script>
   <script src='../js/profiles.js'></script>
   <script src='../js/claimform.js'></script>
-  <!--<script src='../js/settings.js'></script>--> 
+  <!--<script src='../js/settings.js'></script>-->
   <script src='../config/supported_sites.js'></script>
   <title>Quick Claim</title>
 </head>
 <body>
   <div class='container'>
     <div class='col-xs-12 header text-center'>
-        <h1>Quick Claim  <h4>&nbsp(Beta)</h4></h1>
+        <h1>Quick Claim  <h4 id='beta'>&nbsp(Beta)</h4></h1>
     </div>
     <div class='row'>
       <div class='col-xs-12'>
@@ -60,7 +60,7 @@
                 1
               </div>
               <input type='text' class='form-control autoinput cpt'
-               id='inputProcedure1' name='inputProcedure' maxlength='5'>
+               id='inputProcedure1' name='inputProcedure' maxlength='5' autofocus>
             </div>
           </div>
           <div class='col-xs-4'>
@@ -218,8 +218,9 @@
         <div class='row'>
           <div class='col-xs-12 text-center buttons-row'>
             <button type='button' class='btn btn-success' id='fillForm' name='fillForm'>Fill Form</button>
-            <button type='button' class='btn btn-default' id='undoForm'>Undo Fill</button>
-            <button class='btn btn-default' type='reset' id='clearForm'>Clear this claim</button>
+            <button type='button' class='btn btn-warning' id='undoForm'>Undo Fill</button>
+            <button class='btn btn-primary' type='reset' id='clearForm'>Clear claim</button>
+            <button class='btn btn-danger' type='button' id='closePopup'>Close</button>
           </div>
         </div>
         <div id='fillResponse' class='text-center'>
@@ -279,7 +280,7 @@
               Days or Units</label>
               <div class='col-xs-4'>
                 <input type='text' class='form-control cptDetails'
-                 id='inputDays' name='inputDays' maxlength='2'/>
+                 id='inputDays' name='inputDays' maxlength='11'/>
               </div>
           </div>
           <div class='form-group'>
@@ -287,7 +288,7 @@
               EMG</label>
               <div class='col-xs-4'>
                 <input type='text' class='form-control cptDetails'
-                 id='inputEmg' name='inputEmg'/>
+                 id='inputEmg' name='inputEmg' maxlength='2'/>
               </div>
           </div>
           <div class='form-group'>
@@ -295,7 +296,7 @@
               Modifier A</label>
               <div class='col-xs-4'>
                 <input type='text' class='form-control cptDetails'
-                 id='inputModA' name='inputModA'/>
+                 id='inputModA' name='inputModA' maxlength='2'/>
               </div>
           </div>
           <div class='form-group'>
@@ -303,7 +304,7 @@
               Modifier B</label>
               <div class='col-xs-4'>
                 <input type='text' class='form-control cptDetails'
-                 id='inputModB' name='inputModB'/>
+                 id='inputModB' name='inputModB' maxlength='2'/>
               </div>
           </div>
           <div class='form-group'>
@@ -311,7 +312,7 @@
               Modifier C</label>
               <div class='col-xs-4'>
                 <input type='text' class='form-control cptDetails'
-                 id='inputModC' name='inputModC'/>
+                 id='inputModC' name='inputModC' maxlength='2'/>
               </div>
           </div>
           <div class='form-group'>
@@ -319,7 +320,7 @@
               Modifier D</label>
               <div class='col-xs-4'>
                 <input type='text' class='form-control cptDetails'
-                 id='inputModD' name='inputModD'/>
+                 id='inputModD' name='inputModD' maxlength='2'/>
               </div>
           </div>
           <div class='form-group'>
@@ -327,7 +328,7 @@
               EPSDT Family Plan</label>
               <div class='col-xs-4'>
                 <input type='text' class='form-control cptDetails'
-                 id='inputEpsdt' name='inputEpsdt'/>
+                 id='inputEpsdt' name='inputEpsdt' maxlength='2'/>
               </div>
           </div>
         </form>
@@ -340,7 +341,7 @@
 <div role='tabpanel' class='tab-pane' id='faq'>
   <div class='row'>
     <div class='col-xs-12'>
-      <h3 class='text-center' id='faqs'>FAQs</h3>
+      <h4 class='text-center' id='faqs'>FAQs</h4>
       <ul class='faqUl'>
         <li>Why is only Office Ally supported?</li>
         <li class='answer'>This is the beta and I happen to work on their site most often.
@@ -413,11 +414,12 @@
       <li>
          Go to the Profiles tab to setup and save profile data for commonly used CPT codes.
          These codes are not specific to any patient or site and can thus be used for any patient.
+         You only need to do this once per CPT.
       </li>
       <li>
         Go to Claim Form tab, enter CPT codes and dates. Click Fill Form button
         and verify data is correct. Quick Claim will automatically provide each date of service
-        for all CPT codes. If this is undesired, enter data manually.
+        for all CPT codes and all diagnosis for each CPT. If this is undesired, enter data manually.
       </li>
     </ol>
     <h4 class='text-center'>Links</h4>

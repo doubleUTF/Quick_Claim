@@ -81,6 +81,8 @@ window.addEventListener('DOMContentLoaded', function(){
     $('#cptForm').trigger('reset');
     $('#fillResponse').text('Form cleared').removeClass('success').removeClass('fail')
   })
+
+  $('#closePopup').on('click',function(){window.close()})
 }) //End of document ready
 
 
@@ -99,7 +101,6 @@ function renderStatus(url,tabs){
     $('#siteStatus').text('Current site not supported').addClass('notSupported')
 
   } else if (result.length==1){
-
     var siteObj=result[0] // Get specific siteObject from supported_sites
     console.log(siteObj.name)
     switch (siteObj.name){
