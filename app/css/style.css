@@ -9,9 +9,6 @@ body{
 
 .header p{
   display:inline;
-}
-
-.header p{
   float:right;
 }
 
@@ -149,6 +146,34 @@ h4.marginLeft{
   display:inline-block;
 }
 
+.header h4{
+  display:inline-block;
+}
+
+#shortcut{
+  margin-left:20px;
+  margin-top:5px;
+}
+
+#undoForm{
+  color:rgb(0, 0, 0)
+}
+
+#chromeBtn{
+  margin-left: 20px;
+}
+#githubBtn{
+  float:right;
+  margin-right: 20px;
+}
+.secondRow{
+  margin-top: 8px;
+}
+#demoButton{
+  float:right;
+  margin-right:20px;
+  margin-top:5px;
+}
 li.answer{
   list-style-type: none;
   margin-bottom:8px;
@@ -160,8 +185,18 @@ li.answer{
   margin-top:10px;
   margin-bottom: 5px;
 }
+
+a{
+  color:rgb(122, 155, 252)
+}
+a:hover{
+  color:rgb(61, 238, 222)
+}
 /* Bootstrap Overrides */
 
+h1{
+  margin-top:15px;
+}
 .nav > li > a {
   position: relative;
   display: block;

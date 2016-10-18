@@ -10,8 +10,7 @@ chrome.runtime.onMessage.addListener(
       function(response){sendResponse(response)})
     return true
   } else if (request.message=='undoForm'){
-    sendResponse(undoForm(JSON.parse(request.siteObj))
-  )
+    sendResponse(undoForm(JSON.parse(request.siteObj)))
   }
   }
 )
@@ -21,8 +20,10 @@ const diagLetters=['A','B','C','D','E','F',
 
 function getDiagnoses(siteName){
   var diagnosisArray={}
+  console.log(siteName)
   switch (siteName){
     case 'Office_Ally_Dev':
+    case 'Demo_Office_Ally':
       for (var i=1;i<13;i++){
         var j=i-1
         var code=$('#ctl00_phFolderContent_ucHCFA_DIAGNOSIS_CODECMS0212_'+i).val()
@@ -46,7 +47,7 @@ function getDiagnoses(siteName){
 
     default:
       console.log('No diagnosis detected')
-    break
+      break
   }
 }
 
@@ -57,6 +58,7 @@ function fillForm(siteObj,claimObj,callback){
     case 'Office_Ally_Dev':
     case 'Office_Ally':
     case 'OA-Actual':
+    case 'Demo_Office_Ally':
       // Only added ability to add rows since OA allows empty rows in claim.
       var iframe=$('#IFrame9').contents()
       var tableRowsId= siteObj.selectors.prefix+siteObj.selectors.table_rows_id
@@ -105,6 +107,7 @@ function populateForm(siteObj,claimObj){
   // Begin populating rows
   switch (siteObj.name){
     case 'Office_Ally_Dev':
+    case 'Demo_Office_Ally':
       // Big problem: Office Ally site does not properly increment the row number in their naming scheme.
       // From the 12th row and beyond, all row ids are equal to 11(prefix+selector+11), even if row is 39.
       // Therefore this is a problem on the site's end, not ours. Working around a broken naming scheme
@@ -112,9 +115,6 @@ function populateForm(siteObj,claimObj){
       // Filling everything except diagnoses. I will allow an option for the user
       // to select all diagnosis or not.
       for (var i=0;i<claimObj.dates.length;i++){
-        // console.log('Month: '+extractMonth(claimObj.dates[i]))
-        // console.log('Day: '+ extractDay(claimObj.dates[i]))
-        // console.log('Year: '+ extractYear(claimObj.dates[i]))
         if (!extractMonth(claimObj.dates[i]) ||
             !extractDay(claimObj.dates[i])  ||
             !extractYear(claimObj.dates[i])){
@@ -150,9 +150,6 @@ function populateForm(siteObj,claimObj){
     case 'Office_Ally':
     var iframe=$('#Iframe9').contents()
       for (var i=0;i<claimObj.dates.length;i++){
-        // console.log('Month: '+extractMonth(claimObj.dates[i]))
-        // console.log('Day: '+ extractDay(claimObj.dates[i]))
-        // console.log('Year: '+ extractYear(claimObj.dates[i]))
         if (!extractMonth(claimObj.dates[i]) ||
             !extractDay(claimObj.dates[i])  ||
             !extractYear(claimObj.dates[i])){

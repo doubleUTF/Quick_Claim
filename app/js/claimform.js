@@ -96,17 +96,18 @@ function renderStatus(url,tabs){
   var result=$.grep(supported_sites,function(elem){
     return (elem.url===host);
   })
+
   $('#statusOn').html('<span class="link">'+host+"</span>")
   if (result.length==0){
     $('#siteStatus').text('Current site not supported').addClass('notSupported')
 
   } else if (result.length==1){
     var siteObj=result[0] // Get specific siteObject from supported_sites
-    console.log(siteObj.name)
     switch (siteObj.name){
       case "Office_Ally_Dev":
       case 'OA-Actual':
       case 'Office_Ally':
+      case 'Demo_Office_Ally':
       enableForm()
       $('#siteStatus').text(siteObj.name+' is supported!').addClass('supported')
       $('#undoForm').prop('disabled',false).on('click',function(){
