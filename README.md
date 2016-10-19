@@ -33,10 +33,13 @@ To run the demo site, install repo, go to root folder in console, then type 'npm
 To build dist folder: just run 'gulp'
 
 ============Change Log=============
+v0.9.1.1
+- Added Chrome button shortcut link in 'About' tab
+
 Beta v0.9.1
 - Only supports Office Ally at the moment.
 - Next sites to support: United Health Care, Ability Network
 - Updated this readme file
-- Added Chrome button shortcut link in 'About' tab
+
 
 Comments, questions, suggestions: doubleutf26@gmail.com
