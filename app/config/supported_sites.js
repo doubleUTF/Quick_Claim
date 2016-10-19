@@ -33,13 +33,13 @@ const supported_sites=[
      maxRows:50
    },
    {
-     name:'Ability_Network',
+     name:'Ability Network',
      url:'',
      supported:false,
      selectors:{}
    },
    {
-     name:'United_Health_Care',
+     name:'United Health Care',
      url:'provider-linkhealth.unitedhealthcareonline.com',
      supported:false,
      selectors:{}

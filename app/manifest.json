@@ -2,7 +2,7 @@
   "manifest_version":2,
   "name": "Quick Claim",
   "version": "0.9.1.1",
-  "description:":"A tool to file online medical claims faster and smarter.",
+  "description":"File online medical claims faster and smarter.",
   "content_scripts":[
     {
       "matches":[
@@ -26,7 +26,10 @@
   "commands":{
     "_execute_browser_action":{
       "suggested_key":{
-        "default":"Ctrl+Q"
+        "default":"Ctrl+Q",
+        "windows": "Ctrl+Q",
+        "mac": "Command+Q",
+        "linux": "Ctrl+Q"
       }
     }
   },

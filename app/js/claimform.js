@@ -97,7 +97,6 @@ function renderStatus(url,tabs){
     return (elem.url===host);
   })
 
-  $('#statusOn').html('<span class="link">'+host+"</span>")
   if (result.length==0){
     $('#siteStatus').text('Current site not supported').addClass('notSupported')
 
