@@ -13,8 +13,7 @@ Chrome Browser
 Office Ally CMS-1500 HCFA Form section
 
 To Install:
-- Look up 'Quick Claim' in Chrome Web Store and install
-                      or
+- Look up 'Quick Claim' in Chrome Web Store
 - Download github repository, go to chrome://extensions
   and click 'Load unpacked extension' and install the root/app folder.
 
@@ -37,6 +36,7 @@ To build dist folder: just run 'gulp'
 Beta v0.9.1
 - Only supports Office Ally at the moment.
 - Next sites to support: United Health Care, Ability Network
-- Updated this readme folder
+- Updated this readme file
+- Added Chrome button shortcut link in 'About' tab
 
 Comments, questions, suggestions: doubleutf26@gmail.com

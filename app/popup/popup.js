@@ -15,4 +15,11 @@ $(function(){ // Start of document ready
       url:"https://github.com/doubleUTF/Quick_Claim"
     })
   })
+
+  $('#chromeBtn').on('click',function(){
+    chrome.tabs.create({
+      url:'https://chrome.google.com/webstore/detail/quick-claim/hlmoiemagjdmhpcjeolbcehhildojkki'
+    })
+  })
+
 }) // End of document ready
