@@ -143,7 +143,7 @@ function populateForm(siteObj,claimObj){
           row++
           }
         }
-      if (row>0) return ('Success! ' + (row) + ' row(s) added.')
+      if (row>0) return ('Success! ' + (row) + ' row(s) filled.')
       return
 
     case 'OA-Actual':
@@ -178,7 +178,7 @@ function populateForm(siteObj,claimObj){
           row++
           }
         }
-      if (row>0) return ('Success! ' + (row) + ' row(s) added.')
+      if (row>0) return ('Success! ' + (row) + ' row(s) filled.')
       return
     default:
     break

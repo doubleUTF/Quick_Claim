@@ -15,19 +15,35 @@ gulp.task('usemin', function(){
       html:[minifyHtml({empty:true})],
       js:[uglify(),rev()]
     }))
-    .pipe(gulp.dest('dist/'));
+    .pipe(gulp.dest('dist/popup/'));
 });
-
-gulp.task('concatLib',function(){
-  return gulp.src('./app/vendor/*.js')
-    .pipe(concat('lib.js'))
-    .pipe(gulp.dest('dist/js/'))
-})
-
-gulp.task('default',['clean'],function(){
-  gulp.start('usemin','concatLib')
-})
 
 gulp.task('clean',function(){
   return del('dist')
+})
+
+gulp.task('copyImages',function(){
+  gulp.src('app/img/*')
+  .pipe(gulp.dest('dist/img/'))
+})
+
+gulp.task('copyManifest',function(){
+  gulp.src('app/manifest.json')
+  .pipe(gulp.dest('dist'))
+})
+
+gulp.task('copyLib',function(){
+  gulp.src('app/vendor/*.js')
+  .pipe(gulp.dest('dist/vendor'))
+})
+
+gulp.task('copyContentJs',function(){
+  gulp.src('app/js/content.js')
+  .pipe(uglify())
+  .pipe(gulp.dest('dist/js'))
+})
+
+gulp.task('default',['clean'],function(){
+  gulp.start('usemin','copyImages',
+  'copyManifest','copyLib','copyContentJs')
 })
