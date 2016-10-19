@@ -21,8 +21,7 @@ const diagLetters=['A','B','C','D','E','F',
 function getDiagnoses(siteName){
   var diagnosisArray={}
   switch (siteName){
-    case 'Office_Ally_Dev':
-    case 'Demo_Office_Ally':
+    case 'Office Ally Demo':
       for (var i=1;i<13;i++){
         var j=i-1
         var code=$('#ctl00_phFolderContent_ucHCFA_DIAGNOSIS_CODECMS0212_'+i).val()
@@ -33,7 +32,7 @@ function getDiagnoses(siteName){
         return JSON.stringify(diagnosisArray)
 
     case 'OA-Actual':
-    case 'Office_Ally':
+    case 'Office Ally':
         var iframe=$('#Iframe9').contents()
         for (var i=1;i<13;i++){
           var j=i-1
@@ -54,18 +53,21 @@ function fillForm(siteObj,claimObj,callback){
   var rowsRequired=claimObj.rows
   var rowsToAdd=0
   switch (siteObj.name){
-    case 'Office_Ally_Dev':
-    case 'Office_Ally':
+    case 'Office Ally':
     case 'OA-Actual':
-    case 'Demo_Office_Ally':
+    case 'Office Ally Demo':
       // Only added ability to add rows since OA allows empty rows in claim.
       var iframe=$('#IFrame9').contents()
       var tableRowsId= siteObj.selectors.prefix+siteObj.selectors.table_rows_id
-      if (siteObj.name=='OA-Actual'|| siteObj.name=='Office_Ally'){
-        var current_rows=(iframe.find('#'+tableRowsId).length)/2
-      } else{var current_rows=($('#'+tableRowsId).length)/2}
       var maxRows=siteObj.maxRows
+      if (maxRows<rowsRequired){
+        callback('Error, '+rowsRequired+ ' rows required but only '+ maxRows+ ' allowed.')
+        return
+      }
       // Disabling row checking in lieu of Office Ally having incorrect naming scheme.
+      // if (siteObj.name=='OA-Actual'|| siteObj.name=='Office Ally'){
+      //   var current_rows=(iframe.find('#'+tableRowsId).length)/2
+      // } else{var current_rows=($('#'+tableRowsId).length)/2}
       // if (rowsRequired>current_rows){
       //   rowsToAdd=rowsRequired-current_rows
       // }
@@ -105,8 +107,7 @@ function populateForm(siteObj,claimObj){
 
   // Begin populating rows
   switch (siteObj.name){
-    case 'Office_Ally_Dev':
-    case 'Demo_Office_Ally':
+    case 'Office Ally Demo':
       // Big problem: Office Ally site does not properly increment the row number in their naming scheme.
       // From the 12th row and beyond, all row ids are equal to 11(prefix+selector+11), even if row is 39.
       // Therefore this is a problem on the site's end, not ours. Working around a broken naming scheme
@@ -146,7 +147,7 @@ function populateForm(siteObj,claimObj){
       return
 
     case 'OA-Actual':
-    case 'Office_Ally':
+    case 'Office Ally':
     var iframe=$('#Iframe9').contents()
       for (var i=0;i<claimObj.dates.length;i++){
         if (!extractMonth(claimObj.dates[i]) ||
@@ -213,7 +214,7 @@ function undoForm(siteObj){
   var success='Undo fill success, rows cleared.'
   switch (siteObj.name){
     case 'OA-Actual':
-    case 'Office_Ally':
+    case 'Office Ally':
       var iframe=$('#Iframe9').contents()
       var tableRowsId= siteObj.selectors.prefix+siteObj.selectors.table_rows_id
       var current_rows=(iframe.find('#'+tableRowsId).length)/2
@@ -242,7 +243,7 @@ function undoForm(siteObj){
       }
         return success
 
-      case 'Office_Ally_Dev':
+      case 'Office Ally Demo':
         var tableRowsId= siteObj.selectors.prefix+siteObj.selectors.table_rows_id
         var current_rows=($('#'+tableRowsId).length)/2
         var prefix=siteObj.selectors.prefix

@@ -24,7 +24,9 @@ gulp.task('concatLib',function(){
     .pipe(gulp.dest('dist/js/'))
 })
 
-gulp.task('default',['clean','concatLib','usemin'])
+gulp.task('default',['clean'],function(){
+  gulp.start('usemin','concatLib')
+})
 
 gulp.task('clean',function(){
   return del('dist')

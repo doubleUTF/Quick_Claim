@@ -2,7 +2,7 @@
 // Selectors are based on element id
 const supported_sites=[
     {
-     name:"Office_Ally",
+     name:"Office Ally",
      url:"www.officeally.com",
      supported:true,
      selectors:{
@@ -140,7 +140,7 @@ const supported_sites=[
      maxRows:12, //changed this from 50 to 12 cause OA needs to fix their shit
    },
    {
-     name:'Office_Ally_Dev',
+     name:'Office Ally Demo',
      url:'localhost:8001',
      supported:true,
      defaultRows:12,

@@ -104,10 +104,9 @@ function renderStatus(url,tabs){
   } else if (result.length==1){
     var siteObj=result[0] // Get specific siteObject from supported_sites
     switch (siteObj.name){
-      case "Office_Ally_Dev":
       case 'OA-Actual':
-      case 'Office_Ally':
-      case 'Demo_Office_Ally':
+      case 'Office Ally':
+      case 'Office Ally Demo':
       enableForm()
       $('#siteStatus').text(siteObj.name+' is supported!').addClass('supported')
       $('#undoForm').prop('disabled',false).on('click',function(){
