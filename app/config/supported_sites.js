@@ -30,18 +30,20 @@ const supported_sites=[
      },
      maxDiagnosisPointers:4,
      defaultRows:12,
-     maxRows:50
+     maxRows:12
    },
    {
      name:'Ability Network',
      url:'',
      supported:false,
-     selectors:{}
+     selectors:{},
+     notes:'Will not be supported due to complexity of adding rows'
+         +' making calls to ASP framework which I cannot handle atm.'
    },
    {
      name:'United Health Care',
      url:'provider-linkhealth.unitedhealthcareonline.com',
-     supported:false,
+     supported:true,
      selectors:{
        fromMonth:'txt_dosFrom(Num)MM',
        fromDay:'txt_dosFrom(Num)DD',

@@ -1,6 +1,6 @@
 {
   "name": "quick_claim",
-  "version": "0.9.1",
+  "version": "0.9.3",
   "description": "Chrome extension for filing medical claim forms smarter",
   "main": "index.js",
   "scripts": {
@@ -11,9 +11,10 @@
   },
   "keywords": [
     "CMS-1500",
-    "Medical",
-    "claim",
-    "form"
+    "Medical Billing",
+    "Medical Claims",
+    "Form",
+    "Quick Claim"    
   ],
   "author": "doubleUTF",
   "license": "ISC",

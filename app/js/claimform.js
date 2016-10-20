@@ -131,6 +131,7 @@ function renderStatus(url,tabs){
         break
 
       case 'United Health Care Dev':
+      case 'United Health Care':
         $('#siteStatus').text(siteObj.name+' is supported!').addClass('supported')
         $('#fillForm').on('click', function(){
           fillFormHandler(siteObj,tabs[0].id)

@@ -47,6 +47,7 @@ function getDiagnoses(siteName){
       return JSON.stringify(diagnosisArray)
 
     case 'United Health Care Dev':
+    case 'United Health Care':
       for (var i=1;i<13;i++){
         var j=i-1
         var code=$('#txt_diagnosisText'+i).val()
@@ -74,20 +75,6 @@ function fillForm(siteObj,claimObj,callback){
     case 'Office Ally':
     case 'OA-Actual':
     case 'Office Ally Demo':
-      // Only added ability to add rows since OA allows empty rows in claim.
-
-      // Disabling row checking in lieu of Office Ally having incorrect naming scheme.
-      // var tableRowsId= siteObj.selectors.prefix+siteObj.selectors.table_rows_id
-      // if (siteObj.name=='OA-Actual'|| siteObj.name=='Office Ally'){
-      //   var current_rows=(iframe.find('#'+tableRowsId).length)/2
-      // } else{var current_rows=($('#'+tableRowsId).length)/2}
-      // if (rowsRequired>current_rows){
-      //   rowsToAdd=rowsRequired-current_rows
-      // }
-      // console.log('Current rows: '+ current_rows)
-      // console.log('Rows Required: '+ rowsRequired)
-      // console.log('Rows to add: ' +rowsToAdd)
-      // console.log('Total rows expected: '+ (rowsToAdd+current_rows))
 
       var addRowIntervalId= setInterval(function(){
         if (rowsToAdd<=0) {
@@ -101,6 +88,7 @@ function fillForm(siteObj,claimObj,callback){
       },500)
       break;
     case 'United Health Care Dev':
+    case 'United Health Care':
       callback(populateForm(siteObj,claimObj))
       break
     default:
@@ -120,16 +108,15 @@ function populateForm(siteObj,claimObj){
   var selectors=siteObj.selectors
   for (p in diagnosisArray){diagnosisKeys.push(p)}
   //console.log(siteObj.name)
-  console.log(siteObj)
+  //console.log(siteObj)
   // Begin populating rows
   switch (siteObj.name){
     case 'Office Ally Demo':
-      // Big problem: Office Ally site does not properly increment the row number in their naming scheme.
+      // Ongoing issue: Office Ally site does not properly increment the row number in their naming scheme.
       // From the 12th row and beyond, all row ids are equal to 11(prefix+selector+11), even if row is 39.
       // Therefore this is a problem on the site's end, not ours. Working around a broken naming scheme
       // is not a good idea. Therefore, I will only support 12 rows for now until OA fixes their shit.
-      // Filling everything except diagnoses. I will allow an option for the user
-      // to select all diagnosis or not.
+      // Filling everything except diagnoses.
       for (var i=0;i<claimObj.dates.length;i++){
         if (!extractMonth(claimObj.dates[i]) ||
             !extractDay(claimObj.dates[i])  ||
@@ -198,10 +185,9 @@ function populateForm(siteObj,claimObj){
       break
 
     case 'United Health Care Dev':
+    case 'United Health Care':
       row=1
       diagnosisKeys.forEach(function(x,i,a){a[i]=a[i].toLowerCase()})
-      console.log(diagnosisKeys)
-      console.log(claimObj.cpts)
       for (var i=0;i<claimObj.dates.length;i++){
         if (!extractMonth(claimObj.dates[i]) ||
             !extractDay(claimObj.dates[i])  ||
@@ -330,8 +316,9 @@ function undoForm(siteObj){
         return success
 
     case 'United Health Care Dev':
+    case 'United Health Care':
       row=1
-        for (var i=0;i<siteObj.maxRows;i++){
+      for (var i=0;i<siteObj.maxRows;i++){
         $('#'+replaceNum(selectors.fromMonth,row)).val('')
         $('#'+replaceNum(selectors.fromDay,row)).val('')
         $('#'+replaceNum(selectors.fromYear,row)).val('')
@@ -350,10 +337,9 @@ function undoForm(siteObj){
         for (var j=0;j<selectors.diagPointerArray.length;j++){
           $('#'+replaceNum(selectors.diagPointerArray[j],row)).prop('checked',false)
         }
-
         row++
-        }
-        return success
+      }
+      return success
 
 }
 
