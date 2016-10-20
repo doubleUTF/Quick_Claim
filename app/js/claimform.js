@@ -135,6 +135,11 @@ function renderStatus(url,tabs){
         $('#fillForm').on('click', function(){
           fillFormHandler(siteObj,tabs[0].id)
         })
+        $('#undoForm').prop('disabled',false).on('click',function(){
+          chrome.tabs.sendMessage(tabs[0].id,{
+            message:'undoForm',siteObj:JSON.stringify(siteObj)
+          }, function(response){ ResponseHandler(response)})
+        })
         enableForm()
         chrome.tabs.sendMessage(tabs[0].id,
           {message:'getDiagnoses',siteName:siteObj.name},function(diagObj){

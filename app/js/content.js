@@ -119,8 +119,8 @@ function populateForm(siteObj,claimObj){
   var prefix=siteObj.selectors.prefix
   var selectors=siteObj.selectors
   for (p in diagnosisArray){diagnosisKeys.push(p)}
-  console.log(siteObj.name)
-
+  //console.log(siteObj.name)
+  console.log(siteObj)
   // Begin populating rows
   switch (siteObj.name){
     case 'Office Ally Demo':
@@ -195,12 +195,44 @@ function populateForm(siteObj,claimObj){
           }
         }
       if (row>0) return ('Success! ' + (row) + ' row(s) filled.')
-      return
+      break
 
     case 'United Health Care Dev':
+      row=1
       diagnosisKeys.forEach(function(x,i,a){a[i]=a[i].toLowerCase()})
       console.log(diagnosisKeys)
+      console.log(claimObj.cpts)
+      for (var i=0;i<claimObj.dates.length;i++){
+        if (!extractMonth(claimObj.dates[i]) ||
+            !extractDay(claimObj.dates[i])  ||
+            !extractYear(claimObj.dates[i])){
+          return ('Invalid date: '+ claimObj.dates[i])
+        }
+        for (cpt in claimObj.cpts){
+        $('#'+replaceNum(selectors.fromMonth,row)).val(extractMonth(claimObj.dates[i]))
+        $('#'+replaceNum(selectors.fromDay,row)).val(extractDay(claimObj.dates[i]))
+        $('#'+replaceNum(selectors.fromYear,row)).val(extractYear(claimObj.dates[i]))
+        $('#'+replaceNum(selectors.toMonth,row)).val(extractMonth(claimObj.dates[i]))
+        $('#'+replaceNum(selectors.toDay,row)).val(extractDay(claimObj.dates[i]))
+        $('#'+replaceNum(selectors.toYear,row)).val(extractYear(claimObj.dates[i]))
+        $('#'+replaceNum(selectors.placeOfService,row)).val(claimObj.cpts[cpt].place)
+        $('#'+replaceNum(selectors.tos,row)).val(claimObj.cpts[cpt].emg)
+        $('#'+replaceNum(selectors.cpt,row)).val(extractCpt(cpt))
+        $('#'+replaceNum(selectors.modA,row)).val(claimObj.cpts[cpt].modA)
+        $('#'+replaceNum(selectors.modB,row)).val(claimObj.cpts[cpt].modB)
+        $('#'+replaceNum(selectors.modC,row)).val(claimObj.cpts[cpt].modC)
+        $('#'+replaceNum(selectors.modD,row)).val(claimObj.cpts[cpt].modD)
+        $('#'+replaceNum(selectors.charges,row)).val(claimObj.cpts[cpt].charge)
+        $('#'+replaceNum(selectors.units,row)).val(claimObj.cpts[cpt].days)
+        for (var j=0;j<diagnosisKeys.length;j++){
+          $('#'+replaceNum(selectors.diagPointerArray[j],row)).prop('checked',true)
+        }
+        row++
+        }
+      }
+      if (row>0) return ('Success! ' + (row-1) + ' row(s) filled.')
       break
+
     default:
     break
   }
@@ -230,9 +262,16 @@ function extractCpt(cptName){
   return cpt_regex.exec(cptName)[1]
 }
 
+function replaceNum(selString,num){
+  var num_regex=/\(Num\)/
+  var replaced_string=selString.replace(num_regex,num)
+  return replaced_string
+}
+
 function undoForm(siteObj){
   var row=0
   var success='Undo fill success, rows cleared.'
+  var selectors=siteObj.selectors
   switch (siteObj.name){
     case 'OA-Actual':
     case 'Office Ally':
@@ -240,7 +279,6 @@ function undoForm(siteObj){
       var tableRowsId= siteObj.selectors.prefix+siteObj.selectors.table_rows_id
       var current_rows=(iframe.find('#'+tableRowsId).length)/2
       var prefix=siteObj.selectors.prefix
-      var selectors=siteObj.selectors
 
       for (var i=0;i<current_rows;i++){
         iframe.find('#'+ prefix+ selectors.fromMonth + row).val('')
@@ -264,32 +302,59 @@ function undoForm(siteObj){
       }
         return success
 
-      case 'Office Ally Demo':
-        var tableRowsId= siteObj.selectors.prefix+siteObj.selectors.table_rows_id
-        var current_rows=($('#'+tableRowsId).length)/2
-        var prefix=siteObj.selectors.prefix
-        var selectors=siteObj.selectors
+    case 'Office Ally Demo':
+      var tableRowsId= siteObj.selectors.prefix+siteObj.selectors.table_rows_id
+      var current_rows=($('#'+tableRowsId).length)/2
+      var prefix=siteObj.selectors.prefix
 
-        for (var i=0;i<current_rows;i++){
-          $('#'+ prefix+ selectors.fromMonth + row).val('')
-          $('#'+ prefix+ selectors.toMonth+row).val('')
-          $('#'+ prefix+ selectors.fromDay+row).val('')
-          $('#'+ prefix+ selectors.toDay+row).val('')
-          $('#'+ prefix+ selectors.fromYear+row).val('')
-          $('#'+ prefix+ selectors.toYear+row).val('')
-          $('#'+ prefix+ selectors.placeOfService+row).val('')
-          $('#'+ prefix+ selectors.emg+row).val('')
-          $('#'+ prefix+ selectors.cpt+row).val('')
-          $('#'+ prefix+ selectors.modA+row).val('')
-          $('#'+ prefix+ selectors.modB+row).val('')
-          $('#'+ prefix+ selectors.modC+row).val('')
-          $('#'+ prefix+ selectors.modD+row).val('')
-          $('#'+ prefix+ selectors.charges+row).val('')
-          $('#'+ prefix+ selectors.units+row).val('')
-          $('#'+ prefix+ selectors.epsdt+row).val('')
-          $('#'+ prefix+ selectors.diagnosis+row).val('')
-          row++
+      for (var i=0;i<current_rows;i++){
+        $('#'+ prefix+ selectors.fromMonth + row).val('')
+        $('#'+ prefix+ selectors.toMonth+row).val('')
+        $('#'+ prefix+ selectors.fromDay+row).val('')
+        $('#'+ prefix+ selectors.toDay+row).val('')
+        $('#'+ prefix+ selectors.fromYear+row).val('')
+        $('#'+ prefix+ selectors.toYear+row).val('')
+        $('#'+ prefix+ selectors.placeOfService+row).val('')
+        $('#'+ prefix+ selectors.emg+row).val('')
+        $('#'+ prefix+ selectors.cpt+row).val('')
+        $('#'+ prefix+ selectors.modA+row).val('')
+        $('#'+ prefix+ selectors.modB+row).val('')
+        $('#'+ prefix+ selectors.modC+row).val('')
+        $('#'+ prefix+ selectors.modD+row).val('')
+        $('#'+ prefix+ selectors.charges+row).val('')
+        $('#'+ prefix+ selectors.units+row).val('')
+        $('#'+ prefix+ selectors.epsdt+row).val('')
+        $('#'+ prefix+ selectors.diagnosis+row).val('')
+        row++
+      }
+        return success
+
+    case 'United Health Care Dev':
+      row=1
+        for (var i=0;i<siteObj.maxRows;i++){
+        $('#'+replaceNum(selectors.fromMonth,row)).val('')
+        $('#'+replaceNum(selectors.fromDay,row)).val('')
+        $('#'+replaceNum(selectors.fromYear,row)).val('')
+        $('#'+replaceNum(selectors.toMonth,row)).val('')
+        $('#'+replaceNum(selectors.toDay,row)).val('')
+        $('#'+replaceNum(selectors.toYear,row)).val('')
+        $('#'+replaceNum(selectors.placeOfService,row)).val('')
+        $('#'+replaceNum(selectors.tos,row)).val('')
+        $('#'+replaceNum(selectors.cpt,row)).val('')
+        $('#'+replaceNum(selectors.modA,row)).val('')
+        $('#'+replaceNum(selectors.modB,row)).val('')
+        $('#'+replaceNum(selectors.modC,row)).val('')
+        $('#'+replaceNum(selectors.modD,row)).val('')
+        $('#'+replaceNum(selectors.charges,row)).val('')
+        $('#'+replaceNum(selectors.units,row)).val('')
+        for (var j=0;j<selectors.diagPointerArray.length;j++){
+          $('#'+replaceNum(selectors.diagPointerArray[j],row)).prop('checked',false)
         }
-          return success
+
+        row++
+        }
+        return success
+
 }
+
 }

@@ -1,6 +1,6 @@
 {
   "name": "quick_claim",
-  "version": "1.0.0",
+  "version": "0.9.1",
   "description": "Chrome extension for filing medical claim forms smarter",
   "main": "index.js",
   "scripts": {
