@@ -1,0 +1,429 @@
+// uhpd.js
+
+
+function showPinValidation()
+{	
+
+	var url,params;
+	var frm = document.premiumPinValidationForm;
+	params= "userSeqNo=" + frm.userSeqNo.value+ "&" + "forwardPage=" + frm.forwardPage.value;
+
+	url="premiumExptTblcheck.do?function=showpinvalidation";
+
+	url += "&" + params;
+	
+	doAjaxSubmit(url);
+}
+function premiumExptTblCheck()
+{	
+	var url,params;
+	var frm = document.premiumPinValidationForm;
+	
+	params= "userSeqNo=" + frm.userSeqNo.value + "&" + "forwardPage=" + frm.forwardPage.value;
+	url="premiumExptTblcheck.do?function=showvalidationlink";
+
+	url += "&" + params;
+
+	doAjaxSubmit(url);
+}
+
+
+
+function hideShowNotifyDiv(obj)
+{
+	var emailPrefsDiv = document.getElementById('emailPrefs');
+	var faxPrefsDiv = document.getElementById('faxPrefs');
+	var usMailPrefsDiv = document.getElementById('usmailPrefs');
+	var email = document.getElementById('email');
+	var emailConfirm = document.getElementById('emailConfirm');
+	var areaCode = document.getElementById('areaCode');
+	var exchangeCode = document.getElementById('exchangeCode');
+	var subscriberNum = document.getElementById('subscriberNum');
+
+	if(obj.value=="email")
+	{
+			emailPrefsDiv.style.display = 'block';
+			faxPrefsDiv.style.display = 'none';
+			usMailPrefsDiv.style.display = 'none';
+			areaCode.value = '';
+			exchangeCode.value = '';
+			subscriberNum.value = '';
+	}
+	else if(obj.value=="fax")
+	{
+			emailPrefsDiv.style.display = 'none';
+			faxPrefsDiv.style.display = 'block';
+			usMailPrefsDiv.style.display = 'none';
+			email.value = '';
+			emailConfirm.value = '';
+	}
+	else if(obj.value=="U.S. Mail")
+	{
+			emailPrefsDiv.style.display = 'none';
+			faxPrefsDiv.style.display = 'none';
+			usMailPrefsDiv.style.display = 'block';
+			areaCode.value = '';
+			exchangeCode.value = '';
+			subscriberNum.value = '';
+	}
+}
+
+function inputFax(obj)
+{
+	if(obj.value.length==3)
+	{
+		if(obj.name=='areaCode')
+		{
+				var faxExchangeCode = document.getElementsByName('exchangeCode');
+				faxExchangeCode[0].focus();
+		}
+		else if(obj.name=='exchangeCode')
+		{
+				var subscriberNum = document.getElementsByName('subscriberNum');
+				subscriberNum[0].focus();
+		}
+	}
+}
+
+function showHelp(obj)
+{
+	var win = window.open("/b2c/CmaAction.do?viewKey=Help#"+obj.toString(), 'formresult', 'scrollbars=yes,menubar=no,height=600,location=no,width=800,resizable=no,toolbar=no,status=no'); 
+	win.focus();
+}
+function sortBy(col) {
+ 	document.physicianGroupSelectorForm.param.value="processSort"
+ 	
+ 	 var lastSortCol = document.physicianGroupSelectorForm.PRIM_KEY.value;
+ 	 var lastSortOrder =document.physicianGroupSelectorForm.ASC_SORT.value;	 	 
+ 	 if (col == lastSortCol && lastSortOrder == "true")  {
+ 		document.physicianGroupSelectorForm.ASC_SORT.value = "false"; 			
+ 	 } else {
+ 		document.physicianGroupSelectorForm.PRIM_KEY.value=col;
+ 		document.physicianGroupSelectorForm.ASC_SORT.value = "true";
+ 	 }
+ 	 document.physicianGroupSelectorForm.action="/b2c/phyGrpSelection.do";
+	// alert(document.physicianGroupSelectorForm.action);
+ 	 document.physicianGroupSelectorForm.submit();
+}
+
+function enableValidatePIN()
+	{	
+		var textBoxElem = document.premiumPinValidationForm.pinNo2;
+		var textBoxElem1 = document.premiumPinValidationForm.pinNo1;
+		var submitButton = document.getElementById('submitButton');
+		if(((textBoxElem1.value.length==0)  || (textBoxElem1.value=="")) && ((textBoxElem.value.length==0)  || (textBoxElem.value==""))){		
+				submitButton.className = 'disabledButton';	
+				submitButton.disabled=true;	
+		}
+		else{
+				//alert('dfdfa');
+				submitButton.disabled=false;
+				//alert('adfsfdsfdsfdsd');
+				submitButton.className='button';
+		}
+		
+	}
+	
+function fnPinSubmitForm() {
+	//alert("in fnPinSubmitForm()");
+   document.premiumPinValidationForm.submitFromConfirmPage.value="Y";
+    if  (document.premiumPinValidationForm.forwardPage.value == "caseA"){
+   document.premiumPinValidationForm.action = "/b2c/pinValidationCaseA.do";
+   } else if (document.premiumPinValidationForm.forwardPage.value == "caseC1" || document.premiumPinValidationForm.forwardPage.value == "caseC2"){
+   document.premiumPinValidationForm.action = "/b2c/pinValidationCaseC.do";
+   } 
+	document.premiumPinValidationForm.submit();
+	
+}
+
+function fnPinCancel() {
+	document.getElementById('alertSave').style.visibility='hidden';
+	disableButtonCall();
+	//alert("here");
+	document.premiumPinValidationForm.pinNo1.value = "";
+	document.premiumPinValidationForm.pinNo2.value = "";
+}
+function disableButtonCall() {
+	var submitButton = document.getElementById('submitButton');
+	submitButton.disabled = true;
+}
+
+function showCognosReport(url, reportName){
+   	var win = window.open(url, reportName, 'scrollbars=no,menubar=no,height=600,location=no,width=800,resizable=yes,toolbar=no,status=no'); 
+	win.focus();
+}
+
+function showDateValidationPopUp(dateValidationMsg) {
+	if (window.showModalDialog)
+	{
+		window.showModalDialog('/b2c/reconDateValidation.do?dateValidationMsg='+dateValidationMsg, window,'dialogWidth:360px;dialogHeight:170px;status=no;unadorned=no;scroll=no;help:no');
+	}
+	else
+	{
+		window.open('/b2c/reconDateValidation.do?dateValidationMsg='+dateValidationMsg,window,'height=170,width=360,toolbar=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no ,modal=yes');
+	}
+}
+
+function patientDateValidation(validationCode,userEntredDt,rptEndDt,zdeltap,zdeltan,dateValidationMsg){
+	//alert(validationCode);
+
+	var userEntredDt1 = new Date(userEntredDt);
+	//alert(userEntredDt1);
+	var rptEndDt1 = new Date(rptEndDt);
+
+	//alert(rptEndDt1);
+	//alert("zdeltap" + zdeltap);
+
+		if (validationCode == 'PATVAL01')
+		{
+			 rptEndDt1.setDate(parseInt(rptEndDt1.getDate()) + parseInt(zdeltap));
+			 //alert("rptEndDt1" + rptEndDt1);
+			 if (userEntredDt1 <= rptEndDt1){
+			  	//alert("user Entered is less than new report date");
+			 }else {
+	 		 	showDateValidationPopUp(dateValidationMsg);
+	 		 	/*var dateValidationPopup=document.getElementById("dateValidationPopup");
+  				dateValidationPopup.style.visibility="visible";
+  				var dateValidationMsgDiv=document.getElementById("dateValidationMsgDiv");
+  				dateValidationMsgDiv.innerHTML=dateValidationMsg;
+  				dateValidationMsgDiv.style.visibility="visible";*/
+			 }
+		} else if (validationCode == 'PATVAL06') 
+		{
+			 var rptEndZdltaN = new Date(rptEndDt);
+			 rptEndDt1.setDate(parseInt(rptEndDt1.getDate()) + parseInt(zdeltap));
+			 //alert(rptEndDt1);
+			 rptEndZdltaN.setDate(parseInt(rptEndZdltaN.getDate()) + parseInt(zdeltan));
+			 //alert(rptEndZdltaN);
+
+			 if ((rptEndZdltaN <= userEntredDt1) && (userEntredDt1 <=rptEndDt1)) 
+			 {
+				 	//alert("in b/w z+zdeltan & z+zdeltap");
+			}else {
+				showDateValidationPopUp(dateValidationMsg);
+				/*var dateValidationPopup=document.getElementById("dateValidationPopup");
+  				dateValidationPopup.style.visibility="visible";
+  				var dateValidationMsgDiv=document.getElementById("dateValidationMsgDiv");
+  				dateValidationMsgDiv.innerHTML=dateValidationMsg;
+  				dateValidationMsgDiv.style.visibility="visible";*/
+			}
+		}
+
+}
+
+function qualityDateValidation(validationCode,userEntredDt,rptEndDt,zdeltap,zdeltan,msrEligStrtDate,adltaN,adltaP,compStrtDt,bdeltaN,compEndDt,cdltaP,msrEligEndDate,ydltaP,ydltaN,dateValidationMsg)
+{
+			//alert(validationCode);
+			var userEntredDt1 = new Date(userEntredDt);
+			//alert(userEntredDt1);
+			var rptEndDt1 = new Date(rptEndDt);
+			//alert(rptEndDt1);
+			var msrEligStrtDate1 = new Date(msrEligStrtDate);
+			var msrEligStrtDate2 = new Date(msrEligStrtDate);
+
+		if (validationCode == 'PATVAL01')
+		{
+			 rptEndDt1.setDate(parseInt(rptEndDt1.getDate()) + parseInt(zdeltap));
+			 //alert("rptEndDt1" + rptEndDt1);
+			 if (userEntredDt1 <= rptEndDt1){
+			  	//alert("user Entered is less than new report date");
+			 }else {
+	 		 	showDateValidationPopUp(dateValidationMsg);
+	 		 	/*var dateValidationPopup=document.getElementById("dateValidationPopup");
+  				dateValidationPopup.style.visibility="visible";
+  				var dateValidationMsgDiv=document.getElementById("dateValidationMsgDiv");
+  				dateValidationMsgDiv.innerHTML=dateValidationMsg;
+  				dateValidationMsgDiv.style.visibility="visible";*/
+			 }
+		} else if (validationCode == 'PATVAL02')
+			{
+				 msrEligStrtDate1.setDate(parseInt(msrEligStrtDate1.getDate()) + parseInt(adltaN));
+				 msrEligStrtDate2.setDate(parseInt(msrEligStrtDate2.getDate()) + parseInt(adltaP));
+				 //alert("msrEligStrtDate1 " + msrEligStrtDate1 + "msrEligStrtDate2 "+msrEligStrtDate2);
+  			 	 //alert("msrEligStrtDate1" + msrEligStrtDate1);
+
+				 if ((msrEligStrtDate1 <= userEntredDt1) && (userEntredDt1 <= msrEligStrtDate2)){
+				    //alert("valid date -PATVAL02");
+				 }else {
+			 		 //alert("not valid - PATVAL02");
+			 		 showDateValidationPopUp(dateValidationMsg);
+			 		/* var dateValidationPopup=document.getElementById("dateValidationPopup");
+  					dateValidationPopup.style.visibility="visible";
+  					var dateValidationMsgDiv=document.getElementById("dateValidationMsgDiv");
+  					dateValidationMsgDiv.innerHTML=dateValidationMsg;
+  					dateValidationMsgDiv.style.visibility="visible";*/
+				 }
+			} else if (validationCode == 'PATVAL03') {
+
+				 var compStrtDt1 = new Date(compStrtDt);
+				 compStrtDt1.setDate(parseInt(compStrtDt1.getDate()) + parseInt(bdeltaN));
+				// alert(compStrtDt1);
+				 var compEndDt1 = new Date(compEndDt);
+				 compEndDt1.setDate(parseInt(compEndDt1.getDate()) + parseInt(cdltaP));
+				 //alert(compEndDt1);
+				 if ((compStrtDt1 <= userEntredDt1) && (userEntredDt1 <=compEndDt1)) {
+				 	//alert("Valid date - PATVAL03");
+				 }else {
+				 	//alert("not Valid -PATVAL03");
+				 	showDateValidationPopUp(dateValidationMsg);
+				 	/*var dateValidationPopup=document.getElementById("dateValidationPopup");
+  					dateValidationPopup.style.visibility="visible";
+  					var dateValidationMsgDiv=document.getElementById("dateValidationMsgDiv");
+  					dateValidationMsgDiv.innerHTML=dateValidationMsg;
+  					dateValidationMsgDiv.style.visibility="visible";*/
+				 }
+			}else if (validationCode == 'PATVAL04') {
+
+				var msrEligEndDt1 = new Date(msrEligEndDate);
+				msrEligStrtDate1.setDate(parseInt(msrEligStrtDate1.getDate()) + parseInt(adltaN));
+				msrEligEndDt1.setDate(parseInt(msrEligEndDt1.getDate()) + parseInt(ydltaP));
+				
+				if ((msrEligStrtDate1 <= userEntredDt1) && (userEntredDt1 <=msrEligEndDt1)) {
+				 	//alert("Valid date - PATVAL04");
+				 }else {
+				 		//alert("not Valid -PATVAL04");
+				 	showDateValidationPopUp(dateValidationMsg);
+				 	/*var dateValidationPopup=document.getElementById("dateValidationPopup");
+  					dateValidationPopup.style.visibility="visible";
+  					var dateValidationMsgDiv=document.getElementById("dateValidationMsgDiv");
+  					dateValidationMsgDiv.innerHTML=dateValidationMsg;
+  					dateValidationMsgDiv.style.visibility="visible";*/
+				 }
+			}else if (validationCode == 'PATVAL05') {
+
+				var msrEligEndDt1 = new Date(msrEligEndDate);
+				var msrEligEndDt2 = new Date(msrEligEndDate);
+
+				msrEligEndDt1.setDate(parseInt(msrEligEndDt1.getDate()) + parseInt(ydltaN));
+				msrEligEndDt2.setDate(parseInt(msrEligEndDt2.getDate()) + parseInt(ydltaP));
+				//alert(msrEligEndDt1);
+				//alert(msrEligEndDt2);
+				if ((msrEligEndDt1 <= userEntredDt1) && (userEntredDt1 <=msrEligEndDt2)) {
+				 	//alert("Valid date - PATVAL05");
+				 }else {
+				 	//alert("not Valid -PATVAL05");
+				 	showDateValidationPopUp(dateValidationMsg);
+				 	/*var dateValidationPopup=document.getElementById("dateValidationPopup");
+  					dateValidationPopup.style.visibility="visible";
+  					var dateValidationMsgDiv=document.getElementById("dateValidationMsgDiv");
+  					dateValidationMsgDiv.innerHTML=dateValidationMsg;
+  					dateValidationMsgDiv.style.visibility="visible";*/
+				 }
+			
+			 } else if (validationCode == 'PATVAL06') {
+	
+				 var rptEndZdltaN = new Date(rptEndDt);
+				 rptEndDt1.setDate(parseInt(rptEndDt1.getDate()) + parseInt(zdeltap));
+				 //alert(rptEndDt1);
+				 rptEndZdltaN.setDate(parseInt(rptEndZdltaN.getDate()) + parseInt(zdeltan));
+				 //alert(rptEndZdltaN);
+	
+				 if ((rptEndZdltaN <= userEntredDt1) && (userEntredDt1 <=rptEndDt1)) 
+				 {
+					 	//alert("in b/w z+zdeltan & z+zdeltap");
+				 }else {
+				    showDateValidationPopUp(dateValidationMsg);
+					/*var dateValidationPopup=document.getElementById("dateValidationPopup");
+	  				dateValidationPopup.style.visibility="visible";
+	  				var dateValidationMsgDiv=document.getElementById("dateValidationMsgDiv");
+	  				dateValidationMsgDiv.innerHTML=dateValidationMsg;
+	  				dateValidationMsgDiv.style.visibility="visible";*/
+				}
+			
+			}else if (validationCode == 'PATVAL07') {
+
+				var rptEndDt1 = new Date(rptEndDt);
+				var msrEligEndDt1 = new Date(msrEligEndDate);
+
+				//alert("msrEligEndDt1 " + msrEligEndDt1);
+				rptEndDt1.setDate(parseInt(rptEndDt1.getDate()) + parseInt(zdeltan));
+				msrEligEndDt1.setDate(parseInt(msrEligEndDt1.getDate()) + parseInt(ydltaP));
+			    if ((rptEndDt1 <= userEntredDt1) && (userEntredDt1 <=msrEligEndDt1)) {
+				 	//alert("Valid date - PATVAL07");
+				 }else {
+				 	//alert("not Valid - PATVAL07");
+				 	showDateValidationPopUp(dateValidationMsg);
+				 	/*var dateValidationPopup=document.getElementById("dateValidationPopup");
+  					dateValidationPopup.style.visibility="visible";
+  					var dateValidationMsgDiv=document.getElementById("dateValidationMsgDiv");
+  					dateValidationMsgDiv.innerHTML=dateValidationMsg;
+  					dateValidationMsgDiv.style.visibility="visible";*/
+				 }
+			}
+}
+
+
+  function show_cancel_popup(divbox){
+		var alertBox=document.getElementById(divbox);
+			alertBox.style.left = (document.body.clientWidth/2) - (alertBox.offsetWidth/2);			
+		//alertBox.style.top = (document.body.scrollTop) + (document.body.clientHeight/2) - (alertBox.offsetHeight/2);
+			alertBox.style.visibility="visible";
+			
+		event.returnValue=false;
+		return false;
+	}  
+	
+	
+	function cancel_popup(divbox,tabswitch){
+		var alertBox=document.getElementById(divbox);		
+		alertBox.style.visibility="hidden";			
+		var selectedTab=document.getElementById("selected");		
+		if (tabswitch=='N') {
+			selectedTab.value="";
+		}		
+		event.returnValue=false;
+		return false;
+	}
+	
+	function enablePQSValidatePIN()
+	{	
+		var textBoxElem = document.pqsPinValidationForm.pinNo2;
+		var textBoxElem1 = document.pqsPinValidationForm.pinNo1;
+		var submitButton = document.getElementById('submitButton');
+		if(((textBoxElem1.value.length==0)  || (textBoxElem1.value=="")) && ((textBoxElem.value.length==0)  || (textBoxElem.value==""))){		
+				submitButton.className = 'disabledButton';	
+				submitButton.disabled=true;	
+		}
+		else{
+				//alert('dfdfa');
+				submitButton.disabled=false;
+				//alert('adfsfdsfdsfdsd');
+				submitButton.className='button';
+		}
+		
+	}
+	
+	function fnPQSPinSubmitForm() {
+		//alert("in fnPinSubmitForm()");
+	   document.pqsPinValidationForm.submitFromConfirmPage.value="Y";
+	    if  (document.pqsPinValidationForm.forwardPage.value == "content3"){
+	   document.pqsPinValidationForm.action = "/b2c/pqsPinValidation.do";
+	   } else if (document.pqsPinValidationForm.forwardPage.value == "caseC1" || document.pqsPinValidationForm.forwardPage.value == "caseC2"){
+	   document.pqsPinValidationForm.action = "/b2c/pinValidationCaseC.do";
+	   } 
+		document.pqsPinValidationForm.submit();
+		
+	}
+
+	function fnPQSPinCancel() {
+		document.getElementById('alertSave').style.visibility='hidden';
+		disableButtonCall();
+		//alert("here");
+		document.pqsPinValidationForm.pinNo1.value = "";
+		document.pqsPinValidationForm.pinNo2.value = "";
+	}
+
+function showHelp(obj,param)
+     {
+     if(param=="m"){
+	   var win2 = window.open("/b2c/CmaAction.do?viewKey=MedicaHelp#"+obj.toString(), 'formresult','scrollbars=yes,menubar=no,height=600,location=no,width=800,resizable=no,toolbar=no,status=no'); 
+	    win2.focus();
+	  }else{
+	    var win2 = window.open("/b2c/CmaAction.do?viewKey=Help#"+obj.toString(), 'formresult','scrollbars=yes,menubar=no,height=600,location=no,width=800,resizable=no,toolbar=no,status=no'); 
+	     win2.focus();
+	  }
+	
+	} 
+
+	  			
+

@@ -42,7 +42,9 @@ const supported_sites=[
      name:'United Health Care',
      url:'provider-linkhealth.unitedhealthcareonline.com',
      supported:false,
-     selectors:{}
+     selectors:{},
+     defaultRows:10,
+     maxRows:10
    },
    {
      name:'Availity',
@@ -173,5 +175,15 @@ const supported_sites=[
      name:'TriZetto_Provider_Solutions',
      url:'',
      supported:false
+   },
+   {
+     name:'United Health Care Dev',
+     url:'localhost:8002',
+     supported:true,
+     selectors:{
+       
+     },
+     defaultRows:10,
+     maxRows:10
    }
 ]

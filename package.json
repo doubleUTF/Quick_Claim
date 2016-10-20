@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "lite-server -c configs/bs-config.json",
-    "demo": "lite-server -c configs/bs-OA-config.json"
+    "oa": "lite-server -c configs/bs-OA-config.json",
+    "uhc": "lite-server -c configs/bs-UHC-config.json"
   },
   "keywords": [
     "CMS-1500",

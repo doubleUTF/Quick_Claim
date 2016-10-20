@@ -88,9 +88,9 @@ window.addEventListener('DOMContentLoaded', function(){
 
 ////////////// Helper functions
 
-// Check to see if current url in tab is supported
-// against list of supported sites. Then render status
-// as accordingly.
+// Check to see if current url in tab is supported against list of
+// supported sites. Then render status as accordingly.
+// Each site will be treated individually until it has been shown otherwise.
 function renderStatus(url,tabs){
   var host = url.match(/^(.*?:\/{2,3})?(.+?)(\/|$)/)[2];
   var result=$.grep(supported_sites,function(elem){
@@ -108,6 +108,9 @@ function renderStatus(url,tabs){
       case 'Office Ally Demo':
       enableForm()
       $('#siteStatus').text(siteObj.name+' is supported!').addClass('supported')
+      $('#fillForm').on('click', function(){
+        fillFormHandler(siteObj,tabs[0].id)
+      })
       $('#undoForm').prop('disabled',false).on('click',function(){
         chrome.tabs.sendMessage(tabs[0].id,{
           message:'undoForm',siteObj:JSON.stringify(siteObj)
@@ -115,9 +118,6 @@ function renderStatus(url,tabs){
       })
         chrome.tabs.sendMessage(tabs[0].id,
           {message:"getDiagnoses",siteName:siteObj.name},function(diagObj){
-            $('#fillForm').on('click', function(){
-              fillFormHandler(siteObj,tabs[0].id)
-            })
             if (diagObj!='{}'){
               if (getObjLength(diagObj)>4){
                 $('#statusBarMsg').text('More than 4 diagnoses detected. Column 24.E will not be filled due to site limitations.').addClass('warning');
@@ -126,6 +126,23 @@ function renderStatus(url,tabs){
               $('#statusBarMsg').text(getObjLength(diagObj)+' diagnosis code(s) detected, Enter CPT Codes.').addClass('supported')
             } else {
               $('#statusBarMsg').text('No diagnosis detected in section 21. You will enter diagnosis pointers manually for each row.')
+            }
+          })
+        break
+
+      case 'United Health Care Dev':
+        $('#siteStatus').text(siteObj.name+' is supported!').addClass('supported')
+        $('#fillForm').on('click', function(){
+          fillFormHandler(siteObj,tabs[0].id)
+        })
+        enableForm()
+        chrome.tabs.sendMessage(tabs[0].id,
+          {message:'getDiagnoses',siteName:siteObj.name},function(diagObj){
+            console.log(diagObj)
+            if (diagObj=='{}'){
+              $('#statusBarMsg').text('No diagnosis detected in section 21. You will enter diagnosis pointers manually for each row.')
+            } else{
+              $('#statusBarMsg').text(getObjLength(diagObj)+' diagnosis code(s) detected, Enter CPT Codes.').addClass('supported')
             }
           })
         break

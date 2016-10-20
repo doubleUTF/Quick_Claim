@@ -28,7 +28,10 @@ Fill out sections 1-21 either by loading saved patient data or entering new data
 3. Go to Claim Form tab, enter CPT codes and dates. Click Fill Form button and verify data is correct. Quick Claim will automatically provide each date of service for all CPT codes and all diagnosis for each CPT. If this is undesired, click Undo Fill and enter data manually.
 
 For developers:
-To run the demo site, install repo, go to root folder in console, then type 'npm run demo'.
+To run the demo site, install repo, go to root folder in console then type:
+
+ - Office Ally: 'npm run oa'
+ - United Health Care: 'npm run uhc'
 
 To build dist folder: just run 'gulp'
 

@@ -18,6 +18,9 @@ chrome.runtime.onMessage.addListener(
 const diagLetters=['A','B','C','D','E','F',
                    'G','H', 'I','J','K','L']
 
+// I am breaking the DRY principle(do not repeat yourself), but
+// for simplicity's sake it's best to process each site individually
+// since they may have different naming schemes.
 function getDiagnoses(siteName){
   var diagnosisArray={}
   switch (siteName){
@@ -43,6 +46,16 @@ function getDiagnoses(siteName){
         }
       return JSON.stringify(diagnosisArray)
 
+    case 'United Health Care Dev':
+      for (var i=1;i<13;i++){
+        var j=i-1
+        var code=$('#txt_diagnosisText'+i).val()
+        if (code){
+          diagnosisArray[diagLetters[j]]=code
+        }
+      }
+      return JSON.stringify(diagnosisArray)
+
     default:
       console.log('No diagnosis detected')
       break
@@ -51,20 +64,20 @@ function getDiagnoses(siteName){
 
 function fillForm(siteObj,claimObj,callback){
   var rowsRequired=claimObj.rows
+  var maxRows=siteObj.maxRows
   var rowsToAdd=0
+  if (maxRows<rowsRequired){
+    callback('Error, '+rowsRequired+ ' rows required but only '+ maxRows+ ' allowed.')
+    return
+  }
   switch (siteObj.name){
     case 'Office Ally':
     case 'OA-Actual':
     case 'Office Ally Demo':
       // Only added ability to add rows since OA allows empty rows in claim.
-      var iframe=$('#IFrame9').contents()
-      var tableRowsId= siteObj.selectors.prefix+siteObj.selectors.table_rows_id
-      var maxRows=siteObj.maxRows
-      if (maxRows<rowsRequired){
-        callback('Error, '+rowsRequired+ ' rows required but only '+ maxRows+ ' allowed.')
-        return
-      }
+
       // Disabling row checking in lieu of Office Ally having incorrect naming scheme.
+      // var tableRowsId= siteObj.selectors.prefix+siteObj.selectors.table_rows_id
       // if (siteObj.name=='OA-Actual'|| siteObj.name=='Office Ally'){
       //   var current_rows=(iframe.find('#'+tableRowsId).length)/2
       // } else{var current_rows=($('#'+tableRowsId).length)/2}
@@ -87,7 +100,9 @@ function fillForm(siteObj,claimObj,callback){
         $('#btnAddRow').click()
       },500)
       break;
-
+    case 'United Health Care Dev':
+      callback(populateForm(siteObj,claimObj))
+      break
     default:
       console.log('Site not supported');
       break;
@@ -104,6 +119,7 @@ function populateForm(siteObj,claimObj){
   var prefix=siteObj.selectors.prefix
   var selectors=siteObj.selectors
   for (p in diagnosisArray){diagnosisKeys.push(p)}
+  console.log(siteObj.name)
 
   // Begin populating rows
   switch (siteObj.name){
@@ -180,6 +196,11 @@ function populateForm(siteObj,claimObj){
         }
       if (row>0) return ('Success! ' + (row) + ' row(s) filled.')
       return
+
+    case 'United Health Care Dev':
+      diagnosisKeys.forEach(function(x,i,a){a[i]=a[i].toLowerCase()})
+      console.log(diagnosisKeys)
+      break
     default:
     break
   }
