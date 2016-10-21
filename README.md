@@ -36,6 +36,9 @@ To run the demo site, install repo, go to root folder in console then type:
 To build dist folder: just run 'gulp'
 
 ============Change Log=============
+
+v.9.3
+- Added support for United Health Care/Optum
 v0.9.1.1
 - Added Chrome button shortcut link in 'About' tab
 
