@@ -1,6 +1,5 @@
-Quick Claim extension for Google Chrome
-==============================
 ![Quick Claim](/promo/promo3.jpg "Quick Claim")
+
 Filing electronic medical claims on sites such as Office Ally or MD-Online
 requires tedious and repetitive data entry. Quick Claim is a
 Chrome extension meant to save time by remembering
