@@ -1,4 +1,4 @@
-# Quick Claim extension for Google Chrome
+Quick Claim extension for Google Chrome
 ==============================
 Filing electronic medical claims on sites such as Office Ally or MD-Online
 requires tedious and repetitive data entry. Quick Claim is a
@@ -7,19 +7,18 @@ your settings and automatically filling out the dense
 portion of the form (Field 24 of CMS 1500). Quick Claim is
 ideal for clinics/hospitals providing services on same dates with repeating data(To and From dates are equal on section 24.A).
 
-###### Requirements:
+## Requirements:
 Chrome Browser
 Office Ally CMS-1500 HCFA Form section
 Optum/ United Health Care Form section
 
-###### To Install:
-- Go to [Chrome Web Store](https://chrome.google.com/webstore/detail/quick-claim/hlmoiemagjdmhpcjeolbcehhildojkki)
-- Download github repository, go to chrome://extensions
-  and click 'Load unpacked extension' and install the root/app folder.
+## To Install:
+- Add extension from [Chrome Web Store](https://chrome.google.com/webstore/detail/quick-claim/hlmoiemagjdmhpcjeolbcehhildojkki)
+- Or download entire github repository, go to chrome://extensions, click 'Load unpacked extension' and install the root/app folder.
 
 Default popup hotkey in Chrome: Ctrl+Q
 
-###### How to Use:
+## How to Use:
 1. Ensure you are on a supported site(Office Ally only in beta) and at the HCFA-1500 form section. The status bar on the Claim Form tab will indicate this.
 Fill out sections 1-21 either by loading saved patient data or entering new data.
 
@@ -27,7 +26,7 @@ Fill out sections 1-21 either by loading saved patient data or entering new data
 
 3. Go to Claim Form tab, enter CPT codes and dates. Click Fill Form button and verify data is correct. Quick Claim will automatically provide each date of service for all CPT codes and all diagnosis for each CPT. If this is undesired, click Undo Fill and enter data manually.
 
-###### For developers:
+## For developers:
 To run the demo site, install repo, go to root folder in console then type:
 
  - Office Ally: `npm run oa`
@@ -35,7 +34,7 @@ To run the demo site, install repo, go to root folder in console then type:
 
 To build dist folder: just run `gulp`
 
-###### ============Change Log=============
+## ============Change Log=============
 
 v.9.3
 - Added support for United Health Care/Optum
