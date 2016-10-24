@@ -13,11 +13,10 @@
     "CMS-1500",
     "Medical Billing",
     "Medical Claims",
-    "Form",
-    "Quick Claim"    
+    "Quick Claim"
   ],
   "author": "doubleUTF",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "del": "^2.2.2",
     "gulp": "^3.9.1",
