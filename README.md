@@ -1,4 +1,6 @@
-![Quick Claim](/promo/promo3.jpg "Quick Claim")
+<p align='center'>
+  <img src='/promo/promo3.jpg'>
+</p>
 
 Filing electronic medical claims on sites such as Office Ally or MD-Online
 requires tedious and repetitive data entry. Quick Claim is a
