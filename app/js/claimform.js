@@ -83,6 +83,7 @@ window.addEventListener('DOMContentLoaded', function(){
   })
 
   $('#closePopup').on('click',function(){window.close()})
+
 }) //End of document ready
 
 
@@ -111,6 +112,13 @@ function renderStatus(url,tabs){
       $('#fillForm').on('click', function(){
         fillFormHandler(siteObj,tabs[0].id)
       })
+      // Submit form after hitting enter
+      $('#datesForm').keydown(function(event){
+        if (event.which==13){
+          event.preventDefault();
+          fillFormHandler(siteObj,tabs[0].id)
+        }
+      })
       $('#undoForm').prop('disabled',false).on('click',function(){
         chrome.tabs.sendMessage(tabs[0].id,{
           message:'undoForm',siteObj:JSON.stringify(siteObj)
@@ -135,6 +143,12 @@ function renderStatus(url,tabs){
         $('#siteStatus').text(siteObj.name+' is supported!').addClass('supported')
         $('#fillForm').on('click', function(){
           fillFormHandler(siteObj,tabs[0].id)
+        })
+        $('#datesForm').keydown(function(event){
+          if (event.which==13){
+            event.preventDefault();
+            fillFormHandler(siteObj,tabs[0].id)
+          }
         })
         $('#undoForm').prop('disabled',false).on('click',function(){
           chrome.tabs.sendMessage(tabs[0].id,{
