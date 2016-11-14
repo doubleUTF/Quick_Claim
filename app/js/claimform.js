@@ -108,6 +108,7 @@ function renderStatus(url,tabs){
       case 'Office Ally':
       case 'Office Ally Demo':
       enableForm()
+      showOAOptions()
       $('#siteStatus').text(siteObj.name+' is supported!').addClass('supported')
       $('#fillForm').on('click', function(){
         fillFormHandler(siteObj,tabs[0].id)
@@ -288,4 +289,15 @@ function ResponseHandler(response){
     $('#fillResponse').text(response).removeClass('fail').removeClass('success')
   }
 
+}
+
+function showOAOptions(){
+  if (!store.optionsOA){
+    var defaultSettings={
+      autoICD10:false,
+      copy1aTo26:false
+    }
+    store.set('optionsOA',defaultSettings)
+  }
+  $('#OAoptions').removeClass('hide')
 }

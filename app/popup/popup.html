@@ -14,7 +14,7 @@
   <script src='../vendor/select2.min.js'></script>
   <script src='../vendor/jquery.mask.min.js'></script>
   <script src='../vendor/bootstrap-toggle.min.js'></script>
-  
+
   <!-- build:js ../js/app.js-->
   <script src='../js/profiles.js'></script>
   <script src='../js/claimform.js'></script>
@@ -27,7 +27,7 @@
 <body>
   <div class='container'>
     <div class='col-xs-12 header text-center'>
-        <h1>Quick Claim  <h4 id='beta'>&nbsp(Beta)</h4></h1>
+        <h1>Quick Claim  <h4 id='beta'>&nbsp;(Beta)</h4></h1>
     </div>
     <div class='row'>
       <div class='col-xs-12'>
@@ -221,9 +221,9 @@
         </div>
         </div>
         </div>
-        <div class='row hide'>
-          <div class='col-xs-12 text-center' id='options'>
-
+        <div class='row'>
+          <div class='col-xs-12 text-center hide' id='OAoptions'>
+            <input type='checkbox' data-toggle='toggle' id='ICD10' />
           </div>
         </div>
         <div class='row'>
@@ -268,7 +268,7 @@
       </div>
       </div>
       <div class='col-xs-7'>
-        <h4 id='cptHeader' class='text-center'>&nbsp</h4>
+        <h4 id='cptHeader' class='text-center'>&nbsp;</h4>
         <form class='form-horizontal hide' id='cptDetails'>
           <div class='form-group'>
             <label for='inputCharge' class='col-xs-4 control-label'>
