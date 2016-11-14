@@ -294,8 +294,8 @@ function ResponseHandler(response){
 function showOAOptions(){
   if (!store.optionsOA){
     var defaultSettings={
-      autoICD10:false,
-      copy1aTo26:false
+      autoICD10:true,
+      autoAccept:true
     }
     store.set('optionsOA',defaultSettings)
   }
