@@ -125,11 +125,11 @@ h4.marginLeft{
 }
 
 .buttons-row{
-  margin-top:18px;
+  margin-top:4px;
 }
 
 #fillResponse{
-  margin-top:18px;
+  margin-top:10px;
   font-size: 16px;
 }
 
@@ -196,6 +196,9 @@ a:hover{
   color:rgb(61, 238, 222)
 }
 
+#acceptLabel{
+  float:right;
+}
 /* Bootstrap Overrides */
 
 h1{
@@ -254,8 +257,8 @@ h1{
   font-size: 14px;
 }
 
-#OAoptions{
-  padding-top:12px;
+#options{
+  padding-top:8px;
 }
 
 /*jQuery Validator overrides*/

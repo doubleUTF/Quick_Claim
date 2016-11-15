@@ -292,12 +292,29 @@ function ResponseHandler(response){
 }
 
 function showOAOptions(){
-  if (!store.optionsOA){
+  console.log(store.get('optionsOA'))
+  if (!store.get('optionsOA')){
+    console.log('No options found')
     var defaultSettings={
       autoICD10:true,
       autoAccept:true
     }
     store.set('optionsOA',defaultSettings)
   }
-  $('#OAoptions').removeClass('hide')
+
+  var optionsOA=store.get('optionsOA')
+  if (optionsOA.autoICD10){
+    $('#ICD10').bootstrapToggle('on')
+  }
+
+  if (optionsOA.autoAccept){
+    $('#accept').bootstrapToggle('on')
+  }
+
+  $('#ICD10').change(function(){
+    var currentSettings=optionsOA
+    currentSettings.autoICD10=!currentSettings.autoICD10
+    store.set('optionsOA',currentSettings)
+    console.log(currentSettings.autoICD10)
+  })
 }
