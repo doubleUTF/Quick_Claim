@@ -108,7 +108,7 @@ function renderStatus(url,tabs){
       case 'Office Ally':
       case 'Office Ally Demo':
       enableForm()
-      showOAOptions()
+      showOAOptions(tabs[0].id)
       $('#siteStatus').text(siteObj.name+' is supported!').addClass('supported')
       $('#fillForm').on('click', function(){
         fillFormHandler(siteObj,tabs[0].id)
@@ -291,8 +291,7 @@ function ResponseHandler(response){
 
 }
 
-function showOAOptions(){
-  console.log(store.get('optionsOA'))
+function showOAOptions(tabId){
   if (!store.get('optionsOA')){
     console.log('No options found')
     var defaultSettings={
@@ -315,6 +314,11 @@ function showOAOptions(){
     var currentSettings=optionsOA
     currentSettings.autoICD10=!currentSettings.autoICD10
     store.set('optionsOA',currentSettings)
-    console.log(currentSettings.autoICD10)
+  })
+
+  $('#accept').change(function(){
+    var currentSettings=optionsOA
+    currentSettings.autoAccept=!currentSettings.autoAccept
+    store.set('optionsOA',currentSettings)
   })
 }
