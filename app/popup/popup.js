@@ -22,4 +22,5 @@ $(function(){ // Start of document ready
     })
   })
 
+  $('#inputProcedure1').focus()
 }) // End of document ready

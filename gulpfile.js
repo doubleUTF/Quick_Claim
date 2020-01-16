@@ -1,49 +1,50 @@
-var gulp= require('gulp'),
-    usemin=require('gulp-usemin'),
-    uglify= require('gulp-uglify'),
-    minifyHtml=require('gulp-minify-html'),
-    minifyCss=require('gulp-minify-css'),
-    rev=require('gulp-rev'),
-    concat=require('gulp-concat'),
-    del=require('del')
+const { series, src, dest } = require("gulp"),
+  usemin = require("gulp-usemin"),
+  uglify = require("gulp-uglify"),
+  minifyHtml = require("gulp-minify-html"),
+  minifyCss = require("gulp-minify-css"),
+  rev = require("gulp-rev"),
+  concat = require("gulp-concat"),
+  del = require("del");
 
+function clean(cb) {
+  return del("dist");
+}
 
-gulp.task('usemin', function(){
-  return gulp.src('app/popup/*.html')
-    .pipe(usemin({
-      css:[rev()],
-      html:[minifyHtml({empty:true})],
-      js:[uglify(),rev()]
-    }))
-    .pipe(gulp.dest('dist/popup/'));
-});
+function useMin(cb) {
+  return src("app/popup/*.html")
+    .pipe(
+      usemin({
+        css: [rev()],
+        html: [minifyHtml({ empty: true })],
+        js: [uglify(), rev()]
+      })
+    )
+    .pipe(dest("dist/popup/"));
+}
 
-gulp.task('clean',function(){
-  return del('dist')
-})
+function copyImages(cb) {
+  return src("app/img/*").pipe(dest("dist/img/"));
+}
 
-gulp.task('copyImages',function(){
-  gulp.src('app/img/*')
-  .pipe(gulp.dest('dist/img/'))
-})
+function copyManifest(cb) {
+  return src("app/manifest.json").pipe(dest("dist"));
+}
 
-gulp.task('copyManifest',function(){
-  gulp.src('app/manifest.json')
-  .pipe(gulp.dest('dist'))
-})
+function copyLib(cb) {
+  return src("app/vendor/*.js").pipe(dest("dist/vendor"));
+}
 
-gulp.task('copyLib',function(){
-  gulp.src('app/vendor/*.js')
-  .pipe(gulp.dest('dist/vendor'))
-})
-
-gulp.task('copyContentJs',function(){
-  gulp.src('app/js/content.js')
-  .pipe(uglify())
-  .pipe(gulp.dest('dist/js'))
-})
-
-gulp.task('default',['clean'],function(){
-  gulp.start('usemin','copyImages',
-  'copyManifest','copyLib','copyContentJs')
-})
+function copyContentJs(cb) {
+  return src("app/js/content.js")
+    .pipe(uglify())
+    .pipe(dest("dist/js"));
+}
+exports.default = series(
+  clean,
+  useMin,
+  copyImages,
+  copyManifest,
+  copyLib,
+  copyContentJs
+);

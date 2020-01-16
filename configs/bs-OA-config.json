@@ -2,5 +2,5 @@
   "port": 8001,
   "files": ["../app/**/*.{html,htm,css,js}"],
   "server": { "baseDir": "./sites" },
-  "startPath":"Office_Ally/Office_Ally.html"
+  "startPath": "Office Ally.html"
 }

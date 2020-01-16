@@ -27,7 +27,7 @@
 <body>
   <div class='container'>
     <div class='col-xs-12 header text-center'>
-        <h1>Quick Claim  <h4 id='beta'>&nbsp;(Beta)</h4></h1>
+        <h1>Quick Claim</h1>
     </div>
     <div class='row'>
       <div class='col-xs-12'>
@@ -221,22 +221,38 @@
         </div>
         </div>
         </div>
-
-        <div class='row'>
-          <div class='col-xs-12' id='options'>
-            <label>
-            <input type='checkbox' data-toggle='toggle' id='ICD10'
-             data-on="ICD-10" data-off='ICD-9'/>
-            </label>
-
-            <label for='accept' id='acceptLabel'>
-                Accept Assignment
-            <input type='checkbox' data-toggle='toggle' id='accept'
-             data-on='Yes' data-off='No'/>
-             </label>
-          </div>
+        <div class='smallPadding'>
         </div>
-
+        <div class='row'>
+        <div class='col-xs-4'>
+        <div class='input-group'>
+          <div class='input-group-addon small-addon'>
+            10
+          </div>
+        <input type='text' class='form-control autoinput date'
+         id='dateOfService10' name='dateOfService' maxlength='10'>
+        </div>
+        </div>
+        <div class='col-xs-4'>
+        <div class='input-group'>
+          <div class='input-group-addon small-addon'>
+            11
+          </div>
+        <input type='text' class='form-control autoinput date'
+         id='dateOfService11' name='dateOfService' maxlength='10'>
+        </div>
+      </div>
+        <div class='col-xs-4'>
+        <div class='input-group'>
+          <div class='input-group-addon small-addon'>
+            12
+          </div>
+        <input type='text' class='form-control autoinput date'
+         id='dateOfService12' name='dateOfService' maxlength='10'>
+        </div>
+        </div>
+        </div>
+        <div class="smallPadding"></div>
         <div class='row'>
           <div class='col-xs-12 text-center buttons-row'>
             <button type='button' class='btn btn-success' id='fillForm' name='fillForm'>Fill Form</button>
@@ -364,12 +380,11 @@
   <div class='row'>
     <div class='col-xs-12'>
       <ul class='faqUl'>
-        <li class='bold'>What sites are currently supported?</li>
-        <li class='answer'>Office Ally and Optum/United Health Care. To request support
+        <li class='bold'>What site(s) are currently supported?</li>
+        <li class='answer'>Office Ally only. To request support
         for a site, email: doubleutf26@gmail.com</li>
         <li class='bold'>How come only 12 rows can be filled on OA?</li>
-        <li class='answer'>Currently when a row is added, the element id naming scheme doesn't properly increment.
-        In other words, Office Ally dropped the ball.</li>
+        <li class='answer'>Great news, OA fixed this by adding their proper ids to each row. Now you can submit up to 50 rows per claim!</li>
         <li class='bold'>Why do I get error messages when I input data into Claim Form section?</li>
         <li class='answer'>The jQuery Validator plugin validates data as you type.
         Finish the entire input and you should be fine.</li>
@@ -391,7 +406,7 @@
         <h4 class='text-center'>Directions</h4>
     <ol id='directionList'>
       <li>
-        Ensure you are on a supported site(Office Ally only in beta) and at the HCFA-1500 form section.
+        Ensure you are on a supported site(Office Ally only atm) and at the HCFA-1500 form section.
         The status bar on the Claim Form tab will indicate this.
       </li>
       <li>

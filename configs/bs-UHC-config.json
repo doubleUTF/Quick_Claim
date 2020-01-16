@@ -1,6 +1,0 @@
-{
-  "port": 8002,
-  "files": ["./sites/**/*.{html,htm,css,js}"],
-  "server": { "baseDir": "./sites" },
-  "startPath":"United_Health_Care/UnitedHealthcare Online.html"
-}

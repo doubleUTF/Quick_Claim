@@ -1,346 +1,245 @@
 // Look for entered ICD-10 diagnoses on form section 21
 // and return an array of codes.
 
-chrome.runtime.onMessage.addListener(
-  function(request,sender,sendResponse){
-    if (request.message=='getDiagnoses'){
-      sendResponse(getDiagnoses(request.siteName));
-    } else if (request.message=='fillForm'){
-    fillForm(JSON.parse(request.siteObj),JSON.parse(request.claimObj),
-      function(response){sendResponse(response)})
-    return true
-  } else if (request.message=='undoForm'){
-    sendResponse(undoForm(JSON.parse(request.siteObj)))
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  if (request.message == "getDiagnoses") {
+    sendResponse(getDiagnoses(request.siteName));
+  } else if (request.message == "fillForm") {
+    fillForm(
+      JSON.parse(request.siteObj),
+      JSON.parse(request.claimObj),
+      function(response) {
+        sendResponse(response);
+      }
+    );
+    return true;
+  } else if (request.message == "undoForm") {
+    sendResponse(undoForm(JSON.parse(request.siteObj)));
   }
-  }
-)
+});
 
-const diagLetters=['A','B','C','D','E','F',
-                   'G','H', 'I','J','K','L']
+const diagLetters = [
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "H",
+  "I",
+  "J",
+  "K",
+  "L"
+];
 
-// I am breaking the DRY principle(do not repeat yourself), but
-// for simplicity's sake it's best to process each site individually
-// since they may have different naming schemes.
-function getDiagnoses(siteName){
-  var diagnosisArray={}
-  switch (siteName){
-    case 'Office Ally Demo':
-      for (var i=1;i<13;i++){
-        var j=i-1
-        var code=$('#ctl00_phFolderContent_ucHCFA_DIAGNOSIS_CODECMS0212_'+i).val()
-        if (code){
-          diagnosisArray[diagLetters[j]]=code
-          }
-        }
-        return JSON.stringify(diagnosisArray)
-
-    case 'OA-Actual':
-    case 'Office Ally':
-        var iframe=$('#Iframe9').contents()
-        for (var i=1;i<13;i++){
-          var j=i-1
-          var code=iframe.find('#ctl00_phFolderContent_ucHCFA_DIAGNOSIS_CODECMS0212_'+i).val()
-          if (code){
-            diagnosisArray[diagLetters[j]]=code
-          }
-        }
-      return JSON.stringify(diagnosisArray)
-
-    case 'United Health Care Dev':
-    case 'United Health Care':
-      for (var i=1;i<13;i++){
-        var j=i-1
-        var code=$('#txt_diagnosisText'+i).val()
-        if (code){
-          diagnosisArray[diagLetters[j]]=code
+function getDiagnoses(siteName) {
+  var diagnosisArray = {};
+  switch (siteName) {
+    case "Office Ally Demo":
+    case "Office Ally":
+      var iframe = $("#Iframe9").contents();
+      for (var i = 1; i < 13; i++) {
+        var j = i - 1;
+        var code = iframe
+          .find("#ctl00_phFolderContent_ucHCFA_DIAGNOSIS_CODECMS0212_" + i)
+          .val();
+        if (code) {
+          diagnosisArray[diagLetters[j]] = code;
         }
       }
-      return JSON.stringify(diagnosisArray)
-
+      return JSON.stringify(diagnosisArray);
     default:
-      console.log('No diagnosis detected')
-      break
+      break;
   }
 }
 
-function fillForm(siteObj,claimObj,callback){
-  var rowsRequired=claimObj.rows
-  var maxRows=siteObj.maxRows
-  var rowsToAdd=0
-  if (maxRows<rowsRequired){
-    callback('Error, '+rowsRequired+ ' rows required but only '+ maxRows+ ' allowed.')
-    return
-  }
-  switch (siteObj.name){
-    case 'Office Ally':
-    case 'OA-Actual':
-    case 'Office Ally Demo':
-
-      var addRowIntervalId= setInterval(function(){
-        if (rowsToAdd<=0) {
-          // Populate form once there are no further rows to be added
-          callback(populateForm(siteObj,claimObj))
-          clearInterval(addRowIntervalId);
-          return
+function fillForm(siteObj, claimObj, callback) {
+  switch (siteObj.name) {
+    case "Office Ally":
+    case "Office Ally Demo":
+      var rowsRequired = claimObj.rows;
+      var maxRows = siteObj.maxRows;
+      var tableElement = document
+        .getElementById("Iframe9")
+        .contentWindow.document.getElementById(
+          "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_Table1"
+        );
+      var currentRows = tableElement.children[0].children.length / 2; // Quick and dirty way to get state of current rows
+      var rowsToAdd = rowsRequired - currentRows;
+      if (maxRows < rowsRequired) {
+        callback(
+          "Error, " +
+            rowsRequired +
+            " rows required but only " +
+            maxRows +
+            " allowed."
+        );
+        return;
+      } else if (rowsToAdd > 0) {
+        for (var i = 0; i < rowsToAdd; i++) {
+          document
+            .getElementById("Iframe9")
+            .contentWindow.document.getElementById("btnAddRow")
+            .click();
         }
-        rowsToAdd--
-        $('#btnAddRow').click()
-      },500)
+      }
+      callback(populateForm(siteObj, claimObj));
       break;
-    case 'United Health Care Dev':
-    case 'United Health Care':
-      callback(populateForm(siteObj,claimObj))
-      break
     default:
-      console.log('Site not supported');
       break;
   }
 }
 
 // Meat of the app. Fill those rows up baby!
-function populateForm(siteObj,claimObj){
-  var selectAllDiag=true
-  var datesArray=claimObj.dates
-  var diagnosisArray=JSON.parse(getDiagnoses(siteObj.name))
-  var diagnosisKeys=[]
-  var row=0
-  var prefix=siteObj.selectors.prefix
-  var selectors=siteObj.selectors
-  for (p in diagnosisArray){diagnosisKeys.push(p)}
-  //console.log(siteObj.name)
-  //console.log(siteObj)
+function populateForm(siteObj, claimObj) {
+  var selectAllDiag = true;
+  var diagnosisArray = JSON.parse(getDiagnoses(siteObj.name));
+  var diagnosisKeys = [];
+  var row = 0;
+  var prefix = siteObj.selectors.prefix;
+  var selectors = siteObj.selectors;
+  for (p in diagnosisArray) {
+    diagnosisKeys.push(p);
+  }
   // Begin populating rows
-  switch (siteObj.name){
-    case 'Office Ally Demo':
-      // Ongoing issue: Office Ally site does not properly increment the row number in their naming scheme.
-      // From the 12th row and beyond, all row ids are equal to 11(prefix+selector+11), even if row is 39.
-      // Therefore this is a problem on the site's end, not ours. Working around a broken naming scheme
-      // is not a good idea. Therefore, I will only support 12 rows for now until OA fixes their shit.
-      // Filling everything except diagnoses.
-      for (var i=0;i<claimObj.dates.length;i++){
-        if (!extractMonth(claimObj.dates[i]) ||
-            !extractDay(claimObj.dates[i])  ||
-            !extractYear(claimObj.dates[i])){
-          return ('Invalid date: '+ claimObj.dates[i])
+  switch (siteObj.name) {
+    case "Office Ally Demo":
+    case "Office Ally":
+      var iframe = $("#Iframe9").contents();
+      for (var i = 0; i < claimObj.dates.length; i++) {
+        if (
+          !extractMonth(claimObj.dates[i]) ||
+          !extractDay(claimObj.dates[i]) ||
+          !extractYear(claimObj.dates[i])
+        ) {
+          return "Invalid date: " + claimObj.dates[i];
         }
-        for (cpt in claimObj.cpts){
-          $('#'+ prefix+ selectors.fromMonth + row).val(extractMonth(claimObj.dates[i]))
-          $('#'+ prefix+ selectors.toMonth+row).val(extractMonth(claimObj.dates[i]))
-          $('#'+ prefix+ selectors.fromDay+row).val(extractDay(claimObj.dates[i]))
-          $('#'+ prefix+ selectors.toDay+row).val(extractDay(claimObj.dates[i]))
-          $('#'+ prefix+ selectors.fromYear+row).val(extractYear(claimObj.dates[i]))
-          $('#'+ prefix+ selectors.toYear+row).val(extractYear(claimObj.dates[i]))
-          $('#'+ prefix+ selectors.placeOfService+row).val(claimObj.cpts[cpt].place)
-          $('#'+ prefix+ selectors.emg+row).val(claimObj.cpts[cpt].emg)
-          $('#'+ prefix+ selectors.cpt+row).val(extractCpt(cpt))
-          $('#'+ prefix+ selectors.modA+row).val(claimObj.cpts[cpt].modA)
-          $('#'+ prefix+ selectors.modB+row).val(claimObj.cpts[cpt].modB)
-          $('#'+ prefix+ selectors.modC+row).val(claimObj.cpts[cpt].modC)
-          $('#'+ prefix+ selectors.modD+row).val(claimObj.cpts[cpt].modD)
-          $('#'+ prefix+ selectors.charges+row).val(claimObj.cpts[cpt].charge)
-          $('#'+ prefix+ selectors.units+row).val(claimObj.cpts[cpt].days)
-          $('#'+ prefix+ selectors.epsdt+row).val(claimObj.cpts[cpt].epsdt)
-          if (selectAllDiag && diagnosisKeys.length<5) {
-            $('#'+ prefix+ selectors.diagnosis+row).val(diagnosisKeys.join(''))
+        for (cpt in claimObj.cpts) {
+          iframe
+            .find("#" + prefix + selectors.fromMonth + row)
+            .val(extractMonth(claimObj.dates[i]));
+          iframe
+            .find("#" + prefix + selectors.toMonth + row)
+            .val(extractMonth(claimObj.dates[i]));
+          iframe
+            .find("#" + prefix + selectors.fromDay + row)
+            .val(extractDay(claimObj.dates[i]));
+          iframe
+            .find("#" + prefix + selectors.toDay + row)
+            .val(extractDay(claimObj.dates[i]));
+          iframe
+            .find("#" + prefix + selectors.fromYear + row)
+            .val(extractYear(claimObj.dates[i]));
+          iframe
+            .find("#" + prefix + selectors.toYear + row)
+            .val(extractYear(claimObj.dates[i]));
+          iframe
+            .find("#" + prefix + selectors.placeOfService + row)
+            .val(claimObj.cpts[cpt].place);
+          iframe
+            .find("#" + prefix + selectors.emg + row)
+            .val(claimObj.cpts[cpt].emg);
+          iframe.find("#" + prefix + selectors.cpt + row).val(extractCpt(cpt));
+          iframe
+            .find("#" + prefix + selectors.modA + row)
+            .val(claimObj.cpts[cpt].modA);
+          iframe
+            .find("#" + prefix + selectors.modB + row)
+            .val(claimObj.cpts[cpt].modB);
+          iframe
+            .find("#" + prefix + selectors.modC + row)
+            .val(claimObj.cpts[cpt].modC);
+          iframe
+            .find("#" + prefix + selectors.modD + row)
+            .val(claimObj.cpts[cpt].modD);
+          iframe
+            .find("#" + prefix + selectors.charges + row)
+            .val(claimObj.cpts[cpt].charge);
+          iframe
+            .find("#" + prefix + selectors.units + row)
+            .val(claimObj.cpts[cpt].days);
+          iframe
+            .find("#" + prefix + selectors.epsdt + row)
+            .val(claimObj.cpts[cpt].epsdt);
+          if (selectAllDiag && diagnosisKeys.length < 5) {
+            iframe
+              .find("#" + prefix + selectors.diagnosis + row)
+              .val(diagnosisKeys.join(""));
           }
-          row++
-          }
-        }
-      if (row>0) return ('Success! ' + (row) + ' row(s) filled.')
-      return
-
-    case 'OA-Actual':
-    case 'Office Ally':
-    var iframe=$('#Iframe9').contents()
-      for (var i=0;i<claimObj.dates.length;i++){
-        if (!extractMonth(claimObj.dates[i]) ||
-            !extractDay(claimObj.dates[i])  ||
-            !extractYear(claimObj.dates[i])){
-          return ('Invalid date: '+ claimObj.dates[i])
-        }
-        for (cpt in claimObj.cpts){
-          iframe.find('#'+ prefix+ selectors.fromMonth + row).val(extractMonth(claimObj.dates[i]))
-          iframe.find('#'+ prefix+ selectors.toMonth+row).val(extractMonth(claimObj.dates[i]))
-          iframe.find('#'+ prefix+ selectors.fromDay+row).val(extractDay(claimObj.dates[i]))
-          iframe.find('#'+ prefix+ selectors.toDay+row).val(extractDay(claimObj.dates[i]))
-          iframe.find('#'+ prefix+ selectors.fromYear+row).val(extractYear(claimObj.dates[i]))
-          iframe.find('#'+ prefix+ selectors.toYear+row).val(extractYear(claimObj.dates[i]))
-          iframe.find('#'+ prefix+ selectors.placeOfService+row).val(claimObj.cpts[cpt].place)
-          iframe.find('#'+ prefix+ selectors.emg+row).val(claimObj.cpts[cpt].emg)
-          iframe.find('#'+ prefix+ selectors.cpt+row).val(extractCpt(cpt))
-          iframe.find('#'+ prefix+ selectors.modA+row).val(claimObj.cpts[cpt].modA)
-          iframe.find('#'+ prefix+ selectors.modB+row).val(claimObj.cpts[cpt].modB)
-          iframe.find('#'+ prefix+ selectors.modC+row).val(claimObj.cpts[cpt].modC)
-          iframe.find('#'+ prefix+ selectors.modD+row).val(claimObj.cpts[cpt].modD)
-          iframe.find('#'+ prefix+ selectors.charges+row).val(claimObj.cpts[cpt].charge)
-          iframe.find('#'+ prefix+ selectors.units+row).val(claimObj.cpts[cpt].days)
-          iframe.find('#'+ prefix+ selectors.epsdt+row).val(claimObj.cpts[cpt].epsdt)
-          if (selectAllDiag && diagnosisKeys.length<5) {
-            iframe.find('#'+ prefix+ selectors.diagnosis+row).val(diagnosisKeys.join(''))
-          }
-          row++
-          }
-        }
-      if (row>0) return ('Success! ' + (row) + ' row(s) filled.')
-      break
-
-    case 'United Health Care Dev':
-    case 'United Health Care':
-      row=1
-      diagnosisKeys.forEach(function(x,i,a){a[i]=a[i].toLowerCase()})
-      for (var i=0;i<claimObj.dates.length;i++){
-        if (!extractMonth(claimObj.dates[i]) ||
-            !extractDay(claimObj.dates[i])  ||
-            !extractYear(claimObj.dates[i])){
-          return ('Invalid date: '+ claimObj.dates[i])
-        }
-        for (cpt in claimObj.cpts){
-        $('#'+replaceNum(selectors.fromMonth,row)).val(extractMonth(claimObj.dates[i]))
-        $('#'+replaceNum(selectors.fromDay,row)).val(extractDay(claimObj.dates[i]))
-        $('#'+replaceNum(selectors.fromYear,row)).val(extractYear(claimObj.dates[i]))
-        $('#'+replaceNum(selectors.toMonth,row)).val(extractMonth(claimObj.dates[i]))
-        $('#'+replaceNum(selectors.toDay,row)).val(extractDay(claimObj.dates[i]))
-        $('#'+replaceNum(selectors.toYear,row)).val(extractYear(claimObj.dates[i]))
-        $('#'+replaceNum(selectors.placeOfService,row)).val(claimObj.cpts[cpt].place)
-        $('#'+replaceNum(selectors.tos,row)).val(claimObj.cpts[cpt].emg)
-        $('#'+replaceNum(selectors.cpt,row)).val(extractCpt(cpt))
-        $('#'+replaceNum(selectors.modA,row)).val(claimObj.cpts[cpt].modA)
-        $('#'+replaceNum(selectors.modB,row)).val(claimObj.cpts[cpt].modB)
-        $('#'+replaceNum(selectors.modC,row)).val(claimObj.cpts[cpt].modC)
-        $('#'+replaceNum(selectors.modD,row)).val(claimObj.cpts[cpt].modD)
-        $('#'+replaceNum(selectors.charges,row)).val(claimObj.cpts[cpt].charge)
-        $('#'+replaceNum(selectors.units,row)).val(claimObj.cpts[cpt].days)
-        for (var j=0;j<diagnosisKeys.length;j++){
-          $('#'+replaceNum(selectors.diagPointerArray[j],row)).prop('checked',true)
-        }
-        row++
+          row++;
         }
       }
-      if (row>0) return ('Success! ' + (row-1) + ' row(s) filled.')
-      break
-
+      if (row > 0) return "Success! " + row + " row(s) filled.";
+      break;
     default:
-    break
+      break;
   }
 }
 
 // Regex helper functions
-function extractMonth(date){
-  var month_regex=/^(0[1-9]|1[0-2])/
-  if (!month_regex.exec(date)) return
-  return month_regex.exec(date)[1]
+function extractMonth(date) {
+  var month_regex = /^(0[1-9]|1[0-2])/;
+  if (!month_regex.exec(date)) return;
+  return month_regex.exec(date)[1];
 }
 
-function extractDay(date){
-  var day_regex=/\/([0-9]{2})\//
-  if (!day_regex.exec(date)) return
-  return day_regex.exec(date)[1]
+function extractDay(date) {
+  var day_regex = /\/([0-9]{2})\//;
+  if (!day_regex.exec(date)) return;
+  return day_regex.exec(date)[1];
 }
 
-function extractYear(date){
-  var year_regex=/\/([0-9]{4})/
-  if (!year_regex.exec(date)) return
-  return year_regex.exec(date)[1]
+function extractYear(date) {
+  var year_regex = /\/([0-9]{4})/;
+  if (!year_regex.exec(date)) return;
+  return year_regex.exec(date)[1];
 }
 
-function extractCpt(cptName){
-  var cpt_regex=/(\d+)/
-  return cpt_regex.exec(cptName)[1]
+function extractCpt(cptName) {
+  var cpt_regex = /(\d+)/;
+  return cpt_regex.exec(cptName)[1];
 }
 
-function replaceNum(selString,num){
-  var num_regex=/\(Num\)/
-  var replaced_string=selString.replace(num_regex,num)
-  return replaced_string
+function replaceNum(selString, num) {
+  var num_regex = /\(Num\)/;
+  var replaced_string = selString.replace(num_regex, num);
+  return replaced_string;
 }
 
-function undoForm(siteObj){
-  var row=0
-  var success='Undo fill success, rows cleared.'
-  var selectors=siteObj.selectors
-  switch (siteObj.name){
-    case 'OA-Actual':
-    case 'Office Ally':
-      var iframe=$('#Iframe9').contents()
-      var tableRowsId= siteObj.selectors.prefix+siteObj.selectors.table_rows_id
-      var current_rows=(iframe.find('#'+tableRowsId).length)/2
-      var prefix=siteObj.selectors.prefix
+function undoForm(siteObj) {
+  var row = 0;
+  var success = "Undo fill success, rows cleared.";
+  var selectors = siteObj.selectors;
+  switch (siteObj.name) {
+    case "Office Ally Demo":
+    case "Office Ally":
+      var iframe = $("#Iframe9").contents();
+      var tableRowsId =
+        siteObj.selectors.prefix + siteObj.selectors.table_rows_id;
+      var current_rows = iframe.find("#" + tableRowsId).length / 2;
+      var prefix = siteObj.selectors.prefix;
 
-      for (var i=0;i<current_rows;i++){
-        iframe.find('#'+ prefix+ selectors.fromMonth + row).val('')
-        iframe.find('#'+ prefix+ selectors.toMonth+row).val('')
-        iframe.find('#'+ prefix+ selectors.fromDay+row).val('')
-        iframe.find('#'+ prefix+ selectors.toDay+row).val('')
-        iframe.find('#'+ prefix+ selectors.fromYear+row).val('')
-        iframe.find('#'+ prefix+ selectors.toYear+row).val('')
-        iframe.find('#'+ prefix+ selectors.placeOfService+row).val('')
-        iframe.find('#'+ prefix+ selectors.emg+row).val('')
-        iframe.find('#'+ prefix+ selectors.cpt+row).val('')
-        iframe.find('#'+ prefix+ selectors.modA+row).val('')
-        iframe.find('#'+ prefix+ selectors.modB+row).val('')
-        iframe.find('#'+ prefix+ selectors.modC+row).val('')
-        iframe.find('#'+ prefix+ selectors.modD+row).val('')
-        iframe.find('#'+ prefix+ selectors.charges+row).val('')
-        iframe.find('#'+ prefix+ selectors.units+row).val('')
-        iframe.find('#'+ prefix+ selectors.epsdt+row).val('')
-        iframe.find('#'+ prefix+ selectors.diagnosis+row).val('')
-        row++
+      for (var i = 0; i < current_rows; i++) {
+        iframe.find("#" + prefix + selectors.fromMonth + row).val("");
+        iframe.find("#" + prefix + selectors.toMonth + row).val("");
+        iframe.find("#" + prefix + selectors.fromDay + row).val("");
+        iframe.find("#" + prefix + selectors.toDay + row).val("");
+        iframe.find("#" + prefix + selectors.fromYear + row).val("");
+        iframe.find("#" + prefix + selectors.toYear + row).val("");
+        iframe.find("#" + prefix + selectors.placeOfService + row).val("");
+        iframe.find("#" + prefix + selectors.emg + row).val("");
+        iframe.find("#" + prefix + selectors.cpt + row).val("");
+        iframe.find("#" + prefix + selectors.modA + row).val("");
+        iframe.find("#" + prefix + selectors.modB + row).val("");
+        iframe.find("#" + prefix + selectors.modC + row).val("");
+        iframe.find("#" + prefix + selectors.modD + row).val("");
+        iframe.find("#" + prefix + selectors.charges + row).val("");
+        iframe.find("#" + prefix + selectors.units + row).val("");
+        iframe.find("#" + prefix + selectors.epsdt + row).val("");
+        iframe.find("#" + prefix + selectors.diagnosis + row).val("");
+        row++;
       }
-        return success
-
-    case 'Office Ally Demo':
-      var tableRowsId= siteObj.selectors.prefix+siteObj.selectors.table_rows_id
-      var current_rows=($('#'+tableRowsId).length)/2
-      var prefix=siteObj.selectors.prefix
-
-      for (var i=0;i<current_rows;i++){
-        $('#'+ prefix+ selectors.fromMonth + row).val('')
-        $('#'+ prefix+ selectors.toMonth+row).val('')
-        $('#'+ prefix+ selectors.fromDay+row).val('')
-        $('#'+ prefix+ selectors.toDay+row).val('')
-        $('#'+ prefix+ selectors.fromYear+row).val('')
-        $('#'+ prefix+ selectors.toYear+row).val('')
-        $('#'+ prefix+ selectors.placeOfService+row).val('')
-        $('#'+ prefix+ selectors.emg+row).val('')
-        $('#'+ prefix+ selectors.cpt+row).val('')
-        $('#'+ prefix+ selectors.modA+row).val('')
-        $('#'+ prefix+ selectors.modB+row).val('')
-        $('#'+ prefix+ selectors.modC+row).val('')
-        $('#'+ prefix+ selectors.modD+row).val('')
-        $('#'+ prefix+ selectors.charges+row).val('')
-        $('#'+ prefix+ selectors.units+row).val('')
-        $('#'+ prefix+ selectors.epsdt+row).val('')
-        $('#'+ prefix+ selectors.diagnosis+row).val('')
-        row++
-      }
-        return success
-
-    case 'United Health Care Dev':
-    case 'United Health Care':
-      row=1
-      for (var i=0;i<siteObj.maxRows;i++){
-        $('#'+replaceNum(selectors.fromMonth,row)).val('')
-        $('#'+replaceNum(selectors.fromDay,row)).val('')
-        $('#'+replaceNum(selectors.fromYear,row)).val('')
-        $('#'+replaceNum(selectors.toMonth,row)).val('')
-        $('#'+replaceNum(selectors.toDay,row)).val('')
-        $('#'+replaceNum(selectors.toYear,row)).val('')
-        $('#'+replaceNum(selectors.placeOfService,row)).val('')
-        $('#'+replaceNum(selectors.tos,row)).val('')
-        $('#'+replaceNum(selectors.cpt,row)).val('')
-        $('#'+replaceNum(selectors.modA,row)).val('')
-        $('#'+replaceNum(selectors.modB,row)).val('')
-        $('#'+replaceNum(selectors.modC,row)).val('')
-        $('#'+replaceNum(selectors.modD,row)).val('')
-        $('#'+replaceNum(selectors.charges,row)).val('')
-        $('#'+replaceNum(selectors.units,row)).val('')
-        for (var j=0;j<selectors.diagPointerArray.length;j++){
-          $('#'+replaceNum(selectors.diagPointerArray[j],row)).prop('checked',false)
-        }
-        row++
-      }
-      return success
-
-}
-
+      return success;
+  }
 }
