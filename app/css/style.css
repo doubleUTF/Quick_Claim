@@ -1,208 +1,207 @@
 /* Popup html */
-body{
-  min-width:400px;
-  min-height:550px;
+body {
+  min-width: 400px;
+  min-height: 580px;
   background-color: rgb(51, 52, 51);
-  color:rgb(226, 123, 16);
+  color: rgb(226, 123, 16);
 }
 
-
-.header p{
-  display:inline;
-  float:right;
+.header p {
+  display: inline;
+  float: right;
 }
 
-#popup1, #popup2{
-  display:none;
+#popup1,
+#popup2 {
+  display: none;
 }
 
 .popupC {
   padding-top: 40px;
 }
 
-.cptDetails{
+.cptDetails {
   padding: 5px 10px !important;
-  height:24px !important;
+  height: 24px !important;
 }
 
-#addCptInput{
+#addCptInput {
   padding: 5px 10px !important;
-  height:30px !important;
+  height: 30px !important;
   max-width: 80px;
-  display:block;
-  margin-top:12px;
+  display: block;
+  margin-top: 12px;
 }
 
-#inputAdd{
-  padding:0px 12px;
-  height:30px;
-  margin-top:-2px !important;
+#inputAdd {
+  padding: 0px 12px;
+  height: 30px;
+  margin-top: -2px !important;
 }
 
-#rowAdd{
-  margin-top: 5px
+#rowAdd {
+  margin-top: 5px;
 }
 
 .select2-dropdown {
-  color:black;
+  color: black;
 }
 
-#inputCharge{
+#inputCharge {
   max-width: 80px;
-  display:inline-block;
-  float:right;
+  display: inline-block;
+  float: right;
 }
 
-.cptbtn{
-  width:67px;
-  margin-top:5px;
-  margin-bottom:5px;
+.cptbtn {
+  width: 67px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
-p.deleted{
+p.deleted {
   font-weight: bold;
-  font-size:16px;
+  font-size: 16px;
 }
 
-.noOverflow{
-  overflow:hidden;
+.noOverflow {
+  overflow: hidden;
 }
 
-span.link{
-  color:rgb(21, 210, 188)
+span.link {
+  color: rgb(21, 210, 188);
 }
 
-
-#cptMsg, #dateMsg{
+#cptMsg,
+#dateMsg {
   overflow: hidden;
   margin-top: 8px;
   margin-bottom: 10px;
   height: 18px;
-  display:inline-block;
+  display: inline-block;
 }
 
-#cptForm{
+#cptForm {
   margin-bottom: 0px;
 }
-h4.marginLeft{
+h4.marginLeft {
   margin-left: 15px;
-  display:inline-block;
+  display: inline-block;
 }
-#beta{
-  display:inline-block;
+#beta {
+  display: inline-block;
 }
-.supported{
-  color:rgb(19, 233, 85)
-}
-
-.warning{
-  color:rgba(255, 230, 0, 0.76)
+.supported {
+  color: rgb(19, 233, 85);
 }
 
-.notSupported{
-  color:rgb(219, 5, 5)
+.warning {
+  color: rgba(255, 230, 0, 0.76);
 }
 
-#directionList{
+.notSupported {
+  color: rgb(219, 5, 5);
+}
+
+#directionList {
   padding-left: 18px;
 }
 
-.smallPadding{
-  padding-top:4px;
+.smallPadding {
+  padding-top: 4px;
   padding-bottom: 4px;
 }
 
-.date{
-  padding-right:5px !important;
-  padding-left:5px !important;
+.date {
+  padding-right: 5px !important;
+  padding-left: 5px !important;
 }
 
-.status-row{
+.status-row {
   margin-top: 10px;
 }
-.small-addon{
+.small-addon {
   padding: 4px 4px !important;
 }
 
-.buttons-row{
-  margin-top:4px;
+.buttons-row {
+  margin-top: 4px;
 }
 
-#fillResponse{
-  margin-top:10px;
+#fillResponse {
+  margin-top: 10px;
   font-size: 16px;
 }
 
-
-.success{
-  color:rgb(12, 227, 40);
+.success {
+  color: rgb(12, 227, 40);
 }
 
-.fail{
-  color:rgb(232, 17, 17)
+.fail {
+  color: rgb(232, 17, 17);
 }
 
-.header h1{
-  display:inline-block;
+.header h1 {
+  display: inline-block;
 }
 
-.header h4{
-  display:inline-block;
+.header h4 {
+  display: inline-block;
 }
 
-#shortcut{
-  margin-top:5px;
+#shortcut {
+  margin-top: 5px;
 }
 
-.bold{
+.bold {
   font-weight: bold;
 }
-#undoForm{
-  color:rgb(0, 0, 0)
+#undoForm {
+  color: rgb(0, 0, 0);
 }
 
-#chromeBtn{
+#chromeBtn {
   margin-left: 20px;
 }
-#githubBtn{
-  float:right;
+#githubBtn {
+  float: right;
   margin-right: 20px;
 }
-.secondRow{
+.secondRow {
   margin-top: 8px;
 }
-#demoButton{
-  float:right;
-  margin-right:20px;
-  margin-top:5px;
+#demoButton {
+  float: right;
+  margin-right: 20px;
+  margin-top: 5px;
 }
-li.answer{
+li.answer {
   list-style-type: none;
-  margin-bottom:8px;
+  margin-bottom: 8px;
 }
-.faqUl{
-  margin-top:10px;
-  margin-left:0px;
+.faqUl {
+  margin-top: 10px;
+  margin-left: 0px;
 }
-#faqs{
-  margin-top:10px;
+#faqs {
+  margin-top: 10px;
   margin-bottom: 5px;
 }
 
-a{
-  color:rgb(122, 155, 252)
+a {
+  color: rgb(122, 155, 252);
 }
-a:hover{
-  color:rgb(61, 238, 222)
+a:hover {
+  color: rgb(61, 238, 222);
 }
 
-#acceptLabel{
-  float:right;
+#acceptLabel {
+  float: right;
 }
 /* Bootstrap Overrides */
 
-h1{
-  margin-top:15px;
+h1 {
+  margin-top: 15px;
 }
 .nav > li > a {
   position: relative;
@@ -212,7 +211,6 @@ h1{
 
 .nav-tabs {
   border-bottom: 1px solid #797979;
-
 }
 
 .nav-tabs > li > a:hover {
@@ -234,20 +232,22 @@ h1{
   background-color: #eee;
 }
 
-.nav > li >a{
-  color:rgb(138, 133, 133)
+.nav > li > a {
+  color: rgb(138, 133, 133);
 }
 
-.nav-tabs > li, .nav-pills > li {
-    float:none;
-    display:inline-block;
+.nav-tabs > li,
+.nav-pills > li {
+  float: none;
+  display: inline-block;
 }
 
-.nav-tabs, .nav-pills {
-    text-align:center;
+.nav-tabs,
+.nav-pills {
+  text-align: center;
 }
 
-.form-control{
+.form-control {
   height: 30px;
   padding: 4px 10px;
 }
@@ -257,19 +257,19 @@ h1{
   font-size: 14px;
 }
 
-#options{
-  padding-top:8px;
+#options {
+  padding-top: 8px;
 }
 
 /*jQuery Validator overrides*/
-label.error{
-  color:red;
+label.error {
+  color: red;
 }
 
-p.valid{
-  color:rgb(12, 227, 40);
+p.valid {
+  color: rgb(12, 227, 40);
 }
 
-#inputDelete{
-  margin-top:15px;
+#inputDelete {
+  margin-top: 15px;
 }

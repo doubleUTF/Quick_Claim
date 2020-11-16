@@ -1,0 +1,9 @@
+{
+  "port": 8000,
+  "files": [
+    "../app/**/*.{html,htm,css,js}",
+    "./sites/Availity Web Portal -Anthem_files/*"
+  ],
+  "server": { "baseDir": "./sites" },
+  "startPath": "./Ability-Claim Form.html"
+}

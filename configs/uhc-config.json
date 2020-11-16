@@ -1,0 +1,6 @@
+{
+  "port": 8002,
+  "files": ["../app/**/*.{html,htm,css,js}","./sites/UHC/**"],
+  "server": { "baseDir": "./sites" },
+  "startPath": "./UHC/Claim Submission Form _ Claim Submission.html"
+}

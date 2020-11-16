@@ -1,14 +1,14 @@
 // Look for entered ICD-10 diagnoses on form section 21
 // and return an array of codes.
 
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.message == "getDiagnoses") {
     sendResponse(getDiagnoses(request.siteName));
   } else if (request.message == "fillForm") {
     fillForm(
       JSON.parse(request.siteObj),
       JSON.parse(request.claimObj),
-      function(response) {
+      function (response) {
         sendResponse(response);
       }
     );
@@ -30,11 +30,11 @@ const diagLetters = [
   "I",
   "J",
   "K",
-  "L"
+  "L",
 ];
 
 function getDiagnoses(siteName) {
-  var diagnosisArray = {};
+  var diagnosisKeys = [];
   switch (siteName) {
     case "Office Ally Demo":
     case "Office Ally":
@@ -45,10 +45,17 @@ function getDiagnoses(siteName) {
           .find("#ctl00_phFolderContent_ucHCFA_DIAGNOSIS_CODECMS0212_" + i)
           .val();
         if (code) {
-          diagnosisArray[diagLetters[j]] = code;
+          diagnosisKeys.push(diagLetters[j]);
         }
       }
-      return JSON.stringify(diagnosisArray);
+      return diagnosisKeys;
+    case "United Health Care Dev":
+    case "United Health Care":
+      for (var i = 0; i < 4; i++) {
+        var code = document.getElementById("diagnosis-code-data-" + i);
+        code && code.value && diagnosisKeys.push(i + 1);
+      }
+      return diagnosisKeys;
     default:
       break;
   }
@@ -68,20 +75,44 @@ function fillForm(siteObj, claimObj, callback) {
       var currentRows = tableElement.children[0].children.length / 2; // Quick and dirty way to get state of current rows
       var rowsToAdd = rowsRequired - currentRows;
       if (maxRows < rowsRequired) {
-        callback(
+        return callback(
           "Error, " +
             rowsRequired +
             " rows required but only " +
             maxRows +
             " allowed."
         );
-        return;
       } else if (rowsToAdd > 0) {
         for (var i = 0; i < rowsToAdd; i++) {
           document
             .getElementById("Iframe9")
             .contentWindow.document.getElementById("btnAddRow")
             .click();
+        }
+      }
+      callback(populateForm(siteObj, claimObj));
+      break;
+    case "United Health Care Dev":
+    case "United Health Care":
+      var rowsRequired = claimObj.rows;
+      var maxRows = siteObj.maxRows;
+      var boxContainer = document
+        .getElementsByClassName("box")[2]
+        .getElementsByTagName("fieldset")[0]
+        .querySelector("div");
+      var currentRows = boxContainer.children.length - 3; // 3 default items not part of line numbers
+      var rowsToAdd = rowsRequired - currentRows;
+      if (maxRows < rowsRequired) {
+        return callback(
+          "Error, " +
+            rowsRequired +
+            " rows required but only " +
+            maxRows +
+            " allowed."
+        );
+      } else if (rowsToAdd > 0) {
+        for (var i = 0; i < rowsToAdd; i++) {
+          document.getElementById("servicelines-add-row-button").click();
         }
       }
       callback(populateForm(siteObj, claimObj));
@@ -93,15 +124,11 @@ function fillForm(siteObj, claimObj, callback) {
 
 // Meat of the app. Fill those rows up baby!
 function populateForm(siteObj, claimObj) {
-  var selectAllDiag = true;
-  var diagnosisArray = JSON.parse(getDiagnoses(siteObj.name));
-  var diagnosisKeys = [];
+  var diagnosisKeys = getDiagnoses(siteObj.name);
   var row = 0;
   var prefix = siteObj.selectors.prefix;
   var selectors = siteObj.selectors;
-  for (p in diagnosisArray) {
-    diagnosisKeys.push(p);
-  }
+
   // Begin populating rows
   switch (siteObj.name) {
     case "Office Ally Demo":
@@ -162,11 +189,66 @@ function populateForm(siteObj, claimObj) {
           iframe
             .find("#" + prefix + selectors.epsdt + row)
             .val(claimObj.cpts[cpt].epsdt);
-          if (selectAllDiag && diagnosisKeys.length < 5) {
+          if (diagnosisKeys.length < 5) {
             iframe
               .find("#" + prefix + selectors.diagnosis + row)
               .val(diagnosisKeys.join(""));
           }
+          row++;
+        }
+      }
+      if (row > 0) return "Success! " + row + " row(s) filled.";
+      break;
+    case "United Health Care Dev":
+    case "United Health Care":
+      const diagnosisSelectors = [
+        selectors.diagnosisA,
+        selectors.diagnosisB,
+        selectors.diagnosisC,
+        selectors.diagnosisD,
+      ];
+      for (var i = 0; i < claimObj.dates.length; i++) {
+        if (
+          !extractMonth(claimObj.dates[i]) ||
+          !extractDay(claimObj.dates[i]) ||
+          !extractYear(claimObj.dates[i])
+        )
+          return "Invalid date: " + claimObj.dates[i];
+        for (cpt in claimObj.cpts) {
+          document.getElementById(selectors.fromDate + "-" + row).value =
+            claimObj.dates[i];
+          document.getElementById(selectors.toDate + "-" + row).value =
+            claimObj.dates[i];
+          document.getElementById(selectors.cpt + "-" + row).value = extractCpt(
+            cpt
+          );
+          document.getElementById(selectors.modA + "-" + row).value = claimObj
+            .cpts[cpt].modA
+            ? claimObj.cpts[cpt].modA
+            : "";
+          document.getElementById(selectors.modB + "-" + row).value = claimObj
+            .cpts[cpt].modB
+            ? claimObj.cpts[cpt].modB
+            : "";
+          document.getElementById(selectors.modC + "-" + row).value = claimObj
+            .cpts[cpt].modC
+            ? claimObj.cpts[cpt].modC
+            : "";
+          document.getElementById(selectors.modD + "-" + row).value = claimObj
+            .cpts[cpt].modD
+            ? claimObj.cpts[cpt].modD
+            : "";
+          for (var k = 0; k < diagnosisKeys.length; k++) {
+            document.getElementById(diagnosisSelectors[k] + "-" + row).value =
+              diagnosisKeys[k];
+          }
+          document.getElementById(
+            selectors.charges + "-" + row
+          ).value = claimObj.cpts[cpt].charge ? claimObj.cpts[cpt].charge : "";
+          document.getElementById(selectors.units + "-" + row).value = claimObj
+            .cpts[cpt].days
+            ? claimObj.cpts[cpt].days
+            : "";
           row++;
         }
       }

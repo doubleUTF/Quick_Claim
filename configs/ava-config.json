@@ -1,0 +1,9 @@
+{
+  "port": 8001,
+  "files": [
+    "../app/**/*.{html,htm,css,js}",
+    "./sites/Availity Web Portal -Anthem_files/*"
+  ],
+  "server": { "baseDir": "./sites" },
+  "startPath": "./Availity Web Portal -Anthem_files/saved_resource(1).html"
+}

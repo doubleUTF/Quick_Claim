@@ -26,11 +26,11 @@ const supported_sites = [
       units: "UNITS",
       epsdt: "EPSDT_FAMILY_PLAN",
       table_rows_id: "Table1 > tbody> tr",
-      diag21: "ctl00_phFolderContent_ucHCFA_DIAGNOSIS_CODECMS0212_"
+      diag21: "ctl00_phFolderContent_ucHCFA_DIAGNOSIS_CODECMS0212_",
     },
     maxDiagnosisPointers: 4,
     defaultRows: 12,
-    maxRows: 50
+    maxRows: 50,
   },
   {
     name: "Ability Network",
@@ -39,80 +39,70 @@ const supported_sites = [
     selectors: {},
     notes:
       "Will not be supported due to complexity of adding rows" +
-      " making calls to ASP framework which I cannot handle atm."
+      " making calls to ASP framework which I cannot handle atm.",
   },
   {
     name: "United Health Care",
     url: "provider-linkhealth.unitedhealthcareonline.com",
     supported: false,
     notes:
-      "UI was completely updated around 2017-2018, all previous selectors are now removed now."
+      "UI was completely updated around 2017-2018, all previous selectors are now removed now.",
+  },
+  {
+    name: "United Health Care Dev",
+    supported: true,
+    notes: "UI updated, hopefully will support",
+    url: "localhost:8002",
+    defaultRows: 1,
+    selectors: {
+      // ${selector}-${num}
+      fromDate: "input-from",
+      toDate: "input-to",
+      cpt: "cpt-hcpc-code-data",
+      modA: "input-modifier-1",
+      modB: "input-modifier-2",
+      modC: "input-modifier-3",
+      modD: "input-modifier-4",
+      diagnosisA: "input-diagnosis-1",
+      diagnosisB: "input-diagnosis-2",
+      diagnosisC: "input-diagnosis-3",
+      diagnosisD: "input-diagnosis-4",
+      charges: "charge-value",
+      units: "daysorunits-input",
+    },
+    maxDiagnosisPointers: 4,
+    maxRows: 50,
+  },
+  {
+    name: "United Health Care",
+    supported: true,
+    notes: "UI updated, hopefully will support",
+    url: "provider-apps.linkhealth.com",
+    defaultRows: 1,
+    selectors: {
+      // ${selector}-${num}
+      fromDate: "input-from",
+      toDate: "input-to",
+      cpt: "cpt-hcpc-code-data",
+      modA: "input-modifier-1",
+      modB: "input-modifier-2",
+      modC: "input-modifier-3",
+      modD: "input-modifier-4",
+      diagnosisA: "input-diagnosis-1",
+      diagnosisB: "input-diagnosis-2",
+      diagnosisC: "input-diagnosis-3",
+      diagnosisD: "input-diagnosis-4",
+      charges: "charge-value",
+      units: "daysorunits-input",
+    },
+    maxDiagnosisPointers: 4,
+    maxRows: 50,
   },
   {
     name: "Availity",
     url: "",
     supported: false,
-    selectors: {}
-  },
-  {
-    name: "Navinet",
-    url: "",
-    supported: false,
-    selectors: {}
-  },
-  {
-    name: "Navicure",
-    url: "",
-    supported: false,
-    selectors: {}
-  },
-  {
-    name: "Claim MD",
-    url: "",
-    supported: false,
-    selectors: {}
-  },
-  {
-    name: "Practice Suite",
-    url: "",
-    supported: false,
-    selectors: {}
-  },
-  {
-    name: "Apex Edi",
-    url: "",
-    supported: false,
-    selectors: {}
-  },
-  {
-    name: "Emdeon",
-    url: "",
-    supported: false,
-    selectors: {}
-  },
-  {
-    name: "Zirmed",
-    url: "",
-    supported: false,
-    selectors: {}
-  },
-  {
-    name: "Relayhealth",
-    url: "",
-    supported: false,
-    selectors: {}
-  },
-  {
-    name: "Mckesson",
-    url: "",
-    supported: false,
-    selectors: {}
-  },
-  {
-    name: "Realmed",
-    url: "",
-    supported: false,
-    selectors: {}
+    selectors: {},
   },
   {
     name: "Office Ally Demo",
@@ -139,19 +129,9 @@ const supported_sites = [
       charges: "DOS_CHRG",
       units: "UNITS",
       epsdt: "EPSDT_FAMILY_PLAN",
-      table_rows_id: "Table1 > tbody> tr"
+      table_rows_id: "Table1 > tbody> tr",
     },
     maxDiagnosisPointers: 4,
-    maxRows: 50
+    maxRows: 50,
   },
-  {
-    name: "TriZetto_Provider_Solutions",
-    url: "",
-    supported: false
-  },
-  {
-    name: "United Health Care Dev",
-    supported: false,
-    notes: "UI updated, no longer supported"
-  }
 ];

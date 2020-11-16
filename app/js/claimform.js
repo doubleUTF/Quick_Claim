@@ -1,8 +1,8 @@
 // On document ready
-window.addEventListener("DOMContentLoaded", function() {
+window.addEventListener("DOMContentLoaded", function () {
   // Send request to content script for tab info
   // and perform actions with active tab
-  chrome.tabs.query({ active: true, lastFocusedWindow: true }, function(tabs) {
+  chrome.tabs.query({ active: true, lastFocusedWindow: true }, function (tabs) {
     if (tabs.length == 1) {
       var url = tabs[0].url;
       renderStatus(url, tabs);
@@ -13,7 +13,7 @@ window.addEventListener("DOMContentLoaded", function() {
 
   // Check the keycode from event, if it's a letter
   // or word, autotab. Else, do not autotab.
-  $(".autoinput").keyup(function(event) {
+  $(".autoinput").keyup(function (event) {
     var a = event.keyCode;
     var c = String.fromCharCode(event.keyCode);
     var isWordcharacter = c.match(/\w/);
@@ -39,34 +39,34 @@ window.addEventListener("DOMContentLoaded", function() {
       inputProcedure: {
         number: true,
         digits: true,
-        minlength: 5
-      }
+        minlength: 5,
+      },
     },
     messages: {
       inputProcedure: {
-        number: "Numbers only"
-      }
+        number: "Numbers only",
+      },
     },
     errorClass: "error",
-    errorLabelContainer: "#cptMsg"
+    errorLabelContainer: "#cptMsg",
   });
 
   // jQuery Validate for Dates of Services
   $("#datesForm").validate({
     rules: {
       dateOfService: {
-        dateValidate: true
-      }
+        dateValidate: true,
+      },
     },
     errorClass: "error",
-    errorLabelContainer: "#dateMsg"
+    errorLabelContainer: "#dateMsg",
   });
 
   // Date validation is not perfect, but it's good enough
   // and I've spent enough time on it.
   jQuery.validator.addMethod(
     "dateValidate",
-    function(date) {
+    function (date) {
       var date_regex = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/2\d{3}$/;
       if (date_regex.test(date) || date == "") {
         enableFillButton();
@@ -78,7 +78,7 @@ window.addEventListener("DOMContentLoaded", function() {
   );
 
   // Clear claim listener
-  $("#clearForm").on("click", function() {
+  $("#clearForm").on("click", function () {
     $("#cptForm").trigger("reset");
     $("#fillResponse")
       .text("Form cleared")
@@ -86,7 +86,7 @@ window.addEventListener("DOMContentLoaded", function() {
       .removeClass("fail");
   });
 
-  $("#closePopup").on("click", function() {
+  $("#closePopup").on("click", function () {
     window.close();
   });
 }); //End of document ready
@@ -98,7 +98,7 @@ window.addEventListener("DOMContentLoaded", function() {
 // Each site will be treated individually until it has been shown otherwise.
 function renderStatus(url, tabs) {
   var host = url.match(/^(.*?:\/{2,3})?(.+?)(\/|$)/)[2];
-  var result = $.grep(supported_sites, function(elem) {
+  var result = $.grep(supported_sites, function (elem) {
     return elem.url === host;
   });
 
@@ -111,16 +111,18 @@ function renderStatus(url, tabs) {
     switch (siteObj.name) {
       case "Office Ally":
       case "Office Ally Demo":
+      case "United Health Care Dev":
+      case "United Health Care":
         enableForm();
         showOAOptions(tabs[0].id);
         $("#siteStatus")
           .text(siteObj.name + " is supported!")
           .addClass("supported");
-        $("#fillForm").on("click", function() {
+        $("#fillForm").on("click", function () {
           fillFormHandler(siteObj, tabs[0].id);
         });
         // Submit form after hitting enter
-        $("#datesForm").keydown(function(event) {
+        $("#datesForm").keydown(function (event) {
           if (event.which == 13) {
             event.preventDefault();
             fillFormHandler(siteObj, tabs[0].id);
@@ -128,26 +130,25 @@ function renderStatus(url, tabs) {
         });
         $("#undoForm")
           .prop("disabled", false)
-          .on("click", function() {
+          .on("click", function () {
             chrome.tabs.sendMessage(
               tabs[0].id,
               {
                 message: "undoForm",
-                siteObj: JSON.stringify(siteObj)
+                siteObj: JSON.stringify(siteObj),
               },
-              function(response) {
+              function (response) {
                 ResponseHandler(response);
               }
             );
           });
+
         chrome.tabs.sendMessage(
           tabs[0].id,
           { message: "getDiagnoses", siteName: siteObj.name },
-          function(diagObj) {
-            console.log(siteObj);
-            // console.log(diagObj);
-            if (diagObj != "{}") {
-              if (getObjLength(diagObj) > 4) {
+          function (diagObj) {
+            if (diagObj) {
+              if (diagObj.length > 4) {
                 $("#statusBarMsg")
                   .text(
                     "More than 4 diagnoses detected. Column 24.E will not be filled due to site limitations."
@@ -157,7 +158,7 @@ function renderStatus(url, tabs) {
               }
               $("#statusBarMsg")
                 .text(
-                  getObjLength(diagObj) +
+                  diagObj.length +
                     " diagnosis code(s) detected, Enter CPT Codes."
                 )
                 .addClass("supported");
@@ -210,7 +211,7 @@ function getUserInput(siteObj) {
       cptObjects["cpt" + cptValues[i].value] = tempObj;
     }
   }
-  for (var i = 0; i < 12; i++) {
+  for (var i = 0; i < 15; i++) {
     if (datesValues[i].value) {
       datesArray.push(datesValues[i].value);
     }
@@ -238,9 +239,9 @@ function fillFormHandler(siteObj, tabId) {
     {
       message: "fillForm",
       siteObj: JSON.stringify(siteObj),
-      claimObj: JSON.stringify(claimObj)
+      claimObj: JSON.stringify(claimObj),
     },
-    function(response) {
+    function (response) {
       ResponseHandler(response);
     }
   );
@@ -271,7 +272,7 @@ function enableForm() {
 }
 
 function getCurrentTabId() {
-  chrome.tabs.query({ active: true, lastFocusedWindow: true }, function(tabs) {
+  chrome.tabs.query({ active: true, lastFocusedWindow: true }, function (tabs) {
     if (tabs.length == 1) {
       return tabs[0].id;
     } else throw error("Unknown tab count");
@@ -290,15 +291,9 @@ function ResponseHandler(response) {
   var success_regex = /^Success/;
   var fail_regex = /^Invalid/;
   if (success_regex.exec(response)) {
-    $("#fillResponse")
-      .text(response)
-      .addClass("success")
-      .removeClass("fail");
+    $("#fillResponse").text(response).addClass("success").removeClass("fail");
   } else if (fail_regex.exec(response)) {
-    $("#fillResponse")
-      .text(response)
-      .addClass("fail")
-      .removeClass("success");
+    $("#fillResponse").text(response).addClass("fail").removeClass("success");
   } else {
     $("#fillResponse")
       .text(response)
@@ -311,7 +306,7 @@ function showOAOptions(tabId) {
   if (!store.get("optionsOA")) {
     var defaultSettings = {
       autoICD10: true,
-      autoAccept: true
+      autoAccept: true,
     };
     store.set("optionsOA", defaultSettings);
   }
@@ -325,13 +320,13 @@ function showOAOptions(tabId) {
     $("#accept").bootstrapToggle("on");
   }
 
-  $("#ICD10").change(function() {
+  $("#ICD10").change(function () {
     var currentSettings = optionsOA;
     currentSettings.autoICD10 = !currentSettings.autoICD10;
     store.set("optionsOA", currentSettings);
   });
 
-  $("#accept").change(function() {
+  $("#accept").change(function () {
     var currentSettings = optionsOA;
     currentSettings.autoAccept = !currentSettings.autoAccept;
     store.set("optionsOA", currentSettings);
